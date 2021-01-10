@@ -6,4 +6,6 @@ function importAll(resolve): void {
 
 importAll(require.context('../src/', true, /\.ts$|\.scss$/));
 
-$('.my-slider').mySlider();
+$('.my-slider').mySlider({
+  containerClass: 'user-class'
+});
