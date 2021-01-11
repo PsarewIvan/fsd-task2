@@ -1,0 +1,19 @@
+.my-slider {
+  &__line {
+    background-image: linear-gradient(to bottom, lightgray -200%, white 100%);
+    border: 1px solid lightgrey;
+    border-radius: 7px;
+  }
+
+  &__bar {
+    // background-color: lightskyblue;
+    background-image: linear-gradient(to bottom, white 0%, lightskyblue 20%, #e7f9ff 100%);
+    border: 1px solid rgb(185, 223, 247);
+    border-radius: 7px 0 0 7px;
+  }
+
+  &__handle {
+    border: 1px solid grey;
+    background-color: lightgray;
+  }
+}
