@@ -1,30 +1,21 @@
 // Слой для обновления модели и отображения, который
 // реагирует на сообщения о действиях пользователей и обновляет модель,
 // реагирует на сообщения об обновлении модели и обновляет отображение
-import { ImportDeclaration } from 'estree';
 import Model from './model';
 import View from './view';
 
 export default class SliderPresenter {
   private model: IModel;
   private view: IView;
+  private element: HTMLElement
 
-  constructor(element, options) {
+  constructor(element: JQuery, options: Object) {
     this.element = element[0];
-    this.defaults = {
-      containerClass: 'new-class',
-      url: ''
-    };
-    this.config = Object.assign(this.defaults, options);
-    this.init();
+    this.init(options);
   }
 
-  private init() {
-    this.model = new Model();
-    this.view = new View(this.element, this.config);
-
-    // проверка работы
-    this.element.classList.add(this.defaults.containerClass);
-
+  private init(options: Object) {
+    this.model = new Model(options);
+    this.view = new View(this.element, this.model.getSettings());
   }
 };
