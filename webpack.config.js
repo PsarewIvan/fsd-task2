@@ -81,6 +81,10 @@ const plugins = () => {
     base.push( new BundleAnalyzerPlugin() )
   }
 
+  if (isDev) {
+    base.push( new webpack.HotModuleReplacementPlugin() );
+  }
+
   return base;
 };
 
@@ -120,6 +124,7 @@ module.exports = {
     port: 8085,
     hot: isDev
   },
+  target: process.env.NODE_ENV === "development" ? "web" : "browserslist",
 
   // при build-сборке выдает ошибку
   // devtool: isDev ? 'source-map' : '',
