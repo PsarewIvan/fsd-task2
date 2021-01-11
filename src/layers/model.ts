@@ -1,7 +1,23 @@
 // Слой управления данными, который содержит бизнес-логику
 
-export default class Model {
-  constructor() {}
+import MakeObservableSubject from './makeObservableSubject';
 
-  getAll() {}
+export default class Model {
+  private defaults: Object
+  private settings: ISettings
+  public modelChangedSubject: IObserver
+
+  constructor(options: Object) {
+    this.defaults = {
+      min: 0,
+      max: 100,
+      value: 50
+    };
+    this.settings = Object.assign(this.defaults, options);
+    this.modelChangedSubject = new MakeObservableSubject();
+  }
+
+  public getSettings(): Object {
+    return this.settings;
+  }
 };
