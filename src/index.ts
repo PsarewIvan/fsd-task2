@@ -7,5 +7,7 @@ function importAll(resolve): void {
 importAll(require.context('../src/', true, /\.ts$|\.scss$/));
 
 $('.my-slider').mySlider({
-  containerClass: 'user-class'
+  min: 0,
+  max: 100,
+  value: 30
 });
