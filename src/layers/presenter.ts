@@ -17,5 +17,8 @@ export default class SliderPresenter {
   private init(options: Object) {
     this.model = new Model(options);
     this.view = new View(this.element, this.model.getSettings());
+    this.model.modelChangedSubject.subscribe( () => {
+      this.view.drawSlider( this.model.getSettings() );
+    });
   }
 };
