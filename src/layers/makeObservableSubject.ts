@@ -19,7 +19,7 @@ export default class MakeObservableSubject {
     this.observers = this.observers.filter( (obs) =>  obs !== observer);
   }
 
-  notify(data: Array) {
+  notify(data?: Array<any>) {
     const observersSnapshot = this.observers.slice(0);
     observersSnapshot.forEach( (obs) => {
       obs(data);

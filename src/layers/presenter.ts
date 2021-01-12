@@ -5,8 +5,8 @@ import Model from './model';
 import View from './view';
 
 export default class SliderPresenter {
-  private model: IModel;
-  private view: IView;
+  private model: Model;
+  private view: View;
   private element: HTMLElement
 
   constructor(element: JQuery, options: Object) {

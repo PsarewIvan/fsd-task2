@@ -27,17 +27,17 @@ export default class View {
     this.init(element, settings);
   }
 
-  private addElements() {
+  private addElements(): void {
     this.inputElement.insertAdjacentHTML('afterend', this.html);
   }
 
-  public drawSlider(settings: Object) {
+  public drawSlider(settings: Object): void {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
     this.valueElement.innerHTML = settings.value;
   }
 
-  private init(element: HTMLElement, settings: Object) {
+  private init(element: HTMLElement, settings: Object): void {
     this.inputElement = element;
     this.inputElement.classList.add('my-slider__input');
     this.addElements();

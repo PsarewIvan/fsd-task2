@@ -4,8 +4,8 @@ import MakeObservableSubject from './makeObservableSubject';
 
 export default class Model {
   private defaults: Object
-  private settings: ISettings
-  public modelChangedSubject: IObserver
+  private settings: Object
+  public modelChangedSubject: MakeObservableSubject
 
   constructor(options: Object) {
     this.defaults = {
