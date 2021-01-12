@@ -11,3 +11,9 @@ $('.my-slider').mySlider({
   max: 100,
   value: 30
 });
+
+$('.my-slider2').mySlider({
+  min: 10,
+  max: 300,
+  value: 100
+});
