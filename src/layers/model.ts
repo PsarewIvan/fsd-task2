@@ -13,8 +13,15 @@ export default class Model {
       max: 100,
       value: 50
     };
-    this.settings = Object.assign(this.defaults, options);
     this.modelChangedSubject = new MakeObservableSubject();
+    this.setSettings(options);
+  }
+
+  public setSettings(newSettings: Object) {
+    // эта штука безопасно копирует объекты
+    // при условии что там нет методов
+    this.settings = Object.assign(JSON.parse(JSON.stringify(this.defaults)), JSON.parse(JSON.stringify(newSettings)));
+    this.modelChangedSubject.notify();
   }
 
   public getSettings(): Object {
