@@ -2,6 +2,8 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
+import {IModelSettings} from './interfaces';
+
 export default class View {
   private html: string
   private inputElement: HTMLElement
@@ -12,7 +14,7 @@ export default class View {
   private maxElement: HTMLElement
   private valueElement: HTMLElement
 
-  constructor(element: HTMLElement, settings: Object) {
+  constructor(element: HTMLElement, settings: IModelSettings) {
     this.html = `
       <span class="my-slider__wrapper">
         <span class="my-slider__model">
