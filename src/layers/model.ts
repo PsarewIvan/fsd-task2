@@ -1,13 +1,14 @@
 // Слой управления данными, который содержит бизнес-логику
 
 import MakeObservableSubject from './makeObservableSubject';
+import { IModelSettings, IUserSettings } from './interfaces';
 
 export default class Model {
-  private defaults: Object
-  private settings: Object
-  public modelChangedSubject: MakeObservableSubject
+  readonly defaults: IModelSettings;
+  private settings: IModelSettings;
+  public modelChangedSubject: MakeObservableSubject;
 
-  constructor(options: Object) {
+  constructor(options: IUserSettings) {
     this.defaults = {
       min: 0,
       max: 100,
@@ -17,14 +18,14 @@ export default class Model {
     this.setSettings(options);
   }
 
-  public setSettings(newSettings: Object) {
+  public setSettings(newSettings: IUserSettings) {
     // эта штука безопасно копирует объекты
     // при условии что там нет методов
     this.settings = Object.assign(JSON.parse(JSON.stringify(this.defaults)), JSON.parse(JSON.stringify(newSettings)));
     this.modelChangedSubject.notify();
   }
 
-  public getSettings(): Object {
+  public getSettings(): IModelSettings {
     return this.settings;
   }
 };
