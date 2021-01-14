@@ -5,14 +5,17 @@
 import {IModelSettings} from './interfaces';
 
 export default class View {
-  private html: string
-  private inputElement: HTMLElement
-  private sliderElement: HTMLElement
-  private barElement: HTMLElement
-  private pinElement: HTMLElement
-  private minElement: HTMLElement
-  private maxElement: HTMLElement
-  private valueElement: HTMLElement
+  private html: string;
+  private inputElement: HTMLElement;
+  private sliderElement: HTMLElement;
+  private barElement: HTMLElement;
+  private pinElement: HTMLElement;
+  private lineElement: HTMLElement;
+  private minElement: HTMLElement;
+  private maxElement: HTMLElement;
+  private valueElement: HTMLElement;
+
+  private limitCords: Object;
 
   constructor(element: HTMLElement, settings: IModelSettings) {
     this.html = `
@@ -39,6 +42,53 @@ export default class View {
     this.valueElement.innerHTML = settings.value;
   }
 
+  private changePin(): void {
+    const onMouseMoveCall = (moveEvt: Object): void => {
+      this.onMouseMove.call(this, moveEvt);
+    }
+
+    this.pinElement.addEventListener('mousedown', (evt) => {
+      evt.preventDefault();
+
+      // Выключает изменение эффектов
+      const onMouseUp= function(upEvt: Object): void {
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onMouseMoveCall);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+
+      document.addEventListener('mousemove', onMouseMoveCall);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+  }
+
+  // Двигает пин и записывает значение от 1 до 100 в инпут
+  private onMouseMove(moveEvt: Object): void {
+    moveEvt.preventDefault();
+    // this.changeLimitCords();
+
+    let ratio: Number = (this.limitCords.max - this.limitCords.min) / 100;
+    let pinCords: Number = this.pinElement.offsetLeft + moveEvt.movementX;
+
+    if (pinCords < this.limitCords.min) {
+      pinCords = this.limitCords.min;
+    }
+    if (pinCords > this.limitCords.max) {
+      pinCords = this.limitCords.max;
+    }
+
+    this.inputElement.value = Math.floor(Number(pinCords) / Number(ratio));
+    this.pinElement.style.left = pinCords + 'px';
+  }
+
+  private changeLimitCords(): void {
+    this.limitCords = {
+      min: this.lineElement.offsetLeft - this.pinElement.offsetWidth,
+      max: this.lineElement.offsetLeft + this.lineElement.offsetWidth - this.pinElement.offsetWidth
+    };
+  }
+
   private init(element: HTMLElement, settings: Object): void {
     this.inputElement = element;
     this.inputElement.classList.add('my-slider__input');
@@ -46,10 +96,13 @@ export default class View {
     this.sliderElement = this.inputElement.parentElement.querySelector('.my-slider__wrapper');
     this.barElement = this.sliderElement.querySelector('.my-slider__bar');
     this.pinElement = this.sliderElement.querySelector('.my-slider__handle');
+    this.lineElement = this.sliderElement.querySelector('.my-slider__line');
     this.minElement = this.sliderElement.querySelector('.my-slider__min');
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
     this.valueElement = this.sliderElement.querySelector('.my-slider__value');
 
     this.drawSlider(settings);
+    this.changeLimitCords();
+    this.changePin();
   }
 };
