@@ -40,11 +40,12 @@ export default class View {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
     this.valueElement.innerHTML = settings.value;
+    this.pinElement.style.left = `${(settings.value - settings.min) * this.lineElement.offsetWidth / (settings.max - settings.min)}px`;
   }
 
-  private changePin(): void {
+  private changePin(settings: Object): void {
     const onMouseMoveCall = (moveEvt: Object): void => {
-      this.onMouseMove.call(this, moveEvt);
+      this.onMouseMove.call(this, moveEvt, settings);
     }
 
     this.pinElement.addEventListener('mousedown', (evt) => {
@@ -64,7 +65,7 @@ export default class View {
   }
 
   // Двигает пин и записывает значение от 1 до 100 в инпут
-  private onMouseMove(moveEvt: Object): void {
+  private onMouseMove(moveEvt: Object, settings: Object): void {
     moveEvt.preventDefault();
     // this.changeLimitCords();
 
@@ -78,7 +79,8 @@ export default class View {
       pinCords = this.limitCords.max;
     }
 
-    this.inputElement.value = Math.floor(Number(pinCords) / Number(ratio));
+    // this.inputElement.value = Math.floor(Number(pinCords) / Number(ratio));
+    this.inputElement.value = this.pinElement.offsetLeft * (settings.max - settings.min) / this.lineElement.offsetWidth + settings.min;
     this.pinElement.style.left = pinCords + 'px';
   }
 
@@ -103,6 +105,6 @@ export default class View {
 
     this.drawSlider(settings);
     this.changeLimitCords();
-    this.changePin();
+    this.changePin(settings);
   }
 };
