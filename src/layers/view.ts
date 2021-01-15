@@ -40,7 +40,7 @@ export default class View {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
     this.valueElement.innerHTML = settings.value;
-    this.pinElement.style.left = `${(settings.value - settings.min) * this.lineElement.offsetWidth / (settings.max - settings.min)}px`;
+    this.pinElement.style.left = `${settings.value * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
   }
 
   private changePin(settings: Object): void {
@@ -48,28 +48,32 @@ export default class View {
       this.onMouseMove.call(this, moveEvt, settings);
     }
 
+    const onMouseUp = (): void => {
+      this.pinElement.style.willChange = 'auto';
+      document.removeEventListener('mousemove', onMouseMoveCall);
+      document.removeEventListener('mouseup', onMouseUp);
+    }
+
     this.pinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
+      this.pinElement.style.willChange = 'left';
 
       // Выключает изменение эффектов
-      const onMouseUp= function(upEvt: Object): void {
-        upEvt.preventDefault();
+      // const onMouseUp= function(upEvt: Object): void {
+      //   upEvt.preventDefault();
 
-        document.removeEventListener('mousemove', onMouseMoveCall);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
+      //   document.removeEventListener('mousemove', onMouseMoveCall);
+      //   document.removeEventListener('mouseup', onMouseUp);
+      // }
 
       document.addEventListener('mousemove', onMouseMoveCall);
       document.addEventListener('mouseup', onMouseUp);
     });
   }
 
-  // Двигает пин и записывает значение от 1 до 100 в инпут
   private onMouseMove(moveEvt: Object, settings: Object): void {
     moveEvt.preventDefault();
-    // this.changeLimitCords();
 
-    let ratio: Number = (this.limitCords.max - this.limitCords.min) / 100;
     let pinCords: Number = this.pinElement.offsetLeft + moveEvt.movementX;
 
     if (pinCords < this.limitCords.min) {
@@ -79,15 +83,14 @@ export default class View {
       pinCords = this.limitCords.max;
     }
 
-    // this.inputElement.value = Math.floor(Number(pinCords) / Number(ratio));
     this.inputElement.value = this.pinElement.offsetLeft * (settings.max - settings.min) / this.lineElement.offsetWidth + settings.min;
-    this.pinElement.style.left = pinCords + 'px';
+    this.pinElement.style.left = `${pinCords}px`;
   }
 
   private changeLimitCords(): void {
     this.limitCords = {
-      min: this.lineElement.offsetLeft - this.pinElement.offsetWidth,
-      max: this.lineElement.offsetLeft + this.lineElement.offsetWidth - this.pinElement.offsetWidth
+      min: this.lineElement.offsetLeft + this.pinElement.offsetWidth / 2,
+      max: this.lineElement.offsetLeft + this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2
     };
   }
 
@@ -103,8 +106,8 @@ export default class View {
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
     this.valueElement = this.sliderElement.querySelector('.my-slider__value');
 
-    this.drawSlider(settings);
     this.changeLimitCords();
+    this.drawSlider(settings);
     this.changePin(settings);
   }
 };
