@@ -40,7 +40,7 @@ export default class View {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
     this.valueElement.innerHTML = settings.value;
-    this.pinElement.style.left = `${settings.value * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
+    this.pinElement.style.left = `${ (settings.value - settings.min) * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
   }
 
   private changePin(settings: Object): void {
@@ -58,14 +58,6 @@ export default class View {
       evt.preventDefault();
       this.pinElement.style.willChange = 'left';
 
-      // Выключает изменение эффектов
-      // const onMouseUp= function(upEvt: Object): void {
-      //   upEvt.preventDefault();
-
-      //   document.removeEventListener('mousemove', onMouseMoveCall);
-      //   document.removeEventListener('mouseup', onMouseUp);
-      // }
-
       document.addEventListener('mousemove', onMouseMoveCall);
       document.addEventListener('mouseup', onMouseUp);
     });
@@ -74,7 +66,7 @@ export default class View {
   private onMouseMove(moveEvt: Object, settings: Object): void {
     moveEvt.preventDefault();
 
-    let pinCords: Number = this.pinElement.offsetLeft + moveEvt.movementX;
+    let pinCords: number = this.pinElement.offsetLeft + moveEvt.movementX;
 
     if (pinCords < this.limitCords.min) {
       pinCords = this.limitCords.min;
@@ -83,8 +75,8 @@ export default class View {
       pinCords = this.limitCords.max;
     }
 
-    this.inputElement.value = this.pinElement.offsetLeft * (settings.max - settings.min) / this.lineElement.offsetWidth + settings.min;
     this.pinElement.style.left = `${pinCords}px`;
+    this.inputElement.value = this.getInputValue(settings, pinCords);
   }
 
   private changeLimitCords(): void {
@@ -92,6 +84,10 @@ export default class View {
       min: this.lineElement.offsetLeft + this.pinElement.offsetWidth / 2,
       max: this.lineElement.offsetLeft + this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2
     };
+  }
+
+  public getInputValue(settings: Object, pinCords: number): number {
+    return Math.floor( (settings.max - settings.min) * (pinCords - this.pinElement.offsetWidth / 2) / (this.lineElement.offsetWidth - this.pinElement.offsetWidth) + settings.min );
   }
 
   private init(element: HTMLElement, settings: Object): void {
@@ -105,6 +101,8 @@ export default class View {
     this.minElement = this.sliderElement.querySelector('.my-slider__min');
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
     this.valueElement = this.sliderElement.querySelector('.my-slider__value');
+
+    this.inputElement.value = settings.value;
 
     this.changeLimitCords();
     this.drawSlider(settings);
