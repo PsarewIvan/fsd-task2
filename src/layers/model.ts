@@ -19,9 +19,7 @@ export default class Model {
   }
 
   public setSettings(newSettings: IUserSettings) {
-    // эта штука безопасно копирует объекты
-    // при условии что там нет методов
-    this.settings = Object.assign(JSON.parse(JSON.stringify(this.defaults)), JSON.parse(JSON.stringify(newSettings)));
+    this.settings = {...this.defaults, ...newSettings};
     this.modelChangedSubject.notify();
   }
 
