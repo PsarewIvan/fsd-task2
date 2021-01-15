@@ -13,7 +13,6 @@ export default class View {
   private lineElement: HTMLElement;
   private minElement: HTMLElement;
   private maxElement: HTMLElement;
-  private valueElement: HTMLElement;
 
   private limitCords: Object;
 
@@ -24,7 +23,6 @@ export default class View {
           <span class="my-slider__line"></span>
           <span class="my-slider__min">0</span>
           <span class="my-slider__max">1</span>
-          <span class="my-slider__value">0</span>
         </span>
         <span class="my-slider__bar"></span>
         <span class="my-slider__handle"></span>
@@ -39,7 +37,6 @@ export default class View {
   public drawSlider(settings: Object): void {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
-    this.valueElement.innerHTML = settings.value;
     this.pinElement.style.left = `${ (settings.value - settings.min) * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
   }
 
@@ -74,9 +71,11 @@ export default class View {
     if (pinCords > this.limitCords.max) {
       pinCords = this.limitCords.max;
     }
+    let inputValue: number = this.getInputValue(settings, pinCords);
 
     this.pinElement.style.left = `${pinCords}px`;
-    this.inputElement.value = this.getInputValue(settings, pinCords);
+    this.pinElement.style.setProperty('--input-value', `"${inputValue.toString()}"`)
+    this.inputElement.value = inputValue;
   }
 
   private changeLimitCords(): void {
@@ -100,9 +99,9 @@ export default class View {
     this.lineElement = this.sliderElement.querySelector('.my-slider__line');
     this.minElement = this.sliderElement.querySelector('.my-slider__min');
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
-    this.valueElement = this.sliderElement.querySelector('.my-slider__value');
 
     this.inputElement.value = settings.value;
+    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`)
 
     this.changeLimitCords();
     this.drawSlider(settings);

@@ -80,5 +80,13 @@
     transform: translateX(-50%);
 
     cursor: pointer;
+
+    &::after {
+      content: var(--input-value);
+      position: absolute;
+      top: -1.2em;
+
+      display: block;
+    }
   }
 }
