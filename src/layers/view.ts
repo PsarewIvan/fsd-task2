@@ -37,7 +37,10 @@ export default class View {
   public drawSlider(settings: Object): void {
     this.minElement.innerHTML = settings.min;
     this.maxElement.innerHTML = settings.max;
-    this.pinElement.style.left = `${ (settings.value - settings.min) * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
+
+    const offsetPin: string = `${(settings.value - settings.min) * (this.lineElement.offsetWidth - this.pinElement.offsetWidth) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2}px`;
+    this.pinElement.style.left = offsetPin;
+    this.barElement.style.width = offsetPin;
   }
 
   private changePin(settings: Object): void {
@@ -47,6 +50,7 @@ export default class View {
 
     const onMouseUp = (): void => {
       this.pinElement.style.willChange = 'auto';
+      this.barElement.style.willChange = 'auto';
       document.removeEventListener('mousemove', onMouseMoveCall);
       document.removeEventListener('mouseup', onMouseUp);
     }
@@ -54,6 +58,7 @@ export default class View {
     this.pinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
       this.pinElement.style.willChange = 'left';
+      this.barElement.style.willChange = 'width';
 
       document.addEventListener('mousemove', onMouseMoveCall);
       document.addEventListener('mouseup', onMouseUp);
@@ -75,6 +80,8 @@ export default class View {
 
     this.pinElement.style.left = `${pinCords}px`;
     this.pinElement.style.setProperty('--input-value', `"${inputValue.toString()}"`)
+
+    this.barElement.style.width = `${pinCords}px`;
     this.inputElement.value = inputValue;
   }
 
@@ -101,7 +108,7 @@ export default class View {
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
 
     this.inputElement.value = settings.value;
-    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`)
+    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
 
     this.changeLimitCords();
     this.drawSlider(settings);
