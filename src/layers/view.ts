@@ -14,7 +14,10 @@ export default class View {
   private lineElement: HTMLElement;
   private minElement: HTMLElement;
   private maxElement: HTMLElement;
+  private onChange: Function;
+  private onFinish: Function;
   public viewChangedSubject: MakeObservableSubject;
+  public inputValue: number;
 
   private limitCords: Object;
 
@@ -30,6 +33,8 @@ export default class View {
         <span class="my-slider__handle"></span>
       </span>`;
     this.viewChangedSubject = new MakeObservableSubject();
+    this.onChange = settings.onChange;
+    this.onFinish = settings.onFinish;
     this.init(element, settings);
   }
 
@@ -57,8 +62,11 @@ export default class View {
       document.removeEventListener('mousemove', onMouseMoveCall);
       document.removeEventListener('mouseup', onMouseUp);
       this.viewChangedSubject.notify({
-        value: this.inputElement.value
+        value: this.inputValue
       });
+      if (this.onFinish) {
+        this.onFinish(this.inputValue);
+      }
     }
 
     this.pinElement.addEventListener('mousedown', (evt) => {
@@ -82,13 +90,17 @@ export default class View {
     if (pinCords > this.limitCords.max) {
       pinCords = this.limitCords.max;
     }
-    let inputValue: number = this.getInputValue(settings, pinCords);
+    this.inputValue = this.getInputValue(settings, pinCords);
 
     this.pinElement.style.left = `${pinCords}px`;
-    this.pinElement.style.setProperty('--input-value', `"${inputValue.toString()}"`)
+    this.pinElement.style.setProperty('--input-value', `"${this.inputValue.toString()}"`);
 
     this.barElement.style.width = `${pinCords}px`;
-    this.inputElement.value = inputValue;
+    this.inputElement.value = this.inputValue;
+
+    if (this.onChange) {
+      this.onChange(this.inputValue);
+    }
   }
 
   private changeLimitCords(): void {
@@ -113,6 +125,7 @@ export default class View {
     this.minElement = this.sliderElement.querySelector('.my-slider__min');
     this.maxElement = this.sliderElement.querySelector('.my-slider__max');
 
+    this.inputValue = settings.value;
     this.inputElement.value = settings.value;
     this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
 
