@@ -18,8 +18,8 @@ export default class SliderPresenter {
   private init(options: IUserSettings) {
     this.model = new Model(options);
     this.view = new View(this.element, this.model.getSettings());
-    this.model.modelChangedSubject.subscribe( () => {
-      this.view.drawSlider( this.model.getSettings() );
+    this.view.viewChangedSubject.subscribe( (data) => {
+      this.model.setSettings(data);
     });
   }
 };
