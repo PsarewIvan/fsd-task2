@@ -3,6 +3,7 @@
 // пользователя с приложением
 
 import {IModelSettings} from './interfaces';
+import MakeObservableSubject from './makeObservableSubject';
 
 export default class View {
   private html: string;
@@ -13,6 +14,7 @@ export default class View {
   private lineElement: HTMLElement;
   private minElement: HTMLElement;
   private maxElement: HTMLElement;
+  public viewChangedSubject: MakeObservableSubject;
 
   private limitCords: Object;
 
@@ -27,6 +29,7 @@ export default class View {
         <span class="my-slider__bar"></span>
         <span class="my-slider__handle"></span>
       </span>`;
+    this.viewChangedSubject = new MakeObservableSubject();
     this.init(element, settings);
   }
 
@@ -53,6 +56,9 @@ export default class View {
       this.barElement.style.willChange = 'auto';
       document.removeEventListener('mousemove', onMouseMoveCall);
       document.removeEventListener('mouseup', onMouseUp);
+      this.viewChangedSubject.notify({
+        value: this.inputElement.value
+      });
     }
 
     this.pinElement.addEventListener('mousedown', (evt) => {
@@ -92,7 +98,7 @@ export default class View {
     };
   }
 
-  public getInputValue(settings: Object, pinCords: number): number {
+  private getInputValue(settings: Object, pinCords: number): number {
     return Math.floor( (settings.max - settings.min) * (pinCords - this.pinElement.offsetWidth / 2) / (this.lineElement.offsetWidth - this.pinElement.offsetWidth) + settings.min );
   }
 
