@@ -19,8 +19,6 @@ export default class View {
   public viewChangedSubject: MakeObservableSubject;
   public inputValue: number;
 
-  private limitCords: Object;
-
   constructor(element: HTMLElement, settings: IModelSettings) {
     this.html = `
       <span class="my-slider__wrapper">
@@ -52,61 +50,61 @@ export default class View {
   }
 
   private changePin(settings: Object): void {
-    const onMouseMoveCall = (moveEvt: Object): void => {
-      this.onMouseMove.call(this, moveEvt, settings);
-    }
-
-    const onMouseUp = (): void => {
-      this.pinElement.style.willChange = 'auto';
-      this.barElement.style.willChange = 'auto';
-      document.removeEventListener('mousemove', onMouseMoveCall);
-      document.removeEventListener('mouseup', onMouseUp);
-      this.viewChangedSubject.notify({
-        value: this.inputValue
-      });
-      if (this.onFinish) {
-        this.onFinish(this.inputValue);
-      }
-    }
-
     this.pinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
       this.pinElement.style.willChange = 'left';
       this.barElement.style.willChange = 'width';
+      let shiftX = evt.clientX - this.pinElement.getBoundingClientRect().left;
 
-      document.addEventListener('mousemove', onMouseMoveCall);
+      const onMouseMove = (moveEvt: Object): void => {
+        moveEvt.preventDefault();
+
+        let pinCords = moveEvt.clientX - shiftX - this.lineElement.getBoundingClientRect().left + this.pinElement.offsetWidth / 2;
+
+        if (pinCords < this.pinElement.offsetWidth / 2) {
+          pinCords = this.pinElement.offsetWidth / 2;
+        }
+
+        let rightEdge = this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2;
+
+        if (pinCords > rightEdge) {
+          pinCords = rightEdge;
+        }
+
+        this.inputValue = this.getInputValue(settings, pinCords);
+        this.inputElement.value = this.inputValue;
+
+        this.pinElement.style.left = pinCords + 'px';
+        this.pinElement.style.setProperty('--input-value', `"${this.inputValue.toString()}"`);
+        this.barElement.style.width = pinCords + 'px';
+
+        if (this.onChange) {
+          this.onChange(this.inputValue);
+        }
+      }
+
+      const onMouseUp = (): void => {
+        this.pinElement.style.willChange = 'auto';
+        this.barElement.style.willChange = 'auto';
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+
+        this.viewChangedSubject.notify({
+          value: this.inputValue
+        });
+
+        if (this.onFinish) {
+          this.onFinish(this.inputValue);
+        }
+      }
+
+      document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('mouseup', onMouseUp);
     });
-  }
 
-  private onMouseMove(moveEvt: Object, settings: Object): void {
-    moveEvt.preventDefault();
-
-    let pinCords: number = this.pinElement.offsetLeft + moveEvt.movementX;
-
-    if (pinCords < this.limitCords.min) {
-      pinCords = this.limitCords.min;
-    }
-    if (pinCords > this.limitCords.max) {
-      pinCords = this.limitCords.max;
-    }
-    this.inputValue = this.getInputValue(settings, pinCords);
-
-    this.pinElement.style.left = `${pinCords}px`;
-    this.pinElement.style.setProperty('--input-value', `"${this.inputValue.toString()}"`);
-
-    this.barElement.style.width = `${pinCords}px`;
-    this.inputElement.value = this.inputValue;
-
-    if (this.onChange) {
-      this.onChange(this.inputValue);
-    }
-  }
-
-  private changeLimitCords(): void {
-    this.limitCords = {
-      min: this.lineElement.offsetLeft + this.pinElement.offsetWidth / 2,
-      max: this.lineElement.offsetLeft + this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2
+    this.pinElement.ondragstart = function () {
+      return false;
     };
   }
 
@@ -129,7 +127,6 @@ export default class View {
     this.inputElement.value = settings.value;
     this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
 
-    this.changeLimitCords();
     this.drawSlider(settings);
     this.changePin(settings);
   }
