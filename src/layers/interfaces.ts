@@ -1,7 +1,7 @@
 export interface Settings {
-  min: Number;
-  max: Number;
-  value: Number;
+  min: number;
+  max: number;
+  value: number;
   onChange?: Function;
   onFinish?: Function;
 }
