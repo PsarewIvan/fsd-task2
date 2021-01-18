@@ -1,12 +1,12 @@
 // Слой управления данными, который содержит бизнес-логику
 
-import { IModelSettings, IUserSettings } from './interfaces';
+import { Settings } from './interfaces';
 
 export default class Model {
-  readonly defaults: IModelSettings;
-  private settings: IModelSettings;
+  readonly defaults: Settings;
+  private settings: Settings;
 
-  constructor(options: IUserSettings) {
+  constructor(options: Partial<Settings>) {
     this.defaults = {
       min: 0,
       max: 100,
@@ -15,11 +15,11 @@ export default class Model {
     this.setSettings(options);
   }
 
-  public setSettings(newSettings: IUserSettings) {
+  public setSettings(newSettings: Partial<Settings>) {
     this.settings = {...this.defaults, ...newSettings};
   }
 
-  public getSettings(): IModelSettings {
+  public getSettings(): Settings {
     return this.settings;
   }
 };

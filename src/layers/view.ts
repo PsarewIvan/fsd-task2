@@ -2,7 +2,7 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
-import {IModelSettings} from './interfaces';
+import { Settings } from './interfaces';
 import MakeObservableSubject from './makeObservableSubject';
 
 export default class View {
@@ -19,7 +19,7 @@ export default class View {
   public viewChangedSubject: MakeObservableSubject;
   public inputValue: number;
 
-  constructor(element: HTMLElement, settings: IModelSettings) {
+  constructor(element: HTMLElement, settings: Settings) {
     this.html = `
       <span class="my-slider__wrapper">
         <span class="my-slider__model">

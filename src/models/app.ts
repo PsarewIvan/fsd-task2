@@ -1,8 +1,8 @@
 import SliderPresenter from '../layers/presenter';
-import { IUserSettings } from '../layers/interfaces';
+import { Settings } from '../layers/interfaces';
 
 ;(function ($) {
-  $.fn.mySlider = function (options?: IUserSettings) {
+  $.fn.mySlider = function (options?: Partial<Settings>) {
     new SliderPresenter(this.first(), options);
     return this.first();
   };
