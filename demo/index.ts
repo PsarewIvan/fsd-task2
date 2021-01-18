@@ -10,12 +10,12 @@ $('.my-slider').mySlider({
   min: 0,
   max: 100,
   value: 25,
-  onChange: function(value) {
-    console.log('OnChange Value: ', value);
-  },
-  onFinish: function (value) {
-    console.log('OnFinish Value: ', value);
-  }
+  // onChange: function(value) {
+  //   console.log('OnChange Value: ', value);
+  // },
+  // onFinish: function (value) {
+  //   console.log('OnFinish Value: ', value);
+  // }
 });
 
 $('.my-slider2').mySlider({

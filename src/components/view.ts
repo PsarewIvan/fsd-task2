@@ -2,7 +2,7 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
-import { Settings } from './interfaces';
+import { Settings } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
 
 export default class View {

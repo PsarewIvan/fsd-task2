@@ -1,5 +1,5 @@
-import SliderPresenter from '../layers/presenter';
-import { Settings } from '../layers/interfaces';
+import SliderPresenter from './layers/presenter';
+import { Settings } from './types';
 
 ;(function ($) {
   $.fn.mySlider = function (options?: Partial<Settings>) {

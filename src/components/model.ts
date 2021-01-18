@@ -1,6 +1,6 @@
 // Слой управления данными, который содержит бизнес-логику
 
-import { Settings } from './interfaces';
+import { Settings } from '../types';
 
 export default class Model {
   readonly defaults: Settings;

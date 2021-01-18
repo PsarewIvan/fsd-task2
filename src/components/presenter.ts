@@ -3,7 +3,7 @@
 // реагирует на сообщения об обновлении модели и обновляет отображение
 import Model from './model';
 import View from './view';
-import { Settings } from './interfaces';
+import { Settings } from '../types';
 
 export default class SliderPresenter {
   private model: Model;
