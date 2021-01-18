@@ -53,7 +53,7 @@ const babelOtions = (preset) => {
 const plugins = () => {
   const base = [
     new HTMLWebpackPlugin({
-      template: './index.html',
+      template: '../demo/index.html',
       minify: {
         collapseWhitespace: isProd // минификация html
       }
@@ -63,7 +63,7 @@ const plugins = () => {
       patterns: [
         // копируем, что угодно, перечисляя объекты
         {
-          from: path.resolve(__dirname, 'src/assets/favicon'),
+          from: path.resolve(__dirname, 'demo/assets/favicon'),
           to: path.resolve(__dirname, 'dist')
         }
       ]
@@ -71,10 +71,10 @@ const plugins = () => {
     new MiniCssExtractPlugin({
       filename: filename('css')
     }),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery'
-    }),
+    // new webpack.ProvidePlugin({
+    //   $: 'jquery',
+    //   jQuery: 'jquery'
+    // }),
   ];
 
   // if (isProd) {
@@ -96,7 +96,7 @@ module.exports = {
   mode: 'development',
   entry: {
     // входная точка приложения
-    main: ['@babel/polyfill', './index.ts'],
+    main: ['@babel/polyfill', '../demo/index.ts'],
 
     // точка входа для стороннего кода
     // analytics: './analytics.ts'
@@ -113,11 +113,11 @@ module.exports = {
     extensions: ['.js', ',json', '.ts'],
 
     // позволяет использовать алиасы для разных путей
-    alias: {
-      '@models': path.resolve(__dirname, 'src/models'),
-      '@styles': path.resolve(__dirname, 'src/styles'),
-      '@': path.resolve(__dirname, 'src')
-    }
+    // alias: {
+    //   '@models': path.resolve(__dirname, 'src/models'),
+    //   '@styles': path.resolve(__dirname, 'src/styles'),
+    //   '@': path.resolve(__dirname, 'src')
+    // }
   },
   optimization: optimization(),
   devServer: {

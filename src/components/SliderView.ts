@@ -5,7 +5,7 @@
 import { Settings } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
 
-export default class View {
+export default class SliderView {
   private html: string;
   private inputElement: HTMLElement;
   private sliderElement: HTMLElement;

@@ -1,12 +1,8 @@
-import '@styles/styles.scss';
+import './styles.scss';
+import $ from 'jquery';
+import '../src/';
 
-function importAll(resolve): void {
-  resolve.keys().forEach(resolve);
-}
-
-importAll(require.context('../src/', true, /\.ts$|\.scss$/));
-
-$('.my-slider').mySlider({
+$('.my-slider').freeSlider({
   min: 0,
   max: 100,
   value: 25,
@@ -18,7 +14,7 @@ $('.my-slider').mySlider({
   // }
 });
 
-$('.my-slider2').mySlider({
+$('.my-slider2').freeSlider({
   min: 10,
   max: 300,
   value: 100

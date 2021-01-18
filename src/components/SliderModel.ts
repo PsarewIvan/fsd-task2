@@ -2,7 +2,7 @@
 
 import { Settings } from '../types';
 
-export default class Model {
+export default class SliderModel {
   readonly defaults: Settings;
   private settings: Settings;
 

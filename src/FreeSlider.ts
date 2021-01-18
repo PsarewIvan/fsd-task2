@@ -1,9 +1,12 @@
-import SliderPresenter from './layers/presenter';
+import './styles/structure.scss';
+import './styles/theme.scss';
+import SliderPresenter from './components/SliderPresenter';
 import { Settings } from './types';
 
-;(function ($) {
-  $.fn.mySlider = function (options?: Partial<Settings>) {
-    new SliderPresenter(this.first(), options);
-    return this.first();
-  };
-}(jQuery));
+export default class FreeSlider {
+  private freeSlider: SliderPresenter;
+
+  constructor(node: HTMLElement, options: Partial<Settings>) {
+    this.freeSlider = new SliderPresenter(node, options);
+  }
+}
