@@ -7,8 +7,8 @@ import MakeObservableSubject from './makeObservableSubject';
 
 export default class SliderView {
   private html: string;
+  private slider: HTMLElement;
   private inputElement: HTMLElement;
-  private sliderElement: HTMLElement;
   private barElement: HTMLElement;
   private pinElement: HTMLElement;
   private lineElement: HTMLElement;
@@ -22,6 +22,7 @@ export default class SliderView {
   constructor(element: HTMLElement, settings: Settings) {
     this.html = `
       <span class="free-slider__wrapper">
+        <input class="free-slider__input" type="text" name="free-slider">
         <span class="free-slider__model">
           <span class="free-slider__line"></span>
           <span class="free-slider__min">0</span>
@@ -148,15 +149,14 @@ export default class SliderView {
   }
 
   private init(element: HTMLElement, settings: Settings): void {
-    this.inputElement = element;
-    this.inputElement.classList.add('free-slider__input');
-    this.addElements();
-    this.sliderElement = this.inputElement.parentElement.querySelector('.free-slider__wrapper');
-    this.barElement = this.sliderElement.querySelector('.free-slider__bar');
-    this.pinElement = this.sliderElement.querySelector('.free-slider__handle');
-    this.lineElement = this.sliderElement.querySelector('.free-slider__line');
-    this.minElement = this.sliderElement.querySelector('.free-slider__min');
-    this.maxElement = this.sliderElement.querySelector('.free-slider__max');
+    this.slider = element;
+    this.slider.innerHTML = this.html;
+    this.inputElement = this.slider.querySelector('.free-slider__input');
+    this.barElement = this.slider.querySelector('.free-slider__bar');
+    this.pinElement = this.slider.querySelector('.free-slider__handle');
+    this.lineElement = this.slider.querySelector('.free-slider__line');
+    this.minElement = this.slider.querySelector('.free-slider__min');
+    this.maxElement = this.slider.querySelector('.free-slider__max');
 
     this.inputValue = settings.value;
     this.inputElement.value = settings.value;
