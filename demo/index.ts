@@ -2,7 +2,7 @@ import './styles.scss';
 import $ from 'jquery';
 import '../src/';
 
-$('.my-slider').freeSlider({
+$('.free-slider').freeSlider({
   min: 0,
   max: 100,
   value: 25,
@@ -14,7 +14,7 @@ $('.my-slider').freeSlider({
   // }
 });
 
-$('.my-slider2').freeSlider({
+$('.free-slider2').freeSlider({
   min: 10,
   max: 300,
   value: 100

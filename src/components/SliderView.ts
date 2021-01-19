@@ -21,14 +21,14 @@ export default class SliderView {
 
   constructor(element: HTMLElement, settings: Settings) {
     this.html = `
-      <span class="my-slider__wrapper">
-        <span class="my-slider__model">
-          <span class="my-slider__line"></span>
-          <span class="my-slider__min">0</span>
-          <span class="my-slider__max">1</span>
+      <span class="free-slider__wrapper">
+        <span class="free-slider__model">
+          <span class="free-slider__line"></span>
+          <span class="free-slider__min">0</span>
+          <span class="free-slider__max">1</span>
         </span>
-        <span class="my-slider__bar"></span>
-        <span class="my-slider__handle"></span>
+        <span class="free-slider__bar"></span>
+        <span class="free-slider__handle"></span>
       </span>`;
     this.viewChangedSubject = new MakeObservableSubject();
     this.onChange = settings.onChange;
@@ -149,14 +149,14 @@ export default class SliderView {
 
   private init(element: HTMLElement, settings: Settings): void {
     this.inputElement = element;
-    this.inputElement.classList.add('my-slider__input');
+    this.inputElement.classList.add('free-slider__input');
     this.addElements();
-    this.sliderElement = this.inputElement.parentElement.querySelector('.my-slider__wrapper');
-    this.barElement = this.sliderElement.querySelector('.my-slider__bar');
-    this.pinElement = this.sliderElement.querySelector('.my-slider__handle');
-    this.lineElement = this.sliderElement.querySelector('.my-slider__line');
-    this.minElement = this.sliderElement.querySelector('.my-slider__min');
-    this.maxElement = this.sliderElement.querySelector('.my-slider__max');
+    this.sliderElement = this.inputElement.parentElement.querySelector('.free-slider__wrapper');
+    this.barElement = this.sliderElement.querySelector('.free-slider__bar');
+    this.pinElement = this.sliderElement.querySelector('.free-slider__handle');
+    this.lineElement = this.sliderElement.querySelector('.free-slider__line');
+    this.minElement = this.sliderElement.querySelector('.free-slider__min');
+    this.maxElement = this.sliderElement.querySelector('.free-slider__max');
 
     this.inputValue = settings.value;
     this.inputElement.value = settings.value;
