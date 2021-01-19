@@ -56,7 +56,7 @@ export default class SliderView {
       this.barElement.style.willChange = 'width';
       let shiftX = evt.clientX - this.pinElement.getBoundingClientRect().left;
 
-      const onMouseMove = (moveEvt: Object): void => {
+      const onMouseMove = (moveEvt: MouseEvent): void => {
         moveEvt.preventDefault();
 
         let pinCords = moveEvt.clientX - shiftX - this.lineElement.getBoundingClientRect().left + this.pinElement.offsetWidth / 2;
