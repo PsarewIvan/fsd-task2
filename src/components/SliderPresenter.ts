@@ -12,13 +12,9 @@ export default class SliderPresenter {
 
   constructor(element: HTMLElement, options: Partial<Settings>) {
     this.element = element;
-    this.init(options);
-  }
-
-  private init(options: Partial<Settings>) {
     this.model = new SliderModel(options);
     this.view = new SliderView(this.element, this.model.getSettings());
-    this.view.viewChangedSubject.subscribe( (data) => {
+    this.view.viewChangedSubject.subscribe((data) => {
       this.model.setSettings(data);
     });
   }

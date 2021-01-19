@@ -7,7 +7,7 @@ import MakeObservableSubject from './makeObservableSubject';
 
 export default class SliderView {
   private html: string;
-  private slider: HTMLElement;
+  private root: HTMLElement;
   private inputElement: HTMLElement;
   private barElement: HTMLElement;
   private pinElement: HTMLElement;
@@ -19,7 +19,23 @@ export default class SliderView {
   public viewChangedSubject: MakeObservableSubject;
   public inputValue: number;
 
-  constructor(element: HTMLElement, settings: Settings) {
+  constructor(rootNode: HTMLElement, settings: Settings) {
+    this.viewChangedSubject = new MakeObservableSubject();
+    this.onChange = settings.onChange;
+    this.onFinish = settings.onFinish;
+
+    this.render(rootNode);
+    this.initSliderElement();
+    this.updateHandlePosition(settings);
+    this.changePinOnMove(settings);
+    this.changePinOnClick(settings);
+
+    this.inputValue = settings.value;
+    this.inputElement.value = settings.value;
+    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
+  }
+
+  private render(root: HTMLElement) {
     this.html = `
       <span class="free-slider__wrapper">
         <input class="free-slider__input" type="text" name="free-slider">
@@ -31,17 +47,20 @@ export default class SliderView {
         <span class="free-slider__bar"></span>
         <span class="free-slider__handle"></span>
       </span>`;
-    this.viewChangedSubject = new MakeObservableSubject();
-    this.onChange = settings.onChange;
-    this.onFinish = settings.onFinish;
-    this.init(element, settings);
+    this.root = root;
+    this.root.innerHTML = this.html;
   }
 
-  private addElements(): void {
-    this.inputElement.insertAdjacentHTML('afterend', this.html);
+  private initSliderElement() {
+    this.inputElement = this.root.querySelector('.free-slider__input');
+    this.barElement = this.root.querySelector('.free-slider__bar');
+    this.pinElement = this.root.querySelector('.free-slider__handle');
+    this.lineElement = this.root.querySelector('.free-slider__line');
+    this.minElement = this.root.querySelector('.free-slider__min');
+    this.maxElement = this.root.querySelector('.free-slider__max');
   }
 
-  public drawSlider(settings: Settings): void {
+  private updateHandlePosition(settings: Settings): void {
     this.minElement.innerHTML = `${settings.min}`;
     this.maxElement.innerHTML = `${settings.max}`;
 
@@ -146,24 +165,5 @@ export default class SliderView {
     this.inputValue = this.getInputValue(settings, value);
     this.inputElement.value = this.inputValue;
     this.pinElement.style.setProperty('--input-value', `"${this.inputValue}"`);
-  }
-
-  private init(element: HTMLElement, settings: Settings): void {
-    this.slider = element;
-    this.slider.innerHTML = this.html;
-    this.inputElement = this.slider.querySelector('.free-slider__input');
-    this.barElement = this.slider.querySelector('.free-slider__bar');
-    this.pinElement = this.slider.querySelector('.free-slider__handle');
-    this.lineElement = this.slider.querySelector('.free-slider__line');
-    this.minElement = this.slider.querySelector('.free-slider__min');
-    this.maxElement = this.slider.querySelector('.free-slider__max');
-
-    this.inputValue = settings.value;
-    this.inputElement.value = settings.value;
-    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
-
-    this.drawSlider(settings);
-    this.changePinOnMove(settings);
-    this.changePinOnClick(settings);
   }
 };
