@@ -52,8 +52,6 @@ export default class SliderView {
   private changePinOnMove(settings: Settings): void {
     this.pinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
-      this.pinElement.style.willChange = 'left';
-      this.barElement.style.willChange = 'width';
       let shiftX = evt.clientX - this.pinElement.getBoundingClientRect().left;
 
       const onMouseMove = (moveEvt: MouseEvent): void => {
@@ -80,9 +78,6 @@ export default class SliderView {
       }
 
       const onMouseUp = (): void => {
-        this.pinElement.style.willChange = 'auto';
-        this.barElement.style.willChange = 'auto';
-
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
 
