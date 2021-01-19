@@ -17,7 +17,6 @@ export default class SliderModel {
 
   public setSettings(newSettings: Partial<Settings>) {
     this.settings = {...this.defaults, ...newSettings};
-    console.log(this.settings);
   }
 
   public getSettings(): Settings {
