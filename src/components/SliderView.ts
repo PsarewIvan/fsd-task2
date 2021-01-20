@@ -3,7 +3,6 @@
 // пользователя с приложением
 
 import { Settings } from '../types';
-import MakeObservableSubject from './makeObservableSubject';
 
 export default class SliderView {
   private html: string;
@@ -14,25 +13,21 @@ export default class SliderView {
   private lineElement: HTMLElement;
   private minElement: HTMLElement;
   private maxElement: HTMLElement;
-  private onChange: Function;
-  private onFinish: Function;
-  public viewChangedSubject: MakeObservableSubject;
+  private onChange: Function | undefined;
+  private onFinish: Function | undefined;
   public inputValue: number;
 
   constructor(rootNode: HTMLElement, settings: Settings) {
-    this.viewChangedSubject = new MakeObservableSubject();
     this.onChange = settings.onChange;
     this.onFinish = settings.onFinish;
 
     this.render(rootNode);
     this.initSliderElement();
     this.updateHandlePosition(settings);
-    this.changePinOnMove(settings);
-    this.changePinOnClick(settings);
 
     this.inputValue = settings.value;
-    this.inputElement.value = settings.value;
-    this.pinElement.style.setProperty('--input-value', `"${settings.value}"`);
+    this.inputElement.value = this.inputValue;
+    this.pinElement.style.setProperty('--input-value', `"${this.inputValue}"`);
   }
 
   private render(root: HTMLElement) {
@@ -69,28 +64,25 @@ export default class SliderView {
     this.barElement.style.width = offsetPin;
   }
 
-  private changePinOnMove(settings: Settings): void {
+  public updateView(handler: Function): void {
+    this.mouseEvent(handler);
+    this.clickEvent(handler);
+  }
+
+  private mouseEvent(handler: Function): void {
     this.pinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
+
       let shiftX = evt.clientX - this.pinElement.getBoundingClientRect().left;
+      let lineWidth = this.lineElement.offsetWidth - this.pinElement.offsetWidth;
 
-      const onMouseMove = (moveEvt: MouseEvent): void => {
-        moveEvt.preventDefault();
+      const onMouseMove = (evt: MouseEvent): void => {
+        evt.preventDefault();
+        let shiftPin: number = evt.clientX - this.lineElement.getBoundingClientRect().left - shiftX;
+        if (shiftPin < 0) shiftPin = 0;
+        if (shiftPin > lineWidth) shiftPin = lineWidth;
 
-        let pinCords = moveEvt.clientX - shiftX - this.lineElement.getBoundingClientRect().left + this.pinElement.offsetWidth / 2;
-
-        if (pinCords < this.pinElement.offsetWidth / 2) {
-          pinCords = this.pinElement.offsetWidth / 2;
-        }
-
-        let rightEdge = this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2;
-
-        if (pinCords > rightEdge) {
-          pinCords = rightEdge;
-        }
-
-        this.setInputValue(pinCords, settings);
-        this.changeSliderElement(pinCords);
+        handler(shiftPin, lineWidth);
 
         if (this.onChange) {
           this.onChange(this.inputValue);
@@ -100,10 +92,6 @@ export default class SliderView {
       const onMouseUp = (): void => {
         document.removeEventListener('mousemove', onMouseMove);
         document.removeEventListener('mouseup', onMouseUp);
-
-        this.viewChangedSubject.notify({
-          value: this.inputValue
-        });
 
         if (this.onFinish) {
           this.onFinish(this.inputValue);
@@ -119,28 +107,19 @@ export default class SliderView {
     };
   }
 
-  private changePinOnClick(settings: Settings): void {
+  private clickEvent(handler: Function) {
     this.barElement.style.pointerEvents = 'none';
 
-    this.lineElement.addEventListener('click', (clickEvt) => {
-      clickEvt.preventDefault();
+    this.lineElement.addEventListener('click', (evt) => {
+      evt.preventDefault();
 
-      let pinShift: number = clickEvt.clientX - this.lineElement.getBoundingClientRect().left;
+      let lineWidth = this.lineElement.offsetWidth - this.pinElement.offsetWidth;
+      let shiftPin: number = evt.clientX - this.lineElement.getBoundingClientRect().left - this.pinElement.offsetWidth / 2;
 
-      if (pinShift < this.pinElement.offsetWidth / 2) {
-        pinShift = this.pinElement.offsetWidth / 2;
-      }
+      if (shiftPin < 0) shiftPin = 0;
+      if (shiftPin > lineWidth) shiftPin = lineWidth;
 
-      if (pinShift > this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2) {
-        pinShift = this.lineElement.offsetWidth - this.pinElement.offsetWidth / 2;
-      }
-
-      this.setInputValue(pinShift, settings);
-      this.changeSliderElement(pinShift);
-
-      this.viewChangedSubject.notify({
-        value: this.inputValue
-      });
+      handler(shiftPin, lineWidth);
 
       if (this.onChange) {
         this.onChange(this.inputValue);
@@ -152,18 +131,13 @@ export default class SliderView {
     });
   }
 
-  private changeSliderElement(cords: number): void {
-    this.pinElement.style.left = cords + 'px';
-    this.barElement.style.width = cords + 'px';
-  }
+  public changeSlider(settings: Settings) {
+    const pinShift: number = (this.lineElement.offsetWidth - this.pinElement.offsetWidth) * (settings.value - settings.min) / (settings.max - settings.min) + this.pinElement.offsetWidth / 2;
 
-  private getInputValue(settings: Settings, pinCords: number): number {
-    return Math.floor( (settings.max - settings.min) * (pinCords - this.pinElement.offsetWidth / 2) / (this.lineElement.offsetWidth - this.pinElement.offsetWidth) + settings.min );
-  }
-
-  private setInputValue(value: number, settings: Settings): void {
-    this.inputValue = this.getInputValue(settings, value);
+    this.inputValue = settings.value;
     this.inputElement.value = this.inputValue;
     this.pinElement.style.setProperty('--input-value', `"${this.inputValue}"`);
+    this.pinElement.style.left = pinShift + 'px';
+    this.barElement.style.width = pinShift + 'px';
   }
 };

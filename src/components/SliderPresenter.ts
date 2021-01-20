@@ -1,3 +1,4 @@
+import { settings } from 'cluster';
 // Слой для обновления модели и отображения, который
 // реагирует на сообщения о действиях пользователей и обновляет модель,
 // реагирует на сообщения об обновлении модели и обновляет отображение
@@ -14,8 +15,13 @@ export default class SliderPresenter {
     this.element = element;
     this.model = new SliderModel(options);
     this.view = new SliderView(this.element, this.model.getSettings());
-    this.view.viewChangedSubject.subscribe((data) => {
-      this.model.setSettings(data);
+
+    this.view.updateView( (shiftPinPixel: number, sliderWidthPixel: number) => {
+      this.model.setNewValue(shiftPinPixel, sliderWidthPixel);
+    });
+
+    this.model.modelChangedSubject.subscribe( (settings: Settings) => {
+      this.view.changeSlider(settings);
     });
   }
 };
