@@ -83,10 +83,6 @@ export default class SliderView {
         if (shiftPin > lineWidth) shiftPin = lineWidth;
 
         handler(shiftPin, lineWidth);
-
-        if (this.onChange) {
-          this.onChange(this.inputValue);
-        }
       }
 
       const onMouseUp = (): void => {
@@ -121,10 +117,6 @@ export default class SliderView {
 
       handler(shiftPin, lineWidth);
 
-      if (this.onChange) {
-        this.onChange(this.inputValue);
-      }
-
       if (this.onFinish) {
         this.onFinish(this.inputValue);
       }
@@ -139,5 +131,9 @@ export default class SliderView {
     this.pinElement.style.setProperty('--input-value', `"${this.inputValue}"`);
     this.pinElement.style.left = pinShift + 'px';
     this.barElement.style.width = pinShift + 'px';
+
+    if (this.onChange) {
+      this.onChange(this.inputValue);
+    }
   }
 };

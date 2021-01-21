@@ -35,8 +35,12 @@ export default class SliderModel {
     if (value % step >= step / 2 && value !== this.settings.max) value = value + step - (value % step);
     if (value % step < step / 2 && value !== this.settings.max) value = value - (value % step);
     if (value === this.settings.max) value = this.settings.max;
+    value = this.round(value, 5);
 
-    this.setSettings({ value: this.round(value, 5) });
+    if (value !== this.settings.value) {
+      this.setSettings({ value: value });
+    }
+
   }
 
   private round(number: number, digits = 0, base = Math.pow(10, digits)): number {
