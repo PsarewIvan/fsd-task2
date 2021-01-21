@@ -4,8 +4,9 @@ import '../src/';
 
 $('.free-slider').freeSlider({
   min: 0,
-  max: 100,
-  value: 25,
+  max: 10,
+  value: 2,
+  step: 0.1
   // onChange: function(value) {
   //   console.log('OnChange Value: ', value);
   // },
@@ -16,6 +17,7 @@ $('.free-slider').freeSlider({
 
 $('.free-slider2').freeSlider({
   min: 10,
-  max: 300,
-  value: 100
+  max: 303,
+  value: 100.35,
+  step: 10
 });

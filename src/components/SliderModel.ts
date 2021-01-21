@@ -13,7 +13,8 @@ export default class SliderModel {
     this.defaults = {
       min: 0,
       max: 100,
-      value: 50
+      value: 50,
+      step: 1
     };
     this.setSettings(options, this.defaults);
   }
@@ -28,7 +29,23 @@ export default class SliderModel {
   }
 
   public setNewValue(pinShift: number, sliderWidth: number) {
-    const value = Math.floor(pinShift / sliderWidth * (this.settings.max - this.settings.min)) + this.settings.min;
-    this.setSettings({value: value});
+    let step = this.settings.step;
+    let value = pinShift / sliderWidth * (this.settings.max - this.settings.min) + this.settings.min;
+
+    if (value % step >= step / 2 && value !== this.settings.max) value = value + step - (value % step);
+    if (value % step < step / 2 && value !== this.settings.max) value = value - (value % step);
+    if (value === this.settings.max) value = this.settings.max;
+
+    if (step % 1 === 0) {
+      value = this.round(value);
+    } else {
+      value = this.round(value, 1);
+    }
+
+    this.setSettings({ value: value });
   }
+
+  private round(number: number, digits = 0, base = Math.pow(10, digits)): number {
+    return Math.round(base * number) / base;
+  };
 };
