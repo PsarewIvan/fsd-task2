@@ -9,4 +9,8 @@ export default class FreeSlider {
   constructor(node: HTMLElement, options: Partial<Settings>) {
     this.freeSlider = new SliderPresenter(node, options);
   }
+
+  public method(): SliderPresenter {
+    return this.freeSlider;
+  }
 }

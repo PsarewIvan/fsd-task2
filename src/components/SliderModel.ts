@@ -19,7 +19,7 @@ export default class SliderModel {
     this.setSettings(options, this.defaults);
   }
 
-  private setSettings(newSettings: Partial<Settings>, oldSettings: Settings = this.settings) {
+  public setSettings(newSettings: Partial<Settings>, oldSettings: Settings = this.settings) {
     this.settings = {...oldSettings, ...newSettings};
     this.modelChangedSubject.notify(this.settings);
   }

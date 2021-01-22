@@ -24,4 +24,12 @@ export default class SliderPresenter {
       this.view.changeSlider(settings);
     });
   }
+
+  public getCurrentValue(): number {
+    return this.model.getSettings().value;
+  }
+
+  public setValue(value: number): void {
+    this.model.setSettings({value: value});
+  }
 };
