@@ -17,13 +17,11 @@ slider.freeSlider({
   // }
 });
 
-const value = slider.freeSlider('getValue');
-console.log(value);
-slider.freeSlider('setValue', 5);
-
 $('.free-slider2').freeSlider({
+  type: 'range',
   min: 10,
   max: 30,
-  value: 20,
+  from: 15,
+  to: 20,
   step: 1.25
 });
