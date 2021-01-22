@@ -1,8 +1,11 @@
 export interface Settings {
   min: number;
   max: number;
-  value: number;
   step: number;
+  value?: number;
+  from?: number;
+  to?: number;
+  type?: string;
   onChange?: (value: number) => void;
   onFinish?: (value: number) => void;
 }
