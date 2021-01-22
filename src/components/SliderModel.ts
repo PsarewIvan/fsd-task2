@@ -4,19 +4,33 @@ import { Settings } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
 
 export default class SliderModel {
-  readonly defaults: Settings;
+  readonly defaultParamSingle: Settings;
+  readonly defaultParamRange: Settings;
   private settings: Settings;
   public modelChangedSubject: MakeObservableSubject;
 
   constructor(options: Partial<Settings>) {
     this.modelChangedSubject = new MakeObservableSubject();
-    this.defaults = {
+    this.defaultParamSingle = {
       min: 0,
       max: 100,
       value: 50,
-      step: 1
+      step: 1,
     };
-    this.setSettings(options, this.defaults);
+    this.defaultParamRange = {
+      min: 0,
+      max: 100,
+      from: 10,
+      to: 90,
+      step: 1
+    }
+
+    // Очень хрупко, нужны дополнительные провреки
+    if (options.type === 'range') {
+      this.setSettings(options, this.defaultParamRange);
+    } else {
+      this.setSettings(options, this.defaultParamSingle)
+    }
   }
 
   public setSettings(newSettings: Partial<Settings>, oldSettings: Settings = this.settings) {
