@@ -28,7 +28,7 @@ export default class SliderModel {
     return this.settings;
   }
 
-  public setNewValue(pinShift: number, sliderWidth: number) {
+  public calcNewValue(pinShift: number, sliderWidth: number) {
     let step = this.settings.step;
     let value = pinShift / sliderWidth * (this.settings.max - this.settings.min) + this.settings.min;
 

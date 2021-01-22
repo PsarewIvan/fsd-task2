@@ -16,7 +16,7 @@ export default class SliderPresenter {
     this.view = new SliderView(this.element, this.model.getSettings());
 
     this.view.updateView( (shiftPinPixel: number, sliderWidthPixel: number) => {
-      this.model.setNewValue(shiftPinPixel, sliderWidthPixel);
+      this.model.calcNewValue(shiftPinPixel, sliderWidthPixel);
     });
 
     this.model.modelChangedSubject.subscribe( (settings: Settings) => {
