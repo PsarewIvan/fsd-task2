@@ -1,4 +1,3 @@
-import SliderPresenter from './components/SliderPresenter';
 export interface Settings {
   min: number;
   max: number;
