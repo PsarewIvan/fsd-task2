@@ -1,9 +1,9 @@
 import $ from 'jquery';
 import FreeSlider from './FreeSlider';
-import { Settings } from './types';
+import { Settings, Methods } from './types';
 
 (($) => {
-  const methods = {
+  const methods: Methods = {
     init(options?: Partial<Settings>) {
       return this.each((i: number, node: HTMLElement) => {
         const freeSlider: FreeSlider = new FreeSlider(node, options);
@@ -21,8 +21,8 @@ import { Settings } from './types';
     }
   };
 
-  $.fn.freeSlider = function (action?: Partial<Settings> | string, args?) {
-    let method;
+  $.fn.freeSlider = function (action?: Partial<Settings> | string, args?: number) {
+    let method: any;
     if (typeof action === 'string' && methods[action]) {
       method = methods[action].call(this, args);
     } else if (typeof action === 'object' || !action) {

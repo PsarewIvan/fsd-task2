@@ -8,8 +8,14 @@ export interface Settings {
   onFinish?: (value: number) => void;
 }
 
+export interface Methods {
+  init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
+  getValue: () => number;
+  setValue: (value: number) => void;
+}
+
 declare global {
   interface JQuery {
-    freeSlider: (options?: Partial<Settings>) => JQuery;
+    freeSlider: (options?: Partial<Settings> | string, arg?: number) => JQuery;
   }
 }
