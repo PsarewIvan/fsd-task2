@@ -11,7 +11,9 @@
     border-radius: 7px 0 0 7px;
   }
 
-  &__handle {
+  &__handle,
+  &__from-handle,
+  &__to-handle {
     border: 1px solid grey;
     background-color: lightgray;
   }

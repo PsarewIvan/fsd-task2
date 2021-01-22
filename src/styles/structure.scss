@@ -68,7 +68,9 @@
     height: 7px;
   }
 
-  &__handle {
+  &__handle,
+  &__from-handle,
+  &__to-handle {
     position: absolute;
     top: 30px;
     left: 50%;
@@ -84,11 +86,22 @@
     cursor: pointer;
 
     &::after {
-      content: var(--input-value);
       position: absolute;
       top: -1.2em;
 
       display: block;
     }
+  }
+
+  &__handle::after {
+    content: var(--input-value);
+  }
+
+  &__from-handle::after {
+    content: var(--from-input-value);
+  }
+
+  &__to-handle::after {
+    content: var(--to-input-value);
   }
 }
