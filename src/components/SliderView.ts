@@ -35,29 +35,34 @@ export default class SliderView {
   }
 
   public updateView(handler: Function): void {
-    this.mouseEvent(handler);
-    this.clickEvent(handler);
+    if (this.type === 'range') {
+      this.mouseEventRange(handler);
+      // this.clickEvent(handler);
+    } else {
+      this.mouseEventSingle(handler);
+      // this.clickEvent(handler);
+    }
   }
 
   public changeSlider(settings: Settings) {
     if (this.type === 'range') {
       this.inputValue = [settings.from, settings.to];
     } else {
-      this.inputValue[0] = settings.value;
+      this.inputValue = [settings.value];
     }
 
     this.updateInputs();
     this.updatePins(settings);
 
-    if (this.onChange && this.isFirstChange) {
-      this.isFirstChange = false;
+    if (this.onChange && !this.isFirstChange) {
       this.onChange(this.inputValue);
     }
+    this.isFirstChange = false;
   }
 
   private updatePins(settings: Settings): void {
-    const getPinShift = (pinElement: HTMLElement, value: number): number => {
-      return (this.lineElement.offsetWidth - pinElement.offsetWidth) * (value - settings.min) / (settings.max - settings.min) + pinElement.offsetWidth / 2;
+    const getPinShift = (currentPinElement: HTMLElement, value: number): number => {
+      return (this.lineElement.offsetWidth - currentPinElement.offsetWidth) * (value - settings.min) / (settings.max - settings.min) + currentPinElement.offsetWidth / 2;
     };
 
     if (this.type === 'range') {
@@ -130,12 +135,21 @@ export default class SliderView {
     }
   }
 
-  private mouseEvent(handler: Function): void {
-    this.pinElement.addEventListener('mousedown', (evt) => {
+  private mouseEventRange(handler: Function): void {
+    this.pinMouseListener(this.fromPinElement, handler, 'from');
+    this.pinMouseListener(this.toPinElement, handler, 'to');
+  }
+
+  private mouseEventSingle(handler: Function): void {
+    this.pinMouseListener(this.pinElement, handler, 'single');
+  }
+
+  private pinMouseListener(currentPinElement: HTMLElement, handler: Function, pinType: string): void {
+    currentPinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
 
-      let shiftX = evt.clientX - this.pinElement.getBoundingClientRect().left;
-      let lineWidth = this.lineElement.offsetWidth - this.pinElement.offsetWidth;
+      const shiftX = evt.clientX - currentPinElement.getBoundingClientRect().left;
+      let lineWidth = this.lineElement.offsetWidth - currentPinElement.offsetWidth;
 
       const onMouseMove = (evt: MouseEvent): void => {
         evt.preventDefault();
@@ -143,7 +157,7 @@ export default class SliderView {
         if (shiftPin < 0) shiftPin = 0;
         if (shiftPin > lineWidth) shiftPin = lineWidth;
 
-        handler(shiftPin, lineWidth);
+        handler(shiftPin, lineWidth, pinType);
       }
 
       const onMouseUp = (): void => {
@@ -159,7 +173,7 @@ export default class SliderView {
       document.addEventListener('mouseup', onMouseUp);
     });
 
-    this.pinElement.ondragstart = function () {
+    currentPinElement.ondragstart = function () {
       return false;
     };
   }

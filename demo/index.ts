@@ -17,11 +17,13 @@ slider.freeSlider({
   // }
 });
 
+// console.log(slider.freeSlider('getValue'));
+
 $('.free-slider2').freeSlider({
   type: 'range',
   min: 10,
   max: 30,
   from: 15,
   to: 20,
-  step: 1.25
+  step: 2
 });

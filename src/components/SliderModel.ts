@@ -33,7 +33,7 @@ export default class SliderModel {
     }
   }
 
-  public setSettings(newSettings: Partial<Settings>, oldSettings: Settings = this.settings) {
+  public setSettings(newSettings: Partial<Settings>, oldSettings: Settings = this.settings): void {
     this.settings = {...oldSettings, ...newSettings};
     this.modelChangedSubject.notify(this.settings);
   }
@@ -42,7 +42,18 @@ export default class SliderModel {
     return this.settings;
   }
 
-  public calcNewValue(pinShift: number, sliderWidth: number) {
+  public setNewValue(pinShift: number, sliderWidth: number, pinType: string): void {
+    const value = this.calcValue(pinShift, sliderWidth);
+    if (pinType === 'single' && value !== this.settings.value) {
+      this.setSettings({ value: value });
+    } else if (pinType === 'to' && value !== this.settings.to && value >= this.settings.from) {
+      this.setSettings({ to: value });
+    } else if (pinType === 'from' && value !== this.settings.from && value <= this.settings.to) {
+      this.setSettings({ from: value });
+    }
+  }
+
+  private calcValue(pinShift: number, sliderWidth: number): number {
     let step = this.settings.step;
     let value = pinShift / sliderWidth * (this.settings.max - this.settings.min) + this.settings.min;
 
@@ -50,11 +61,7 @@ export default class SliderModel {
     if (value % step < step / 2 && value !== this.settings.max) value = value - (value % step);
     if (value === this.settings.max) value = this.settings.max;
     value = this.round(value, 5);
-
-    if (value !== this.settings.value) {
-      this.setSettings({ value: value });
-    }
-
+    return value;
   }
 
   private round(number: number, digits = 0, base = Math.pow(10, digits)): number {
