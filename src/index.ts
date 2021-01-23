@@ -28,10 +28,8 @@ import { Settings, Methods } from './types';
     } else if (typeof action === 'object' || !action) {
       method = methods.init.call(this, action);
     } else {
-      $.error(`Метода ${action} не существует для freeSlider`);
-      method = this;
+      throw new Error(`Метода ${action} не существует для freeSlider`);
     }
-
     return method;
   };
 })($);
