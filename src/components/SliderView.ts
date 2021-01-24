@@ -37,10 +37,10 @@ export default class SliderView {
   public updateView(handler: Function): void {
     if (this.type === 'range') {
       this.mouseEventRange(handler);
-      // this.clickEvent(handler);
+      this.clickEvent(handler);
     } else {
       this.mouseEventSingle(handler);
-      // this.clickEvent(handler);
+      this.clickEvent(handler);
     }
   }
 
@@ -148,8 +148,8 @@ export default class SliderView {
     currentPinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
 
-      const shiftX = evt.clientX - currentPinElement.getBoundingClientRect().left;
-      let lineWidth = this.lineElement.offsetWidth - currentPinElement.offsetWidth;
+      const shiftX: number = evt.clientX - currentPinElement.getBoundingClientRect().left;
+      const lineWidth: number = this.getLineWidth();
 
       const onMouseMove = (evt: MouseEvent): void => {
         evt.preventDefault();
@@ -178,23 +178,45 @@ export default class SliderView {
     };
   }
 
-  private clickEvent(handler: Function) {
+  private clickEvent(handler: Function): void {
     this.barElement.style.pointerEvents = 'none';
 
     this.lineElement.addEventListener('click', (evt) => {
       evt.preventDefault();
 
-      let lineWidth = this.lineElement.offsetWidth - this.pinElement.offsetWidth;
-      let shiftPin: number = evt.clientX - this.lineElement.getBoundingClientRect().left - this.pinElement.offsetWidth / 2;
+      const lineWidth: number = this.getLineWidth();
+      let shiftPin: number = this.getCLickShiftPin(evt);
 
       if (shiftPin < 0) shiftPin = 0;
       if (shiftPin > lineWidth) shiftPin = lineWidth;
 
-      handler(shiftPin, lineWidth);
+      if (this.type === 'range') {
+        const range: number = this.toPinElement.getBoundingClientRect().left - this.fromPinElement.getBoundingClientRect().left;
 
-      if (this.onFinish) {
-        this.onFinish(this.inputValue);
+        if (evt.clientX <= this.fromPinElement.getBoundingClientRect().left + range / 2) {
+          handler(shiftPin, lineWidth, 'from');
+        } else {
+          handler(shiftPin, lineWidth, 'to');
+        }
+      } else {
+        handler(shiftPin, lineWidth, 'single');
       }
     });
+  }
+
+  private getLineWidth(): number {
+    if (this.type === 'range') {
+      return this.lineElement.offsetWidth - this.fromPinElement.offsetWidth / 2 - this.toPinElement.offsetWidth / 2;
+    } else {
+      return this.lineElement.offsetWidth - this.pinElement.offsetWidth;
+    }
+  }
+
+  private getCLickShiftPin(evt: MouseEvent): number {
+    if (this.type === 'range') {
+      return evt.clientX - this.lineElement.getBoundingClientRect().left - this.fromPinElement.offsetWidth / 2;
+    } else {
+      return evt.clientX - this.lineElement.getBoundingClientRect().left - this.pinElement.offsetWidth / 2;
+    }
   }
 };

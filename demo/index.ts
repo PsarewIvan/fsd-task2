@@ -22,8 +22,8 @@ slider.freeSlider({
 $('.free-slider2').freeSlider({
   type: 'range',
   min: 10,
-  max: 30,
-  from: 15,
-  to: 20,
+  max: 300,
+  from: 30,
+  to: 100,
   step: 2
 });
