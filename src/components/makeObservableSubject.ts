@@ -1,8 +1,8 @@
 export default class MakeObservableSubject {
-  private observers: Array<Function>
+  private observers: Array<Function>;
 
   constructor() {
-    this.observers = []
+    this.observers = [];
   }
 
   subscribe(observer: Function) {
