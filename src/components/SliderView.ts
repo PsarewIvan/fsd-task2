@@ -185,7 +185,7 @@ export default class SliderView {
       evt.preventDefault();
 
       const lineWidth: number = this.getLineWidth();
-      let shiftPin: number = this.getCLickShiftPin(evt);
+      let shiftPin: number = this.getPinShift(evt);
 
       if (shiftPin < 0) shiftPin = 0;
       if (shiftPin > lineWidth) shiftPin = lineWidth;
@@ -212,7 +212,7 @@ export default class SliderView {
     }
   }
 
-  private getCLickShiftPin(evt: MouseEvent): number {
+  private getPinShift(evt: MouseEvent): number {
     if (this.type === 'range') {
       return evt.clientX - this.lineElement.getBoundingClientRect().left - this.fromPinElement.offsetWidth / 2;
     } else {
