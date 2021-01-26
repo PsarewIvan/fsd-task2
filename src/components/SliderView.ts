@@ -35,12 +35,12 @@ export default class SliderView {
   }
 
   public updateView(handler: Function): void {
+    this.clickOnBarListener(handler);
+
     if (this.type === 'range') {
       this.mouseEventRange(handler);
-      this.clickEvent(handler);
     } else {
       this.mouseEventSingle(handler);
-      this.clickEvent(handler);
     }
   }
 
@@ -136,41 +136,18 @@ export default class SliderView {
   }
 
   private mouseEventRange(handler: Function): void {
-    this.pinMouseListener(this.fromPinElement, handler, 'from');
-    this.pinMouseListener(this.toPinElement, handler, 'to');
+    this.pinMouseListener(this.fromPinElement, handler);
+    this.pinMouseListener(this.toPinElement, handler);
   }
 
   private mouseEventSingle(handler: Function): void {
-    this.pinMouseListener(this.pinElement, handler, 'single');
+    this.pinMouseListener(this.pinElement, handler);
   }
 
-  private pinMouseListener(currentPinElement: HTMLElement, handler: Function, pinType: string): void {
+  private pinMouseListener(currentPinElement: HTMLElement, handler: Function): void {
     currentPinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
-
-      const shiftX: number = evt.clientX - currentPinElement.getBoundingClientRect().left;
-      const lineWidth: number = this.getLineWidth();
-
-      const onMouseMove = (evt: MouseEvent): void => {
-        evt.preventDefault();
-        let shiftPin: number = evt.clientX - this.lineElement.getBoundingClientRect().left - shiftX;
-        if (shiftPin < 0) shiftPin = 0;
-        if (shiftPin > lineWidth) shiftPin = lineWidth;
-
-        handler(shiftPin, lineWidth, pinType);
-      }
-
-      const onMouseUp = (): void => {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-
-        if (this.onFinish) {
-          this.onFinish(this.inputValue);
-        }
-      }
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      this.handlingMouseMotionEvents(evt, currentPinElement, handler);
     });
 
     currentPinElement.ondragstart = function () {
@@ -178,30 +155,86 @@ export default class SliderView {
     };
   }
 
-  private clickEvent(handler: Function): void {
+  private clickOnBarListener(handler: Function): void {
     this.barElement.style.pointerEvents = 'none';
-
-    this.lineElement.addEventListener('click', (evt) => {
+    this.lineElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
 
-      const lineWidth: number = this.getLineWidth();
-      let shiftPin: number = this.getPinShift(evt);
-
-      if (shiftPin < 0) shiftPin = 0;
-      if (shiftPin > lineWidth) shiftPin = lineWidth;
+      this.changePinOnClick(evt, handler);
 
       if (this.type === 'range') {
         const range: number = this.toPinElement.getBoundingClientRect().left - this.fromPinElement.getBoundingClientRect().left;
-
         if (evt.clientX <= this.fromPinElement.getBoundingClientRect().left + range / 2) {
-          handler(shiftPin, lineWidth, 'from');
+          this.handlingMouseMotionEvents(evt, this.fromPinElement, handler);
         } else {
-          handler(shiftPin, lineWidth, 'to');
+          this.handlingMouseMotionEvents(evt, this.toPinElement, handler);
         }
       } else {
-        handler(shiftPin, lineWidth, 'single');
+        this.handlingMouseMotionEvents(evt, this.pinElement, handler);
       }
     });
+
+    this.lineElement.ondragstart = function () {
+      return false;
+    };
+  }
+
+  private handlingMouseMotionEvents(evt: MouseEvent, currentPin: HTMLElement, handler: Function,): void {
+    const shiftX: number = evt.clientX - currentPin.getBoundingClientRect().left;
+    const lineWidth: number = this.getLineWidth();
+
+    let pinType: string;
+    switch (currentPin) {
+      case this.fromPinElement:
+        pinType = 'from';
+        break;
+      case this.toPinElement:
+        pinType = 'to';
+        break;
+      default:
+        pinType = 'single';
+    }
+
+    const onMouseMove = (evt: MouseEvent): void => {
+      evt.preventDefault();
+      let shiftPin: number = evt.clientX - this.lineElement.getBoundingClientRect().left - shiftX;
+      if (shiftPin < 0) shiftPin = 0;
+      if (shiftPin > lineWidth) shiftPin = lineWidth;
+
+      handler(shiftPin, lineWidth, pinType);
+    }
+
+    const onMouseUp = (): void => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (this.onFinish) {
+        this.onFinish(this.inputValue);
+      }
+    }
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
+  private changePinOnClick(evt: MouseEvent, handler: Function): void {
+    const lineWidth: number = this.getLineWidth();
+    let shiftPin: number = this.getPinShift(evt);
+
+    if (shiftPin < 0) shiftPin = 0;
+    if (shiftPin > lineWidth) shiftPin = lineWidth;
+
+    if (this.type === 'range') {
+      const range: number = this.toPinElement.getBoundingClientRect().left - this.fromPinElement.getBoundingClientRect().left;
+
+      if (evt.clientX <= this.fromPinElement.getBoundingClientRect().left + range / 2) {
+        handler(shiftPin, lineWidth, 'from');
+      } else {
+        handler(shiftPin, lineWidth, 'to');
+      }
+    } else {
+      handler(shiftPin, lineWidth, 'single');
+    }
   }
 
   private getLineWidth(): number {
