@@ -15,7 +15,7 @@ export default class SliderModel {
       min: 0,
       max: 100,
       value: 50,
-      step: 1,
+      step: 1
     };
     this.defaultParamRange = {
       min: 0,
