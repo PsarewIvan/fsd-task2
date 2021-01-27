@@ -6,6 +6,7 @@ export interface Settings {
   from?: number;
   to?: number;
   type?: string;
+  orientation?: string;
   onChange?: (value: number) => void;
   onFinish?: (value: number) => void;
 }
