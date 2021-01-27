@@ -18,6 +18,7 @@ export default class SliderView {
   private onChange: Function | undefined;
   private onFinish: Function | undefined;
   private type: string | undefined;
+  private orientation: string | undefined;
   private isFirstChange: boolean;
   private inputValue: Array<number>;
 
@@ -25,6 +26,7 @@ export default class SliderView {
     this.onChange = settings.onChange;
     this.onFinish = settings.onFinish;
     this.type = settings.type;
+    this.orientation = settings.orientation;
     this.isFirstChange = true;
     this.inputValue = settings.value ? [settings.value] : [settings.from, settings.to];
 
@@ -90,14 +92,14 @@ export default class SliderView {
       <span class="free-slider__bar"></span>`;
     if (this.type === 'range') {
       this.html = `
-        <span class="free-slider__wrapper">
+        <span class="free-slider">
           ${baseHtml}
           <span class="free-slider__from-handle"></span>
           <span class="free-slider__to-handle"></span>
         </span>`;
     } else {
       this.html = `
-        <span class="free-slider__wrapper">
+        <span class="free-slider">
           ${baseHtml}
           <span class="free-slider__handle"></span>
         </span>`;
@@ -117,6 +119,10 @@ export default class SliderView {
       this.toPinElement = this.root.querySelector('.free-slider__to-handle');
     } else {
       this.pinElement = this.root.querySelector('.free-slider__handle');
+    }
+    if (this.orientation === 'vertical') {
+
+      this.root.querySelector('.free-slider').classList.add('free-slider--vertical');
     }
   }
 
