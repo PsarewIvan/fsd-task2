@@ -26,7 +26,7 @@ export default class SliderModel {
     }
 
     // Очень хрупко, нужны дополнительные провреки
-    if (options.type === 'range') {
+    if (options && options.type === 'range') {
       this.setSettings(options, this.defaultParamRange);
     } else {
       this.setSettings(options, this.defaultParamSingle)
