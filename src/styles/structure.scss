@@ -1,4 +1,9 @@
 .free-slider {
+  position: relative;
+
+  display: block;
+  height: 50px;
+
   &__input {
     position: absolute !important;
     display: block !important;
@@ -18,13 +23,6 @@
     //   border-color: transparent !important;
     left: 50%;
     top: -20px;
-  }
-
-  &__wrapper {
-    position: relative;
-
-    display: block;
-    height: 50px;
   }
 
   &__line {
@@ -103,5 +101,59 @@
 
   &__to-handle::after {
     content: var(--to-input-value);
+  }
+}
+
+  // --- Vertical slider style ---
+
+.free-slider--vertical {
+  width: 50px;
+  height: 100%;
+
+  .free-slider__input {
+    left: 0;
+    top: -30px;
+    width: 50px;
+  }
+
+  .free-slider__line {
+    top: 0;
+    left: 30px;
+
+    width: 7px;
+    height: 100%;
+  }
+
+  .free-slider__min,
+  .free-slider__max {
+    left: auto;
+    right: 33px;
+  }
+
+  .free-slider__max {
+    top: auto;
+    bottom: 0;
+  }
+
+  .free-slider__handle,
+  .free-slider__from-handle,
+  .free-slider__to-handle {
+    top: 50%;
+    left: 23px;
+
+    transform: translateY(-50%);
+
+    &::after {
+      top: auto;
+      right: 1.6em;
+    }
+  }
+
+  .free-slider__bar {
+    top: 0;
+    left: 30px;
+
+    width: 7px;
+    height: 50%;
   }
 }

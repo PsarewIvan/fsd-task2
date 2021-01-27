@@ -18,3 +18,13 @@
     background-color: lightgray;
   }
 }
+
+// --- Vertical slider ---
+
+.free-slider--vertical {
+  .free-slider__bar {
+    background-image: linear-gradient(to right, white 0%, lightskyblue 20%, #e7f9ff 100%);
+    border-radius: 7px 7px 0 0;
+  }
+}
+
