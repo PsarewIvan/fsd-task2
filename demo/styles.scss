@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  padding: 0 30px;
+  padding: 0 30px 40px;
 }
 
 .container {
@@ -17,4 +17,10 @@ body {
 .slider__wrapper {
   max-width: 700px;
   margin: 0 auto 40px;
+
+  &--vertical {
+    display: flex;
+    height: 200px;
+    gap: 50px;
+  }
 }
