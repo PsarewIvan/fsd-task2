@@ -15,18 +15,25 @@ export default class SliderModel {
       min: 0,
       max: 100,
       value: 50,
-      step: 1
+      step: 1,
+      type: 'single'
     };
     this.defaultParamRange = {
       min: 0,
       max: 100,
       from: 10,
       to: 90,
-      step: 1
+      step: 1,
+      type: 'range'
     }
 
     // Очень хрупко, нужны дополнительные провреки
-    if (options && options.type === 'range') {
+    const isRangeType = options && options.type === 'range';
+    const emptyType = options && !options.hasOwnProperty('type') && options.from && options.to;
+    if (isRangeType || emptyType) {
+      if (options.from > options.to) {
+        [options.min, options.max] = [options.max, options.min];
+      }
       this.setSettings(options, this.defaultParamRange);
     } else {
       this.setSettings(options, this.defaultParamSingle)
