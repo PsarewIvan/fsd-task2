@@ -59,7 +59,6 @@ export default class SliderModel {
 
     if (value % step >= step / 2 && value !== this.settings.max) value = value + step - (value % step);
     if (value % step < step / 2 && value !== this.settings.max) value = value - (value % step);
-    if (value === this.settings.max) value = this.settings.max;
     value = this.round(value, 5);
     return value;
   }
