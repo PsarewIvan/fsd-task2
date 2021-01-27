@@ -64,8 +64,9 @@ export default class SliderModel {
     let step = this.settings.step;
     let value = pinShift / sliderWidth * (this.settings.max - this.settings.min) + this.settings.min;
 
-    if (value % step >= step / 2 && value !== this.settings.max) value = value + step - (value % step);
-    if (value % step < step / 2 && value !== this.settings.max) value = value - (value % step);
+    if (value % step > step / 2 && value !== this.settings.max && value !== this.settings.min) value = value + step - (value % step);
+    if (value % step < step / 2 && value !== this.settings.max && value !== this.settings.min) value = value - (value % step);
+
     value = this.round(value, 5);
     return value;
   }
