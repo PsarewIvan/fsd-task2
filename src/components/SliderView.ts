@@ -28,7 +28,7 @@ export default class SliderView {
     this.type = settings.type;
     this.orientation = settings.orientation;
     this.isFirstChange = true;
-    this.inputValue = settings.value ? [settings.value] : [settings.from, settings.to];
+    this.inputValue = this.type === 'range' ? [settings.from, settings.to] : [settings.value];
 
     this.render(rootNode);
     this.initSliderElement();
