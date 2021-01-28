@@ -28,7 +28,6 @@ export default class SliderView {
     this.type = settings.type;
     this.orientation = settings.orientation;
     this.isFirstChange = true;
-    this.inputValue = this.type === 'range' ? [settings.from, settings.to] : [settings.value];
 
     this.render(rootNode);
     this.initSliderElement();
@@ -47,13 +46,9 @@ export default class SliderView {
   }
 
   public changeSlider(settings: Settings) {
-    if (this.type === 'range') {
-      this.inputValue = [settings.from, settings.to];
-    } else {
-      this.inputValue = [settings.value];
-    }
+    this.inputValue = this.type === 'range' ? [settings.from, settings.to] : [settings.value];
 
-    this.updateInputs();
+    this.updateInput();
     this.updatePins(settings);
 
     if (this.onChange && !this.isFirstChange) {
@@ -131,7 +126,7 @@ export default class SliderView {
     this.maxElement.innerHTML = `${max}`;
   }
 
-  private updateInputs(): void {
+  private updateInput(): void {
     this.inputElement.value = this.inputValue.join('-');
     if (this.type === 'range') {
       this.fromPinElement.style.setProperty('--from-input-value', `"${this.inputValue[0]}"`)
