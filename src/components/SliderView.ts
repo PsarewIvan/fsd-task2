@@ -46,7 +46,8 @@ export default class SliderView {
   }
 
   public changeSlider(settings: Settings) {
-    this.inputValue = this.type === 'range' ? [settings.from, settings.to] : [settings.value];
+    this.inputValue =
+      this.type === 'range' ? [settings.from, settings.to] : [settings.value];
 
     this.updateInput();
     if (this.orientation) {
@@ -62,12 +63,23 @@ export default class SliderView {
   }
 
   private updatePinsHoriz(settings: Settings): void {
-    const getPinShift = (currentPinElement: HTMLElement, value: number): number => {
-      return (this.lineElement.offsetWidth - currentPinElement.offsetWidth) * (value - settings.min) / (settings.max - settings.min) + currentPinElement.offsetWidth / 2;
+    const getPinShift = (
+      currentPinElement: HTMLElement,
+      value: number
+    ): number => {
+      return (
+        ((this.lineElement.offsetWidth - currentPinElement.offsetWidth) *
+          (value - settings.min)) /
+          (settings.max - settings.min) +
+        currentPinElement.offsetWidth / 2
+      );
     };
 
     if (this.type === 'range') {
-      const fromPinShift: number = getPinShift(this.fromPinElement, settings.from);
+      const fromPinShift: number = getPinShift(
+        this.fromPinElement,
+        settings.from
+      );
       const toPinShift: number = getPinShift(this.toPinElement, settings.to);
       this.fromPinElement.style.left = `${fromPinShift}px`;
       this.toPinElement.style.left = `${toPinShift}px`;
@@ -81,12 +93,23 @@ export default class SliderView {
   }
 
   private updatePinsVertical(settings: Settings): void {
-    const getPinShift = (currentPinElement: HTMLElement, value: number): number => {
-      return (this.lineElement.offsetHeight - currentPinElement.offsetHeight) * (value - settings.min) / (settings.max - settings.min) + currentPinElement.offsetHeight / 2;
+    const getPinShift = (
+      currentPinElement: HTMLElement,
+      value: number
+    ): number => {
+      return (
+        ((this.lineElement.offsetHeight - currentPinElement.offsetHeight) *
+          (value - settings.min)) /
+          (settings.max - settings.min) +
+        currentPinElement.offsetHeight / 2
+      );
     };
 
     if (this.type === 'range') {
-      const fromPinShift: number = getPinShift(this.fromPinElement, settings.from);
+      const fromPinShift: number = getPinShift(
+        this.fromPinElement,
+        settings.from
+      );
       const toPinShift: number = getPinShift(this.toPinElement, settings.to);
 
       this.fromPinElement.style.top = `${fromPinShift}px`;
@@ -135,14 +158,17 @@ export default class SliderView {
     this.minElement = this.root.querySelector('.free-slider__min');
     this.maxElement = this.root.querySelector('.free-slider__max');
     if (this.type === 'range') {
-      this.fromPinElement = this.root.querySelector('.free-slider__from-handle');
+      this.fromPinElement = this.root.querySelector(
+        '.free-slider__from-handle'
+      );
       this.toPinElement = this.root.querySelector('.free-slider__to-handle');
     } else {
       this.pinElement = this.root.querySelector('.free-slider__handle');
     }
     if (this.orientation === 'vertical') {
-
-      this.root.querySelector('.free-slider').classList.add('free-slider--vertical');
+      this.root
+        .querySelector('.free-slider')
+        .classList.add('free-slider--vertical');
     }
   }
 
@@ -154,10 +180,19 @@ export default class SliderView {
   private updateInput(): void {
     this.inputElement.value = this.inputValue.join('-');
     if (this.type === 'range') {
-      this.fromPinElement.style.setProperty('--from-input-value', `"${this.inputValue[0]}"`)
-      this.toPinElement.style.setProperty('--to-input-value', `"${this.inputValue[1]}"`)
+      this.fromPinElement.style.setProperty(
+        '--from-input-value',
+        `"${this.inputValue[0]}"`
+      );
+      this.toPinElement.style.setProperty(
+        '--to-input-value',
+        `"${this.inputValue[1]}"`
+      );
     } else {
-      this.pinElement.style.setProperty('--input-value', `"${this.inputValue[0]}"`);
+      this.pinElement.style.setProperty(
+        '--input-value',
+        `"${this.inputValue[0]}"`
+      );
     }
   }
 
@@ -170,7 +205,10 @@ export default class SliderView {
     this.pinMouseListener(this.pinElement, handler);
   }
 
-  private pinMouseListener(currentPinElement: HTMLElement, handler: Function): void {
+  private pinMouseListener(
+    currentPinElement: HTMLElement,
+    handler: Function
+  ): void {
     currentPinElement.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
       this.handlingMouseMotionEvents(evt, currentPinElement, handler);
@@ -181,7 +219,11 @@ export default class SliderView {
     };
   }
 
-  private handlingMouseMotionEvents(evt: MouseEvent, currentPin: HTMLElement, handler: Function,): void {
+  private handlingMouseMotionEvents(
+    evt: MouseEvent,
+    currentPin: HTMLElement,
+    handler: Function
+  ): void {
     let clickOffset: number;
     let lineSize: number;
 
@@ -197,15 +239,21 @@ export default class SliderView {
       evt.preventDefault();
       let shiftPin: number;
       if (this.orientation === 'vertical') {
-        shiftPin = evt.clientY - this.lineElement.getBoundingClientRect().top - clickOffset;
+        shiftPin =
+          evt.clientY -
+          this.lineElement.getBoundingClientRect().top -
+          clickOffset;
       } else {
-        shiftPin = evt.clientX - this.lineElement.getBoundingClientRect().left - clickOffset;
+        shiftPin =
+          evt.clientX -
+          this.lineElement.getBoundingClientRect().left -
+          clickOffset;
       }
       if (shiftPin < 0) shiftPin = 0;
       if (shiftPin > lineSize) shiftPin = lineSize;
 
       handler(shiftPin, lineSize, this.getPinType(currentPin));
-    }
+    };
 
     const onMouseUp = (): void => {
       document.removeEventListener('mousemove', onMouseMove);
@@ -214,7 +262,7 @@ export default class SliderView {
       if (this.onFinish) {
         this.onFinish(this.inputValue);
       }
-    }
+    };
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
@@ -272,7 +320,11 @@ export default class SliderView {
 
   private getLineWidth(): number {
     if (this.type === 'range') {
-      return this.lineElement.offsetWidth - this.fromPinElement.offsetWidth / 2 - this.toPinElement.offsetWidth / 2;
+      return (
+        this.lineElement.offsetWidth -
+        this.fromPinElement.offsetWidth / 2 -
+        this.toPinElement.offsetWidth / 2
+      );
     } else {
       return this.lineElement.offsetWidth - this.pinElement.offsetWidth;
     }
@@ -280,7 +332,11 @@ export default class SliderView {
 
   private getLineHeight(): number {
     if (this.type === 'range') {
-      return this.lineElement.offsetHeight - this.fromPinElement.offsetHeight / 2 - this.toPinElement.offsetHeight / 2;
+      return (
+        this.lineElement.offsetHeight -
+        this.fromPinElement.offsetHeight / 2 -
+        this.toPinElement.offsetHeight / 2
+      );
     } else {
       return this.lineElement.offsetHeight - this.pinElement.offsetHeight;
     }
@@ -290,15 +346,27 @@ export default class SliderView {
     let pinShift: number;
     if (this.orientation === 'vertical') {
       if (this.type === 'range') {
-        pinShift = evt.clientY - this.lineElement.getBoundingClientRect().top - this.fromPinElement.offsetHeight / 2;
+        pinShift =
+          evt.clientY -
+          this.lineElement.getBoundingClientRect().top -
+          this.fromPinElement.offsetHeight / 2;
       } else {
-        pinShift = evt.clientY - this.lineElement.getBoundingClientRect().top - this.pinElement.offsetHeight / 2;
+        pinShift =
+          evt.clientY -
+          this.lineElement.getBoundingClientRect().top -
+          this.pinElement.offsetHeight / 2;
       }
     } else {
       if (this.type === 'range') {
-        pinShift = evt.clientX - this.lineElement.getBoundingClientRect().left - this.fromPinElement.offsetWidth / 2;
+        pinShift =
+          evt.clientX -
+          this.lineElement.getBoundingClientRect().left -
+          this.fromPinElement.offsetWidth / 2;
       } else {
-        pinShift = evt.clientX - this.lineElement.getBoundingClientRect().left - this.pinElement.offsetWidth / 2;
+        pinShift =
+          evt.clientX -
+          this.lineElement.getBoundingClientRect().left -
+          this.pinElement.offsetWidth / 2;
       }
     }
     return pinShift;
@@ -322,18 +390,31 @@ export default class SliderView {
   private getRangeBetweenPins(): number {
     let range: number;
     if (this.orientation === 'vertical') {
-      range = this.toPinElement.getBoundingClientRect().top - this.fromPinElement.getBoundingClientRect().top;
+      range =
+        this.toPinElement.getBoundingClientRect().top -
+        this.fromPinElement.getBoundingClientRect().top;
     } else {
-      range = this.toPinElement.getBoundingClientRect().left - this.fromPinElement.getBoundingClientRect().left;
+      range =
+        this.toPinElement.getBoundingClientRect().left -
+        this.fromPinElement.getBoundingClientRect().left;
     }
     return range;
   }
 
-  private isClickRefersToTheFromPin(evt: MouseEvent, sliderRange: number): boolean {
+  private isClickRefersToTheFromPin(
+    evt: MouseEvent,
+    sliderRange: number
+  ): boolean {
     if (this.orientation === 'vertical') {
-      return evt.clientY <= this.fromPinElement.getBoundingClientRect().top + sliderRange / 2;
+      return (
+        evt.clientY <=
+        this.fromPinElement.getBoundingClientRect().top + sliderRange / 2
+      );
     } else {
-      return evt.clientX <= this.fromPinElement.getBoundingClientRect().left + sliderRange / 2;
+      return (
+        evt.clientX <=
+        this.fromPinElement.getBoundingClientRect().left + sliderRange / 2
+      );
     }
   }
-};
+}

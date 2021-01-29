@@ -8,18 +8,20 @@ import { Settings } from '../types';
 export default class SliderPresenter {
   private model: SliderModel;
   private view: SliderView;
-  private element: HTMLElement
+  private element: HTMLElement;
 
   constructor(element: HTMLElement, options: Partial<Settings>) {
     this.element = element;
     this.model = new SliderModel(options);
     this.view = new SliderView(this.element, this.model.getSettings());
 
-    this.view.updateView( (shiftPinPixel: number, sliderWidthPixel: number, pinType: string) => {
-      this.model.setNewValue(shiftPinPixel, sliderWidthPixel, pinType)
-    });
+    this.view.updateView(
+      (shiftPinPixel: number, sliderWidthPixel: number, pinType: string) => {
+        this.model.setNewValue(shiftPinPixel, sliderWidthPixel, pinType);
+      }
+    );
 
-    this.model.modelChangedSubject.subscribe( (settings: Settings) => {
+    this.model.modelChangedSubject.subscribe((settings: Settings) => {
       this.view.changeSlider(settings);
     });
   }
@@ -29,6 +31,6 @@ export default class SliderPresenter {
   }
 
   public setValue(value: number): void {
-    this.model.setSettings({value: value});
+    this.model.setSettings({ value: value });
   }
-};
+}

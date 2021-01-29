@@ -9,19 +9,19 @@ export default class MakeObservableSubject {
     if (typeof observer !== 'function') {
       throw new Error('observer must be a function');
     }
-    if (this.observers.includes( (obs: Function) => obs !== observer)) {
+    if (this.observers.includes((obs: Function) => obs !== observer)) {
       throw new Error('observer already in the list');
     }
     this.observers.push(observer);
   }
 
   unsubscribe(observer: Function) {
-    this.observers = this.observers.filter( (obs) =>  obs !== observer);
+    this.observers = this.observers.filter((obs) => obs !== observer);
   }
 
   notify(value?: Object) {
     const observersSnapshot = this.observers.slice(0);
-    observersSnapshot.forEach( (obs) => {
+    observersSnapshot.forEach((obs) => {
       obs(value);
     });
   }

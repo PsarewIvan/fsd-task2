@@ -25,7 +25,13 @@ $('.slider--range').freeSlider({
   max: 300,
   from: 30,
   to: 100,
-  step: 2
+  step: 2,
+  // onChange: function(value) {
+  //   console.log('OnChange Value: ', value);
+  // },
+  // onFinish: function (value) {
+  //   console.log('OnFinish Value: ', value);
+  // }
 });
 
 $('.slider--vertical').freeSlider({
@@ -33,7 +39,7 @@ $('.slider--vertical').freeSlider({
   min: 0,
   max: 100,
   value: 30,
-  step: 1
+  step: 1,
 });
 
 $('.slider--vertical--range').freeSlider({
@@ -43,5 +49,5 @@ $('.slider--vertical--range').freeSlider({
   max: 100,
   from: 0,
   to: 50,
-  step: 5
+  step: 5,
 });

@@ -18,10 +18,13 @@ import { Settings, Methods } from './types';
 
     setValue(value: number): void {
       $(this).data().freeSlider.method().setValue(value);
-    }
+    },
   };
 
-  $.fn.freeSlider = function (action?: Partial<Settings> | string, args?: number) {
+  $.fn.freeSlider = function (
+    action?: Partial<Settings> | string,
+    args?: number
+  ) {
     let method: any;
     if (typeof action === 'string' && methods[action]) {
       method = methods[action].call(this, args);
@@ -33,4 +36,3 @@ import { Settings, Methods } from './types';
     return method;
   };
 })($);
-
