@@ -50,6 +50,7 @@ export default class SliderView {
       this.type === 'range' ? [settings.from, settings.to] : [settings.value];
 
     this.updateInput();
+
     if (this.orientation) {
       this.updatePinsVertical(settings);
     } else {
@@ -128,7 +129,7 @@ export default class SliderView {
     const baseHtml = `
       <input class="free-slider__input" type="text" name="free-slider">
       <span class="free-slider__model">
-        <span class="free-slider__line"></span>
+        <span class="free-slider__track"></span>
         <span class="free-slider__min">0</span>
         <span class="free-slider__max">100</span>
       </span>

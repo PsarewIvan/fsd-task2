@@ -17,6 +17,7 @@ export default class SliderModel {
       value: 50,
       step: 1,
       type: 'single',
+      orientation: 'horizontal',
     };
     this.defaultParamRange = {
       min: 0,
@@ -25,6 +26,7 @@ export default class SliderModel {
       to: 90,
       step: 1,
       type: 'range',
+      orientation: 'horizontal',
     };
 
     // Очень хрупко, нужны дополнительные провреки

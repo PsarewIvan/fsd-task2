@@ -7,6 +7,8 @@ export interface Settings {
   to?: number;
   type?: string;
   orientation?: string;
+  scale?: boolean;
+  tooltips?: boolean;
   onChange?: (value: number) => void;
   onFinish?: (value: number) => void;
 }
@@ -15,6 +17,11 @@ export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
   getValue: () => number;
   setValue: (value: number) => void;
+}
+
+export interface EventValue {
+  evt: MouseEvent;
+  handler: Function;
 }
 
 declare global {
