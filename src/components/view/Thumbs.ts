@@ -135,6 +135,28 @@ export default class ThumbView {
     };
   }
 
+  private writeThumbsShift() {
+    if (this.state.orientation === 'horizontal') {
+      if (this.state.type === 'single') {
+        this.thumbsShift = [this.single.root.getBoundingClientRect().left];
+      } else if (this.state.type === 'range') {
+        this.thumbsShift = [
+          this.from.root.getBoundingClientRect().left,
+          this.to.root.getBoundingClientRect().left,
+        ];
+      }
+    } else if (this.state.orientation === 'vertical') {
+      if (this.state.type === 'single') {
+        this.thumbsShift = [this.single.root.getBoundingClientRect().top];
+      } else if (this.state.type === 'range') {
+        this.thumbsShift = [
+          this.from.root.getBoundingClientRect().top,
+          this.to.root.getBoundingClientRect().top,
+        ];
+      }
+    }
+  }
+
   // public getThumbsSize(): Array<number> {
   //   let thumbWidth: Array<number> = [];
 
