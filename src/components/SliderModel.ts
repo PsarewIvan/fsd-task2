@@ -18,6 +18,7 @@ export default class SliderModel {
       step: 1,
       type: 'single',
       orientation: 'horizontal',
+      tooltips: true,
     };
     this.defaultParamRange = {
       min: 0,
@@ -27,13 +28,14 @@ export default class SliderModel {
       step: 1,
       type: 'range',
       orientation: 'horizontal',
+      tooltips: true,
     };
 
-    // Очень хрупко, нужны дополнительные провреки
+    // Очень хрупко, нужны дополнительные проверки
     const isRangeType = options && options.type === 'range';
-    const emptyType =
+    const isEmptyType =
       options && !options.hasOwnProperty('type') && options.from && options.to;
-    if (isRangeType || emptyType) {
+    if (isRangeType || isEmptyType) {
       if (options.from > options.to) {
         [options.min, options.max] = [options.max, options.min];
       }
@@ -41,6 +43,10 @@ export default class SliderModel {
     } else {
       this.setSettings(options, this.defaultParamSingle);
     }
+  }
+
+  public on(handler: Function) {
+    handler();
   }
 
   public setSettings(
@@ -52,25 +58,27 @@ export default class SliderModel {
   }
 
   public getSettings(): Settings {
-    return this.settings;
+    const upgradeSettings: Settings = { ...this.settings };
+    if (this.settings.type === 'single') {
+      upgradeSettings.values = [this.settings.value];
+    } else if (this.settings.type === 'range') {
+      upgradeSettings.values = [this.settings.from, this.settings.to];
+    }
+    return upgradeSettings;
   }
 
-  public setNewValue(
-    pinShift: number,
-    sliderWidth: number,
-    pinType: string
-  ): void {
-    const value = this.calcValue(pinShift, sliderWidth);
-    if (pinType === 'single' && value !== this.settings.value) {
+  public setNewValue(thumbPercentOffset: number, thumbName: string): void {
+    const value = this.calcValue(thumbPercentOffset);
+    if (thumbName === 'single' && value !== this.settings.value) {
       this.setSettings({ value: value });
     } else if (
-      pinType === 'to' &&
+      thumbName === 'to' &&
       value !== this.settings.to &&
       value >= this.settings.from
     ) {
       this.setSettings({ to: value });
     } else if (
-      pinType === 'from' &&
+      thumbName === 'from' &&
       value !== this.settings.from &&
       value <= this.settings.to
     ) {
@@ -78,11 +86,10 @@ export default class SliderModel {
     }
   }
 
-  private calcValue(pinShift: number, sliderWidth: number): number {
+  private calcValue(thumbShift: number): number {
     let step = this.settings.step;
     let value =
-      (pinShift / sliderWidth) * (this.settings.max - this.settings.min) +
-      this.settings.min;
+      this.settings.min + (this.settings.max - this.settings.min) * thumbShift;
 
     if (
       value % step > step / 2 &&

@@ -2,30 +2,25 @@
 // реагирует на сообщения о действиях пользователей и обновляет модель,
 // реагирует на сообщения об обновлении модели и обновляет отображение
 import SliderModel from './SliderModel';
-// import SliderView from './SliderView';
 import View from './view/View';
 import { Settings } from '../types';
 
 export default class SliderPresenter {
   private model: SliderModel;
-  // private view: SliderView;
   private view: View;
   private element: HTMLElement;
 
   constructor(element: HTMLElement, options: Partial<Settings>) {
     this.element = element;
     this.model = new SliderModel(options);
-    // this.view = new SliderView(this.element, this.model.getSettings());
     this.view = new View(this.element, this.model.getSettings());
 
-    this.view.updateView(
-      (shiftPinPixel: number, sliderWidthPixel: number, pinType: string) => {
-        this.model.setNewValue(shiftPinPixel, sliderWidthPixel, pinType);
-      }
-    );
+    this.view.viewChanged((thumbPercentOffset: number, thumbName: string) => {
+      this.model.setNewValue(thumbPercentOffset, thumbName);
+    });
 
     this.model.modelChangedSubject.subscribe((settings: Settings) => {
-      this.view.changeSlider(settings);
+      // this.view.update(settings);
     });
   }
 

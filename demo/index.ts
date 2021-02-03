@@ -6,8 +6,8 @@ const slider = $('.slider');
 
 slider.freeSlider({
   min: -100,
-  max: -80,
-  value: -90,
+  max: 50,
+  value: -50,
   step: 0.1,
   // onChange: function(value) {
   //   console.log('OnChange Value: ', value);

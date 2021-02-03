@@ -5,6 +5,7 @@ export interface Settings {
   value?: number;
   from?: number;
   to?: number;
+  values?: Array<number>;
   type?: string;
   orientation?: string;
   scale?: boolean;
@@ -22,6 +23,22 @@ export interface Methods {
 export interface EventValue {
   evt: MouseEvent;
   handler: Function;
+}
+
+export interface State {
+  type: string;
+  orientation: string;
+}
+export interface ExpandedState {
+  type: string;
+  orientation: string;
+  min: number;
+  max: number;
+}
+
+export interface TooltipsState {
+  min: number;
+  max: number;
 }
 
 declare global {
