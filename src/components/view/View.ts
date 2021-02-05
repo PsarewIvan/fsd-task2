@@ -16,17 +16,13 @@ export default class View {
   private onFinish: Function | undefined;
   private track: Track;
   private bar: Bar;
-  private scale: Scale;
+  private scale?: Scale;
   private thumbs: Thumbs;
   private tooltips?: Tooltips;
   private state: State;
-  private max: number;
-  private min: number;
 
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
-    this.max = settings.max;
-    this.min = settings.min;
     this.onChange = settings.onChange;
     this.onFinish = settings.onFinish;
 
@@ -34,6 +30,9 @@ export default class View {
     this.update(settings);
   }
 
+  // Создает необходимые компоненты слайдера и размещает их
+  // в созданном родительском компоненте, который помещается
+  // в элемент на котором был создан слайдер
   private render(settings: Settings): void {
     this.slider = document.createElement('span');
     if (settings.orientation === 'vertical') {
@@ -68,8 +67,9 @@ export default class View {
     }
   }
 
+  // Обновляет положение движущихся элементов слайдера
   public update(settings: Settings): void {
-    this.updateState(settings);
+    this.state = { type: settings.type, orientation: settings.orientation };
     const percentsToView: Array<number> = this.formatPercentsToSubview(
       settings.percents
     );
@@ -79,10 +79,8 @@ export default class View {
     // this.onChange(settings.values);
   }
 
-  private updateState(settings: Settings) {
-    this.state = { type: settings.type, orientation: settings.orientation };
-  }
-
+  // Форматирует текущее процентное значение в проценты необходимые
+  // для отрисовки компонентов слайдера
   private formatPercentsToSubview(percents: Array<number>): Array<number> {
     const trackSize: number = this.track.getTrackSize();
     const thumbsSize: number = this.thumbs.getThumbSize();
@@ -94,6 +92,8 @@ export default class View {
     }
   }
 
+  // Создает слушателей за наблюдением состояния слайдера
+  // при взаимодействии пользователя
   public viewChanged(handler: Function) {
     this.thumbs.mouseEvent((thumbShift: number, type: string) => {
       const percent = this.percentFromThumbShift(thumbShift);
@@ -113,6 +113,8 @@ export default class View {
     });
   }
 
+  // Возвращает значение смещения ползунка в процентах, относительно
+  // ширины рабочей области слайдера
   private percentFromThumbShift(thumbShift: number): number {
     const trackSize: number = this.track.getTrackSize();
     const distanceFromTrackToScreen: number = this.track.getDistanceToScreen();

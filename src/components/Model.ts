@@ -45,6 +45,8 @@ export default class SliderModel {
     }
   }
 
+  // Записывает новые значения слайдера, объединяя новые значения
+  // со старыми
   public setSettings(
     newSettings: Partial<Settings>,
     oldSettings: Settings = this.settings
@@ -53,6 +55,10 @@ export default class SliderModel {
     this.modelChangedSubject.notify(this.getSettings());
   }
 
+  // Возвращает значения с дополнительными полями, требуемыми для
+  // корректной работы View:
+  // settings.percents - массив значений в процентах
+  // settings.values - массив значений
   public getSettings(): Settings {
     const upgradeSettings: Settings = { ...this.settings };
     const range: number = this.settings.max - this.settings.min;
@@ -71,6 +77,8 @@ export default class SliderModel {
     return upgradeSettings;
   }
 
+  // Устанавливает новые значения слайдера в зависимости от
+  // смещения конкртеного ползунка в процентах
   public setNewValue(thumbPercentOffset: number, thumbName: string): void {
     const value = this.calcValue(thumbPercentOffset);
     if (thumbName === 'single' && value !== this.settings.value) {
@@ -90,6 +98,8 @@ export default class SliderModel {
     }
   }
 
+  // Возвращает новое корректное значения в зависимости от
+  // установленного шага и смещения в процентах
   private calcValue(thumbPercentOffset: number): number {
     let step = this.settings.step;
     let value =
@@ -113,6 +123,7 @@ export default class SliderModel {
     return value;
   }
 
+  // Метод для округления неточных значений
   private round(
     number: number,
     digits = 0,

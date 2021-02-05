@@ -12,6 +12,7 @@ export default class ThumbView {
     this.render(rootNode);
   }
 
+  // Отрисовывает необходимые ползунки в родительском элементе
   private render(rootNode: HTMLElement): void {
     if (this.state.type === 'range') {
       this.from = new SliderElement(rootNode, [
@@ -27,12 +28,14 @@ export default class ThumbView {
     }
   }
 
+  // Обновляет состояние ползунков
   public update(percents: Array<number>, values: Array<number>): void {
-    this.updateDimensions(percents);
+    this.updatePosition(percents);
     this.updateHints(values);
   }
 
-  public updateDimensions(percents: Array<number>): void {
+  // Обновляет местоположение ползунков на слайдере
+  public updatePosition(percents: Array<number>): void {
     const shift = this.getThumbSize() / 2;
     if (this.state.orientation === 'vertical') {
       if (this.state.type === 'range') {
@@ -53,6 +56,18 @@ export default class ThumbView {
     }
   }
 
+  // Обновляет числовое значение над ползунком
+  public updateHints(values: Array<number>): void {
+    if (this.state.type === 'range') {
+      this.from.root.style.setProperty('--from-input-value', `"${values[0]}"`);
+      this.to.root.style.setProperty('--to-input-value', `"${values[1]}"`);
+    } else if (this.state.type === 'single') {
+      this.single.root.style.setProperty('--input-value', `"${values[0]}"`);
+    }
+  }
+
+  // Возвращает ширину или высоту ползунков
+  // в зависимости от ориентации слайдера
   public getThumbSize(): number {
     let thumbDiameter: number;
     if (this.state.orientation === 'horizontal') {
@@ -71,15 +86,8 @@ export default class ThumbView {
     return thumbDiameter;
   }
 
-  public updateHints(values: Array<number>): void {
-    if (this.state.type === 'range') {
-      this.from.root.style.setProperty('--from-input-value', `"${values[0]}"`);
-      this.to.root.style.setProperty('--to-input-value', `"${values[1]}"`);
-    } else if (this.state.type === 'single') {
-      this.single.root.style.setProperty('--input-value', `"${values[0]}"`);
-    }
-  }
-
+  // Создает слушателей на ползунках для обработки событий
+  // работы пользователя
   public mouseEvent(handler: Function): void {
     if (this.state.type === 'range') {
       this.mouseListener(this.from.root, handler);
@@ -89,6 +97,8 @@ export default class ThumbView {
     }
   }
 
+  // Слушатель для обработки пользовательских событий
+  // при клике и движении ползунков
   private mouseListener(currentThumb: HTMLElement, handler: Function): void {
     currentThumb.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
@@ -119,6 +129,7 @@ export default class ThumbView {
     };
   }
 
+  // Вызывает переданный обработчик с параметрами движения ползунков
   private updateThumbsShift(
     evt: MouseEvent,
     currentThumb: HTMLElement,
@@ -147,6 +158,7 @@ export default class ThumbView {
     handler(thumbShift, type);
   }
 
+  // Слушатель для обработки кликов на тело слайдера
   public clickToTrackListener(
     thumbType: string,
     evt: MouseEvent,
@@ -177,6 +189,8 @@ export default class ThumbView {
     document.addEventListener('mouseup', onMouseUp);
   }
 
+  // Возвращает тип ползунка, который необходимо подвинуть
+  // при клике на Track
   public requiredThumb(clickOffset: number): string {
     let requiredThumb: string;
     if (this.state.type === 'single') {
@@ -193,6 +207,8 @@ export default class ThumbView {
     return requiredThumb;
   }
 
+  // Вспомогательный метод, возвращает значение от ползунка
+  // до края экрана
   private getDistance(elem: HTMLElement): number {
     let distanceToScreen: number;
     if (this.state.orientation === 'horizontal') {

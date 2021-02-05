@@ -21,6 +21,7 @@ export default class TrackView extends SliderElement {
     return trackSize;
   }
 
+  // Возвращает расстояние от трека до края экрана
   public getDistanceToScreen(): number {
     const trackRect: DOMRect = this.root.getBoundingClientRect();
     if (this.state.orientation === 'horizontal') {
@@ -30,6 +31,7 @@ export default class TrackView extends SliderElement {
     }
   }
 
+  // Слушатель для обработки клика по треку
   public clickEvent(handler: Function): void {
     this.root.addEventListener('mousedown', (evt: MouseEvent) => {
       evt.preventDefault();

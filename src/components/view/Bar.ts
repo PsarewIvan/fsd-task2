@@ -10,6 +10,7 @@ export default class TrackView extends SliderElement {
     this.root.style.pointerEvents = 'none';
   }
 
+  // Обновляет расположение бара
   public update(percents: Array<number>): void {
     if (this.state.orientation === 'vertical') {
       if (this.state.type === 'range') {
