@@ -1,7 +1,7 @@
 // Слой для обновления модели и отображения, который
 // реагирует на сообщения о действиях пользователей и обновляет модель,
 // реагирует на сообщения об обновлении модели и обновляет отображение
-import SliderModel from './SliderModel';
+import SliderModel from './Model';
 import View from './view/View';
 import { Settings } from '../types';
 

@@ -1,5 +1,5 @@
 import SliderElement from './SliderElement';
-import { EventValue, State, ExpandedState } from '../../types';
+import { ExpandedState } from '../../types';
 
 export default class ThumbView {
   private state: ExpandedState;
@@ -7,20 +7,9 @@ export default class ThumbView {
   private from?: SliderElement;
   private to?: SliderElement;
 
-  constructor(
-    rootNode: HTMLElement,
-    // percents: Array<number>,
-    state: ExpandedState
-  ) {
+  constructor(rootNode: HTMLElement, state: ExpandedState) {
     this.state = state;
     this.render(rootNode);
-    // this.updateDimensions(percents);
-    // this.updateHints(percents);
-  }
-
-  public update(percents: Array<number>, values: Array<number>): void {
-    this.updateDimensions(percents);
-    this.updateHints(values);
   }
 
   private render(rootNode: HTMLElement): void {
@@ -36,6 +25,11 @@ export default class ThumbView {
     } else {
       this.single = new SliderElement(rootNode, ['free-slider__thumb']);
     }
+  }
+
+  public update(percents: Array<number>, values: Array<number>): void {
+    this.updateDimensions(percents);
+    this.updateHints(values);
   }
 
   public updateDimensions(percents: Array<number>): void {
@@ -57,6 +51,24 @@ export default class ThumbView {
         }% + ${shift}px)`;
       }
     }
+  }
+
+  public getThumbSize(): number {
+    let thumbDiameter: number;
+    if (this.state.orientation === 'horizontal') {
+      if (this.state.type === 'single') {
+        thumbDiameter = this.single.root.offsetWidth;
+      } else if (this.state.type === 'range') {
+        thumbDiameter = this.from.root.offsetWidth;
+      }
+    } else if (this.state.orientation === 'vertical') {
+      if (this.state.type === 'single') {
+        thumbDiameter = this.single.root.offsetHeight;
+      } else if (this.state.type === 'range') {
+        thumbDiameter = this.from.root.offsetHeight;
+      }
+    }
+    return thumbDiameter;
   }
 
   public updateHints(values: Array<number>): void {
@@ -165,24 +177,6 @@ export default class ThumbView {
     document.addEventListener('mouseup', onMouseUp);
   }
 
-  public getThumbSize(): number {
-    let thumbDiameter: number;
-    if (this.state.orientation === 'horizontal') {
-      if (this.state.type === 'single') {
-        thumbDiameter = this.single.root.offsetWidth;
-      } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.offsetWidth;
-      }
-    } else if (this.state.orientation === 'vertical') {
-      if (this.state.type === 'single') {
-        thumbDiameter = this.single.root.offsetHeight;
-      } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.offsetHeight;
-      }
-    }
-    return thumbDiameter;
-  }
-
   public requiredThumb(clickOffset: number): string {
     let requiredThumb: string;
     if (this.state.type === 'single') {
@@ -208,225 +202,4 @@ export default class ThumbView {
     }
     return distanceToScreen;
   }
-
-  // public moveThumbs(values: Array<number>) {
-  //   if (this.orientation === 'vertical') {
-  //     if (this.type === 'range') {
-  //       this.from.root.style.top = `${values[0]}px`;
-  //       this.to.root.style.top = `${values[1]}px`;
-  //     } else {
-  //       this.single.root.style.top = `${values[0]}px`;
-  //     }
-  //   } else if (this.orientation === 'horizontal') {
-  //     if (this.type === 'range') {
-  //       this.from.root.style.left = `${values[0]}px`;
-  //       this.to.root.style.left = `${values[1]}px`;
-  //     } else {
-  //       this.single.root.style.left = `${values[0]}px`;
-  //     }
-  //   }
-  // }
-
-  // public updateInputTooltip(value: Array<number>): void {
-  //   if (this.type === 'range') {
-  //     this.from.root.style.setProperty('--from-input-value', `${value[0]}`);
-  //     this.to.root.style.setProperty('--to-input-value', `${value[1]}`);
-  //   } else {
-  //     this.single.root.style.setProperty('--input-value', `${value[0]}`);
-  //   }
-  // }
-
-  // public getRoot(): Array<HTMLElement> {
-  //   if (this.type === 'range') {
-  //     return [this.from.root, this.to.root];
-  //   } else {
-  //     return [this.single.root];
-  //   }
-  // }
-
-  // public mouseEvent(handler: Function): void {
-  //   if (this.type === 'range') {
-  //     this.mouseListener(this.from.root, handler);
-  //     this.mouseListener(this.to.root, handler);
-  //   } else {
-  //     this.mouseListener(this.single.root, handler);
-  //   }
-  // }
-
-  // private mouseListener(currentElement: HTMLElement, handler: Function): void {
-  //   currentElement.addEventListener('mousedown', (evt) => {
-  //     evt.preventDefault();
-  //     this.handlingMouseMotionEvents(evt, currentElement, handler);
-  //   });
-
-  //   currentElement.ondragstart = function () {
-  //     return false;
-  //   };
-  // }
-
-  // private handlingMouseMotionEvents(
-  //   evt: MouseEvent,
-  //   currentPin: HTMLElement,
-  //   handler: Function
-  // ): void {
-  //   let clickOffset: number;
-
-  //   if (this.orientation === 'vertical') {
-  //     clickOffset = evt.clientY - currentPin.getBoundingClientRect().top;
-  //   } else {
-  //     clickOffset = evt.clientX - currentPin.getBoundingClientRect().left;
-  //   }
-
-  //   const onMouseMove = (evt: MouseEvent): void => {
-  //     evt.preventDefault();
-
-  //     let shiftPin: number;
-  //     const trackWorkingSize = this.observer.notify(
-  //       'getTrackWorkingSize',
-  //       this.getThumbsSize()
-  //     );
-  //     const trackClientRect = this.observer.notify('getTrackRect');
-
-  //     if (this.orientation === 'vertical') {
-  //       shiftPin = evt.clientY - trackClientRect.top - clickOffset;
-  //     } else if (this.orientation === 'horizontal') {
-  //       shiftPin = evt.clientX - trackClientRect.left - clickOffset;
-  //     }
-  //     if (shiftPin < 0) shiftPin = 0;
-  //     if (shiftPin > trackWorkingSize) shiftPin = trackWorkingSize;
-
-  //     handler(shiftPin, trackWorkingSize, this.getPinType(currentPin));
-  //   };
-
-  //   const onMouseUp = (): void => {
-  //     document.removeEventListener('mousemove', onMouseMove);
-  //     document.removeEventListener('mouseup', onMouseUp);
-
-  //     this.observer.notify('onFinish');
-  //   };
-
-  //   document.addEventListener('mousemove', onMouseMove);
-  //   document.addEventListener('mouseup', onMouseUp);
-  // }
-
-  // private getPinType(currentPin: HTMLElement): string {
-  //   let pinType: string;
-  //   switch (currentPin) {
-  //     case this.from.root:
-  //       pinType = 'from';
-  //       break;
-  //     case this.to.root:
-  //       pinType = 'to';
-  //       break;
-  //     default:
-  //       pinType = 'single';
-  //   }
-  //   return pinType;
-  // }
-
-  // private changeThumbsOnClick(value: EventValue): void {
-  //   let thumbShift: number = this.getThumbShift(value.evt);
-  //   let trackSize: number = this.observer.notify(
-  //     'getTrackWorkingSize',
-  //     this.getThumbsSize()
-  //   );
-
-  //   if (thumbShift < 0) thumbShift = 0;
-  //   if (thumbShift > trackSize) thumbShift = trackSize;
-
-  //   if (this.type === 'range') {
-  //     const range: number = this.getRangeBetweenThumbs();
-
-  //     if (this.isClickRefersToTheFromThumb(value.evt, range)) {
-  //       value.handler(thumbShift, trackSize, 'from');
-  //     } else {
-  //       value.handler(thumbShift, trackSize, 'to');
-  //     }
-  //   } else {
-  //     value.handler(thumbShift, trackSize, 'single');
-  //   }
-  // }
-
-  // Считает расстояние смещения пина относительно трека (для type='single')
-  // или смещение пина 'from' (для type='range')
-
-  // private getThumbShift(evt: MouseEvent): number {
-  //   let thumbShift: number;
-  //   const trackRect: DOMRect = this.observer.notify('getTrackRect');
-
-  //   if (this.orientation === 'vertical') {
-  //     if (this.type === 'range') {
-  //       thumbShift =
-  //         evt.clientY - trackRect.top - this.from.root.offsetHeight / 2;
-  //     } else {
-  //       thumbShift =
-  //         evt.clientY - trackRect.top - this.single.root.offsetHeight / 2;
-  //     }
-  //   } else {
-  //     if (this.type === 'range') {
-  //       thumbShift =
-  //         evt.clientX - trackRect.left - this.from.root.offsetWidth / 2;
-  //     } else {
-  //       thumbShift =
-  //         evt.clientX - trackRect.left - this.single.root.offsetWidth / 2;
-  //     }
-  //   }
-  //   return thumbShift;
-  // }
-
-  // Считает растояние между 'from' и 'to' (для type='range')
-
-  // private getRangeBetweenThumbs(): number {
-  //   let range: number;
-  //   if (this.orientation === 'vertical') {
-  //     range =
-  //       this.to.root.getBoundingClientRect().top -
-  //       this.from.root.getBoundingClientRect().top;
-  //   } else if (this.orientation === 'horizontal') {
-  //     range =
-  //       this.to.root.getBoundingClientRect().left -
-  //       this.from.root.getBoundingClientRect().left;
-  //   }
-  //   return range;
-  // }
-
-  // Указывает относится ли клик по треку к 'from'
-
-  // private isClickRefersToTheFromThumb(
-  //   evt: MouseEvent,
-  //   sliderRange: number
-  // ): boolean {
-  //   if (this.orientation === 'vertical') {
-  //     return (
-  //       evt.clientY <=
-  //       this.from.root.getBoundingClientRect().top + sliderRange / 2
-  //     );
-  //   } else if (this.orientation === 'horizontal') {
-  //     return (
-  //       evt.clientX <=
-  //       this.from.root.getBoundingClientRect().left + sliderRange / 2
-  //     );
-  //   }
-  // }
-
-  // private moveThumbsOnClickToTrack(value: EventValue) {
-  //   if (this.type === 'range') {
-  //     const range: number = this.getRangeBetweenThumbs();
-  //     if (this.isClickRefersToTheFromThumb(value.evt, range)) {
-  //       this.handlingMouseMotionEvents(
-  //         value.evt,
-  //         this.from.root,
-  //         value.handler
-  //       );
-  //     } else {
-  //       this.handlingMouseMotionEvents(value.evt, this.to.root, value.handler);
-  //     }
-  //   } else {
-  //     this.handlingMouseMotionEvents(
-  //       value.evt,
-  //       this.single.root,
-  //       value.handler
-  //     );
-  //   }
-  // }
 }

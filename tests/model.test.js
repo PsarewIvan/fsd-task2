@@ -1,4 +1,4 @@
-import SliderModel from '../src/components/SliderModel';
+import SliderModel from '../src/components/Model';
 import Observer from '../src/components/makeObservableSubject';
 
 describe('Slider Model', () => {

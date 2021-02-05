@@ -79,6 +79,10 @@ export default class View {
     // this.onChange(settings.values);
   }
 
+  private updateState(settings: Settings) {
+    this.state = { type: settings.type, orientation: settings.orientation };
+  }
+
   private formatPercentsToSubview(percents: Array<number>): Array<number> {
     const trackSize: number = this.track.getTrackSize();
     const thumbsSize: number = this.thumbs.getThumbSize();
@@ -123,9 +127,5 @@ export default class View {
       percent = 1;
     }
     return percent;
-  }
-
-  private updateState(settings: Settings) {
-    this.state = { type: settings.type, orientation: settings.orientation };
   }
 }
