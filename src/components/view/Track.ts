@@ -30,6 +30,19 @@ export default class TrackView extends SliderElement {
     }
   }
 
+  public clickEvent(handler: Function): void {
+    this.root.addEventListener('mousedown', (evt: MouseEvent) => {
+      evt.preventDefault();
+      let clientOffset: number;
+      if (this.state.orientation === 'horizontal') {
+        clientOffset = evt.clientX;
+      } else if (this.state.orientation === 'vertical') {
+        clientOffset = evt.clientY;
+      }
+      handler(clientOffset);
+    });
+  }
+
   // public getTrackWorkingSize(thumbsSize: Array<number>): number {
   //   let trackWorkingSize: number;
 

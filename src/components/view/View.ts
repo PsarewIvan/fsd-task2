@@ -95,19 +95,20 @@ export default class View {
       const percent = this.percentFromThumbShift(thumbShift);
       handler(percent, type);
     });
-    // this.track.clickEvent((clickCoord: number) => {
 
-    //   handler(percent, type);
-    // });
+    this.track.clickEvent((clickCoord: number) => {
+      const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
+      const percent = this.percentFromThumbShift(clickOffset);
+      const type: string = this.thumbs.requiredThumb(clickOffset);
+
+      handler(percent, type);
+    });
   }
 
   private percentFromThumbShift(thumbShift: number): number {
     const trackSize: number = this.track.getTrackSize();
     const distanceFromTrackToScreen: number = this.track.getDistanceToScreen();
     const thumbSize: number = this.thumbs.getThumbSize();
-
-    // shiftFromTrack px - ( thumbSize - distanceFromTrackToScreen )
-    // 100% in px -        ( trackSIze - thumbSize )
     let percent: number =
       (thumbShift - distanceFromTrackToScreen) / (trackSize - thumbSize);
 
@@ -119,14 +120,6 @@ export default class View {
     }
     return percent;
   }
-
-  // public update(settings: Settings): void {
-  // this.updateState(settings);
-  // const percent: Array<number> = this.percentFromValues(settings.values);
-  // this.thumbs.update(percent);
-  // this.bar.update(percent);
-  // this.onChange(settings.values);
-  // }
 
   private updateState(settings: Settings) {
     this.state = { type: settings.type, orientation: settings.orientation };

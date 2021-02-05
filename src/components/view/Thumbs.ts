@@ -153,27 +153,31 @@ export default class ThumbView {
     return thumbDiameter;
   }
 
-  // public getThumbsSize(): Array<number> {
-  //   let thumbWidth: Array<number> = [];
+  public requiredThumb(clickOffset: number): string {
+    let requiredThumb: string;
+    if (this.state.type === 'single') {
+      requiredThumb = 'single';
+    } else if (this.state.type === 'range') {
+      const range: number =
+        this.getDistance(this.to.root) - this.getDistance(this.from.root);
+      if (clickOffset <= this.getDistance(this.from.root) + range / 2) {
+        requiredThumb = 'from';
+      } else {
+        requiredThumb = 'to';
+      }
+    }
+    return requiredThumb;
+  }
 
-  //   if (this.orientation === 'vertical') {
-  //     if (this.type === 'range') {
-  //       thumbWidth.push(this.from.root.offsetHeight);
-  //       thumbWidth.push(this.to.root.offsetHeight);
-  //     } else {
-  //       thumbWidth.push(this.single.root.offsetHeight);
-  //     }
-  //   } else if (this.orientation === 'horizontal') {
-  //     if (this.type === 'range') {
-  //       thumbWidth.push(this.from.root.offsetWidth);
-  //       thumbWidth.push(this.to.root.offsetWidth);
-  //     } else {
-  //       thumbWidth.push(this.single.root.offsetWidth);
-  //     }
-  //   }
-
-  //   return thumbWidth;
-  // }
+  private getDistance(elem: HTMLElement): number {
+    let distanceToScreen: number;
+    if (this.state.orientation === 'horizontal') {
+      distanceToScreen = elem.getBoundingClientRect().left;
+    } else if (this.state.orientation === 'vertical') {
+      distanceToScreen = elem.getBoundingClientRect().top;
+    }
+    return distanceToScreen;
+  }
 
   // public moveThumbs(values: Array<number>) {
   //   if (this.orientation === 'vertical') {
