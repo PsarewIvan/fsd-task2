@@ -39,7 +39,7 @@ export default class TrackView extends SliderElement {
       } else if (this.state.orientation === 'vertical') {
         clientOffset = evt.clientY;
       }
-      handler(clientOffset);
+      handler(clientOffset, evt);
     });
   }
 

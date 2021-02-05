@@ -135,6 +135,36 @@ export default class ThumbView {
     handler(thumbShift, type);
   }
 
+  public clickToTrackListener(
+    thumbType: string,
+    evt: MouseEvent,
+    handler: Function
+  ): void {
+    let clickOffset: number;
+    let currentThumb: HTMLElement;
+    if (thumbType === 'single') currentThumb = this.single.root;
+    if (thumbType === 'from') currentThumb = this.from.root;
+    if (thumbType === 'to') currentThumb = this.to.root;
+    if (this.state.orientation === 'vertical') {
+      clickOffset = evt.clientY - currentThumb.getBoundingClientRect().top;
+    } else if (this.state.orientation === 'horizontal') {
+      clickOffset = evt.clientX - currentThumb.getBoundingClientRect().left;
+    }
+
+    const onMouseMove = (evt: MouseEvent): void => {
+      evt.preventDefault();
+      this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
+    };
+
+    const onMouseUp = (): void => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+  }
+
   public getThumbSize(): number {
     let thumbDiameter: number;
     if (this.state.orientation === 'horizontal') {

@@ -96,12 +96,16 @@ export default class View {
       handler(percent, type);
     });
 
-    this.track.clickEvent((clickCoord: number) => {
+    this.track.clickEvent((clickCoord: number, evt: MouseEvent) => {
       const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
       const percent = this.percentFromThumbShift(clickOffset);
       const type: string = this.thumbs.requiredThumb(clickOffset);
-
       handler(percent, type);
+
+      this.thumbs.clickToTrackListener(type, evt, (thumbShift: number) => {
+        const percent = this.percentFromThumbShift(thumbShift);
+        handler(percent, type);
+      });
     });
   }
 
