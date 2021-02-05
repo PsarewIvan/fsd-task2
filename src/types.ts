@@ -31,6 +31,12 @@ export interface TooltipsState {
   max: number;
 }
 
+export interface Methods {
+  init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
+  getValue: () => number;
+  setValue: (value: number) => void;
+}
+
 export interface RequiredThumb {
   name: string;
   root: HTMLElement;
