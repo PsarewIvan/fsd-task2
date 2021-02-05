@@ -2,7 +2,7 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
-import { Settings, State } from '../../types';
+import { Settings, State, RequiredThumb } from '../../types';
 import Track from './Track';
 import Thumbs from './Thumbs';
 import Bar from './Bar';
@@ -14,6 +14,7 @@ export default class View {
   private slider: HTMLElement;
   private onChange: Function | undefined;
   private onFinish: Function | undefined;
+  private isFirstChange: boolean;
   private track: Track;
   private bar: Bar;
   private scale?: Scale;
@@ -25,6 +26,7 @@ export default class View {
     this.root = rootNode;
     this.onChange = settings.onChange;
     this.onFinish = settings.onFinish;
+    this.isFirstChange = true;
 
     this.render(settings);
     this.update(settings);
@@ -76,7 +78,10 @@ export default class View {
     this.thumbs.update(percentsToView, settings.values);
     this.bar.update(percentsToView);
 
-    // this.onChange(settings.values);
+    if (this.onChange && !this.isFirstChange) {
+      this.onChange(settings.values);
+    }
+    this.isFirstChange = false;
   }
 
   // Форматирует текущее процентное значение в проценты необходимые
@@ -103,13 +108,19 @@ export default class View {
     this.track.clickEvent((clickCoord: number, evt: MouseEvent) => {
       const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
       const percent = this.percentFromThumbShift(clickOffset);
-      const type: string = this.thumbs.requiredThumb(clickOffset);
-      handler(percent, type);
+      const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(
+        clickOffset
+      );
+      handler(percent, requiredThumb.name);
 
-      this.thumbs.clickToTrackListener(type, evt, (thumbShift: number) => {
-        const percent = this.percentFromThumbShift(thumbShift);
-        handler(percent, type);
-      });
+      this.thumbs.mouseMoveEvent(
+        requiredThumb.root,
+        evt,
+        (thumbShift: number) => {
+          const percent = this.percentFromThumbShift(thumbShift);
+          handler(percent, requiredThumb.name);
+        }
+      );
     });
   }
 

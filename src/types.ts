@@ -15,17 +15,6 @@ export interface Settings {
   onFinish?: (value: number) => void;
 }
 
-export interface Methods {
-  init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
-  getValue: () => number;
-  setValue: (value: number) => void;
-}
-
-export interface EventValue {
-  evt: MouseEvent;
-  handler: Function;
-}
-
 export interface State {
   type: string;
   orientation: string;
@@ -40,6 +29,11 @@ export interface ExpandedState {
 export interface TooltipsState {
   min: number;
   max: number;
+}
+
+export interface RequiredThumb {
+  name: string;
+  root: HTMLElement;
 }
 
 declare global {

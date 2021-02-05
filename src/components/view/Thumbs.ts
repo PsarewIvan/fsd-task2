@@ -1,5 +1,5 @@
 import SliderElement from './SliderElement';
-import { ExpandedState } from '../../types';
+import { ExpandedState, RequiredThumb } from '../../types';
 
 export default class ThumbView {
   private state: ExpandedState;
@@ -98,35 +98,43 @@ export default class ThumbView {
   }
 
   // Слушатель для обработки пользовательских событий
-  // при клике и движении ползунков
+  // при клике на ползунок и его движении
   private mouseListener(currentThumb: HTMLElement, handler: Function): void {
     currentThumb.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
-      let clickOffset: number;
-
-      if (this.state.orientation === 'vertical') {
-        clickOffset = evt.clientY - currentThumb.getBoundingClientRect().top;
-      } else if (this.state.orientation === 'horizontal') {
-        clickOffset = evt.clientX - currentThumb.getBoundingClientRect().left;
-      }
-
-      const onMouseMove = (evt: MouseEvent): void => {
-        evt.preventDefault();
-        this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
-      };
-
-      const onMouseUp = (): void => {
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      };
-
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      this.mouseMoveEvent(currentThumb, evt, handler);
     });
 
     currentThumb.ondragstart = function () {
       return false;
     };
+  }
+
+  // Метод считывает движения пользователя при движении ползунков
+  public mouseMoveEvent(
+    currentThumb: HTMLElement,
+    evt: MouseEvent,
+    handler: Function
+  ): void {
+    let clickOffset: number;
+    if (this.state.orientation === 'vertical') {
+      clickOffset = evt.clientY - currentThumb.getBoundingClientRect().top;
+    } else if (this.state.orientation === 'horizontal') {
+      clickOffset = evt.clientX - currentThumb.getBoundingClientRect().left;
+    }
+
+    const onMouseMove = (evt: MouseEvent): void => {
+      evt.preventDefault();
+      this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
+    };
+
+    const onMouseUp = (): void => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   }
 
   // Вызывает переданный обработчик с параметрами движения ползунков
@@ -158,53 +166,30 @@ export default class ThumbView {
     handler(thumbShift, type);
   }
 
-  // Слушатель для обработки кликов на тело слайдера
-  public clickToTrackListener(
-    thumbType: string,
-    evt: MouseEvent,
-    handler: Function
-  ): void {
-    let clickOffset: number;
-    let currentThumb: HTMLElement;
-    if (thumbType === 'single') currentThumb = this.single.root;
-    if (thumbType === 'from') currentThumb = this.from.root;
-    if (thumbType === 'to') currentThumb = this.to.root;
-    if (this.state.orientation === 'vertical') {
-      clickOffset = evt.clientY - currentThumb.getBoundingClientRect().top;
-    } else if (this.state.orientation === 'horizontal') {
-      clickOffset = evt.clientX - currentThumb.getBoundingClientRect().left;
-    }
-
-    const onMouseMove = (evt: MouseEvent): void => {
-      evt.preventDefault();
-      this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
-    };
-
-    const onMouseUp = (): void => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-    };
-
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
-  }
-
-  // Возвращает тип ползунка, который необходимо подвинуть
-  // при клике на Track
-  public requiredThumb(clickOffset: number): string {
-    let requiredThumb: string;
+  // Возвращает объект с данными ползунка, который необходимо
+  // подвинуть при клике на Track
+  public requiredThumb(clickOffset: number): RequiredThumb {
     if (this.state.type === 'single') {
-      requiredThumb = 'single';
-    } else if (this.state.type === 'range') {
+      return {
+        name: 'single',
+        root: this.single.root,
+      };
+    }
+    if (this.state.type === 'range') {
       const range: number =
         this.getDistance(this.to.root) - this.getDistance(this.from.root);
       if (clickOffset <= this.getDistance(this.from.root) + range / 2) {
-        requiredThumb = 'from';
+        return {
+          name: 'from',
+          root: this.from.root,
+        };
       } else {
-        requiredThumb = 'to';
+        return {
+          name: 'to',
+          root: this.to.root,
+        };
       }
     }
-    return requiredThumb;
   }
 
   // Вспомогательный метод, возвращает значение от ползунка
