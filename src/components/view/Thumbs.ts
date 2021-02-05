@@ -68,18 +68,6 @@ export default class ThumbView {
     }
   }
 
-  private valuesFromPercent(percents: Array<number>): Array<number> {
-    const values: Array<number> = [];
-    percents.forEach((value) => {
-      const round = this.round(
-        (this.state.max - this.state.min) * value + this.state.min,
-        5
-      );
-      values.push(round);
-    });
-    return values;
-  }
-
   public mouseEvent(handler: Function): void {
     if (this.state.type === 'range') {
       this.mouseListener(this.from.root, handler);
@@ -153,24 +141,16 @@ export default class ThumbView {
       if (this.state.type === 'single') {
         thumbDiameter = this.single.root.offsetWidth;
       } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.clientWidth;
+        thumbDiameter = this.from.root.offsetWidth;
       }
     } else if (this.state.orientation === 'vertical') {
       if (this.state.type === 'single') {
-        thumbDiameter = this.single.root.offsetWidth;
+        thumbDiameter = this.single.root.offsetHeight;
       } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.offsetWidth;
+        thumbDiameter = this.from.root.offsetHeight;
       }
     }
     return thumbDiameter;
-  }
-
-  private round(
-    number: number,
-    digits = 0,
-    base = Math.pow(10, digits)
-  ): number {
-    return Math.round(base * number) / base;
   }
 
   // public getThumbsSize(): Array<number> {
