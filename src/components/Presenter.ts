@@ -29,11 +29,29 @@ export default class SliderPresenter {
   }
 
   // Публичные методы взаимодействия со слайдером
-  public getCurrentValue(): number {
-    return this.model.getSettings().value;
+  public getCurrentValue(): Array<number> {
+    return this.model.getSettings().values;
   }
 
-  public setValue(value: number): void {
-    this.model.setSettings({ value: value });
+  public setValue(values: Array<number>): void {
+    const settings = this.model.getSettings();
+    if (settings.type === 'single') {
+      this.model.setSettings({ value: values[0] });
+    } else if (settings.type === 'range') {
+      if (values.length === 1) {
+        this.model.setSettings({
+          from: values[0],
+        });
+      } else if (values[0] === null) {
+        this.model.setSettings({
+          to: values[1],
+        });
+      } else {
+        this.model.setSettings({
+          from: values[0],
+          to: values[1],
+        });
+      }
+    }
   }
 }

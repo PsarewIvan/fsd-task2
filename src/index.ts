@@ -12,18 +12,18 @@ import { Settings, Methods } from './types';
       });
     },
 
-    getValue(): number {
+    getValue(): Array<number> {
       return $(this).data().freeSlider.method().getCurrentValue();
     },
 
-    setValue(value: number): void {
-      $(this).data().freeSlider.method().setValue(value);
+    setValue(values: Array<number>): void {
+      $(this).data().freeSlider.method().setValue(values);
     },
   };
 
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
-    args?: number
+    args?: Array<number>
   ) {
     let method: any;
     if (typeof action === 'string' && methods[action]) {

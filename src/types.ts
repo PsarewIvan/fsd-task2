@@ -33,8 +33,8 @@ export interface TooltipsState {
 
 export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
-  getValue: () => number;
-  setValue: (value: number) => void;
+  getValue: () => Array<number>;
+  setValue: (value: Array<number>) => void;
 }
 
 export interface RequiredThumb {
@@ -44,6 +44,9 @@ export interface RequiredThumb {
 
 declare global {
   interface JQuery {
-    freeSlider: (options?: Partial<Settings> | string, arg?: number) => JQuery;
+    freeSlider: (
+      options?: Partial<Settings> | string,
+      arg?: Array<number>
+    ) => JQuery;
   }
 }
