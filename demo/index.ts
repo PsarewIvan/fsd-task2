@@ -9,30 +9,32 @@ slider.freeSlider({
   max: 50,
   value: -50,
   step: 0.1,
-  onChange: function (value) {
-    console.log('OnChange Value: ', value);
-  },
-  onFinish: function (value) {
-    console.log('OnFinish Value: ', value);
-  },
+  // onChange: function (value) {
+  //   console.log('OnChange Value: ', value);
+  // },
+  // onFinish: function (value) {
+  //   console.log('OnFinish Value: ', value);
+  // },
 });
 
 // console.log(slider.freeSlider('getValue'));
 
-$('.slider--range').freeSlider({
+const slider2 = $('.slider--range');
+slider2.freeSlider({
   type: 'range',
   min: -100,
   max: 300,
   from: 30,
   to: 100,
   step: 10,
-  onChange: function (value) {
-    console.log('OnChange Value: ', value);
-  },
-  onFinish: function (value) {
-    console.log('OnFinish Value: ', value);
-  },
+  // onChange: function (value) {
+  //   console.log('OnChange Value: ', value);
+  // },
+  // onFinish: function (value) {
+  //   console.log('OnFinish Value: ', value);
+  // },
 });
+slider2.freeSlider('setValue', [null, 50]);
 
 $('.slider--vertical').freeSlider({
   orientation: 'vertical',
