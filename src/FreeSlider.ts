@@ -1,6 +1,6 @@
 import './styles/structure.scss';
 import './styles/theme.scss';
-import SliderPresenter from './components/SliderPresenter';
+import SliderPresenter from './components/Presenter';
 import { Settings } from './types';
 
 export default class FreeSlider {
