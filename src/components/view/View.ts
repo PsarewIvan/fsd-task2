@@ -100,7 +100,7 @@ export default class View {
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
   public viewChanged(handler: Function) {
-    this.thumbs.mouseEvent((thumbShift: number, type: string) => {
+    this.thumbs.addMouseListener((thumbShift: number, type: string) => {
       const percent = this.percentFromThumbShift(thumbShift);
       handler(percent, type);
     });

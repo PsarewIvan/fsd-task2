@@ -88,7 +88,7 @@ export default class ThumbView {
 
   // Создает слушателей на ползунках для обработки событий
   // работы пользователя
-  public mouseEvent(handler: Function): void {
+  public addMouseListener(handler: Function): void {
     if (this.state.type === 'range') {
       this.mouseListener(this.from.root, handler);
       this.mouseListener(this.to.root, handler);
