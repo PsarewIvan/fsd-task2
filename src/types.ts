@@ -6,6 +6,7 @@ export interface Settings {
   from?: number;
   to?: number;
   values?: Array<number>;
+  percents?: Array<number>;
   type?: string;
   orientation?: string;
   scale?: boolean;

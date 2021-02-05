@@ -20,7 +20,7 @@ export default class SliderPresenter {
     });
 
     this.model.modelChangedSubject.subscribe((settings: Settings) => {
-      // this.view.update(settings);
+      this.view.update(settings);
     });
   }
 

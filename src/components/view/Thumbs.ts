@@ -6,21 +6,22 @@ export default class ThumbView {
   private single?: SliderElement;
   private from?: SliderElement;
   private to?: SliderElement;
-  private thumbsShift: Array<number>;
 
   constructor(
     rootNode: HTMLElement,
-    values: Array<number>,
+    // percents: Array<number>,
     state: ExpandedState
   ) {
     this.state = state;
     this.render(rootNode);
-    this.updateDimensions(values);
-    this.updateHints(values);
-    this.mouseEvent();
+    // this.updateDimensions(percents);
+    // this.updateHints(percents);
   }
 
-  public getThumbShift() {}
+  public update(percents: Array<number>, values: Array<number>): void {
+    this.updateDimensions(percents);
+    this.updateHints(values);
+  }
 
   private render(rootNode: HTMLElement): void {
     if (this.state.type === 'range') {
@@ -37,26 +38,28 @@ export default class ThumbView {
     }
   }
 
-  private updateDimensions(values: Array<number>): void {
+  public updateDimensions(percents: Array<number>): void {
+    const shift = this.getThumbSize() / 2;
     if (this.state.orientation === 'vertical') {
       if (this.state.type === 'range') {
-        this.from.root.style.top = `${values[0] * 100}%`;
-        this.to.root.style.top = `${values[1] * 100}%`;
+        this.from.root.style.top = `calc(${percents[0] * 100}% + ${shift}px)`;
+        this.to.root.style.top = `calc(${percents[1] * 100}% + ${shift}px)`;
       } else {
-        this.single.root.style.top = `${values[0] * 100}%`;
+        this.single.root.style.top = `calc(${percents[0] * 100}% + ${shift}px)`;
       }
     } else if (this.state.orientation === 'horizontal') {
       if (this.state.type === 'range') {
-        this.from.root.style.left = `${values[0] * 100}%`;
-        this.to.root.style.left = `${values[1] * 100}%`;
+        this.from.root.style.left = `calc(${percents[0] * 100}% + ${shift}px)`;
+        this.to.root.style.left = `calc(${percents[1] * 100}% + ${shift}px)`;
       } else {
-        this.single.root.style.left = `${values[0] * 100}%`;
+        this.single.root.style.left = `calc(${
+          percents[0] * 100
+        }% + ${shift}px)`;
       }
     }
   }
 
-  private updateHints(percentValues: Array<number>): void {
-    const values = this.valuesFromPercent(percentValues);
+  public updateHints(values: Array<number>): void {
     if (this.state.type === 'range') {
       this.from.root.style.setProperty('--from-input-value', `"${values[0]}"`);
       this.to.root.style.setProperty('--to-input-value', `"${values[1]}"`);
@@ -65,28 +68,30 @@ export default class ThumbView {
     }
   }
 
-  private valuesFromPercent(percentValues: Array<number>): Array<number> {
+  private valuesFromPercent(percents: Array<number>): Array<number> {
     const values: Array<number> = [];
-    percentValues.forEach((value) => {
-      values.push((this.state.max - this.state.min) * value + this.state.min);
+    percents.forEach((value) => {
+      const round = this.round(
+        (this.state.max - this.state.min) * value + this.state.min,
+        5
+      );
+      values.push(round);
     });
     return values;
   }
 
-  private mouseEvent(): void {
+  public mouseEvent(handler: Function): void {
     if (this.state.type === 'range') {
-      this.mouseListener(this.from.root);
-      this.mouseListener(this.to.root);
+      this.mouseListener(this.from.root, handler);
+      this.mouseListener(this.to.root, handler);
     } else {
-      this.mouseListener(this.single.root);
+      this.mouseListener(this.single.root, handler);
     }
   }
 
-  private mouseListener(currentThumb: HTMLElement): void {
+  private mouseListener(currentThumb: HTMLElement, handler: Function): void {
     currentThumb.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
-      this.writeThumbsShift();
-
       let clickOffset: number;
 
       if (this.state.orientation === 'vertical') {
@@ -97,28 +102,7 @@ export default class ThumbView {
 
       const onMouseMove = (evt: MouseEvent): void => {
         evt.preventDefault();
-
-        if (this.state.orientation === 'vertical') {
-          if (this.state.type === 'single') {
-            this.thumbsShift[0] = evt.clientY - clickOffset;
-          } else if (this.state.type === 'range') {
-            if (currentThumb === this.from.root) {
-              this.thumbsShift[0] = evt.clientY - clickOffset;
-            } else if (currentThumb === this.to.root) {
-              this.thumbsShift[1] = evt.clientY - clickOffset;
-            }
-          }
-        } else if (this.state.orientation === 'horizontal') {
-          if (this.state.type === 'single') {
-            this.thumbsShift[0] = evt.clientX - clickOffset;
-          } else if (this.state.type === 'range') {
-            if (currentThumb === this.from.root) {
-              this.thumbsShift[0] = evt.clientX - clickOffset;
-            } else if (currentThumb === this.to.root) {
-              this.thumbsShift[1] = evt.clientX - clickOffset;
-            }
-          }
-        }
+        this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
       };
 
       const onMouseUp = (): void => {
@@ -135,26 +119,58 @@ export default class ThumbView {
     };
   }
 
-  private writeThumbsShift() {
+  private updateThumbsShift(
+    evt: MouseEvent,
+    currentThumb: HTMLElement,
+    clickOffset: number,
+    handler: Function
+  ): void {
+    let thumbShift: number;
+    let type: string;
+
+    if (this.state.orientation === 'vertical') {
+      thumbShift = evt.clientY - clickOffset;
+    }
+    if (this.state.orientation === 'horizontal') {
+      thumbShift = evt.clientX - clickOffset;
+    }
+    if (this.state.type === 'single') {
+      type = 'single';
+    }
+    if (this.state.type === 'range') {
+      if (currentThumb === this.from.root) {
+        type = 'from';
+      } else if (currentThumb === this.to.root) {
+        type = 'to';
+      }
+    }
+    handler(thumbShift, type);
+  }
+
+  public getThumbSize(): number {
+    let thumbDiameter: number;
     if (this.state.orientation === 'horizontal') {
       if (this.state.type === 'single') {
-        this.thumbsShift = [this.single.root.getBoundingClientRect().left];
+        thumbDiameter = this.single.root.offsetWidth;
       } else if (this.state.type === 'range') {
-        this.thumbsShift = [
-          this.from.root.getBoundingClientRect().left,
-          this.to.root.getBoundingClientRect().left,
-        ];
+        thumbDiameter = this.from.root.clientWidth;
       }
     } else if (this.state.orientation === 'vertical') {
       if (this.state.type === 'single') {
-        this.thumbsShift = [this.single.root.getBoundingClientRect().top];
+        thumbDiameter = this.single.root.offsetWidth;
       } else if (this.state.type === 'range') {
-        this.thumbsShift = [
-          this.from.root.getBoundingClientRect().top,
-          this.to.root.getBoundingClientRect().top,
-        ];
+        thumbDiameter = this.from.root.offsetWidth;
       }
     }
+    return thumbDiameter;
+  }
+
+  private round(
+    number: number,
+    digits = 0,
+    base = Math.pow(10, digits)
+  ): number {
+    return Math.round(base * number) / base;
   }
 
   // public getThumbsSize(): Array<number> {

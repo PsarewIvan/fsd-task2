@@ -45,23 +45,27 @@ export default class SliderModel {
     }
   }
 
-  public on(handler: Function) {
-    handler();
-  }
-
   public setSettings(
     newSettings: Partial<Settings>,
     oldSettings: Settings = this.settings
   ): void {
     this.settings = { ...oldSettings, ...newSettings };
-    this.modelChangedSubject.notify(this.settings);
+    this.modelChangedSubject.notify(this.getSettings());
   }
 
   public getSettings(): Settings {
     const upgradeSettings: Settings = { ...this.settings };
+    const range: number = this.settings.max - this.settings.min;
     if (this.settings.type === 'single') {
+      upgradeSettings.percents = [
+        (this.settings.value - this.settings.min) / range,
+      ];
       upgradeSettings.values = [this.settings.value];
     } else if (this.settings.type === 'range') {
+      upgradeSettings.percents = [
+        (this.settings.from - this.settings.min) / range,
+        (this.settings.to - this.settings.min) / range,
+      ];
       upgradeSettings.values = [this.settings.from, this.settings.to];
     }
     return upgradeSettings;
@@ -86,10 +90,11 @@ export default class SliderModel {
     }
   }
 
-  private calcValue(thumbShift: number): number {
+  private calcValue(thumbPercentOffset: number): number {
     let step = this.settings.step;
     let value =
-      this.settings.min + (this.settings.max - this.settings.min) * thumbShift;
+      this.settings.min +
+      (this.settings.max - this.settings.min) * thumbPercentOffset;
 
     if (
       value % step > step / 2 &&

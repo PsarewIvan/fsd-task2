@@ -3,7 +3,6 @@
 // пользователя с приложением
 
 import { Settings, State } from '../../types';
-import Observer from '../makeObservable';
 import Track from './Track';
 import Thumbs from './Thumbs';
 import Bar from './Bar';
@@ -13,11 +12,8 @@ import Tooltips from './Tooltips';
 export default class View {
   private root: HTMLElement;
   private slider: HTMLElement;
-  private observer: Observer;
   private onChange: Function | undefined;
   private onFinish: Function | undefined;
-  private isFirstChange: boolean;
-  private inputValues: Array<number>;
   private track: Track;
   private bar: Bar;
   private scale: Scale;
@@ -29,49 +25,13 @@ export default class View {
 
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
-    this.state = { type: settings.type, orientation: settings.orientation };
     this.max = settings.max;
     this.min = settings.min;
+    this.onChange = settings.onChange;
+    this.onFinish = settings.onFinish;
 
     this.render(settings);
-
-    // this.observer = new Observer();
-    // this.root = rootNode;
-    // this.onChange = settings.onChange;
-    // this.onFinish = settings.onFinish;
-    // this.isFirstChange = true;
-
-    // this.observer.subscribe('onFinish', this.runOnFinish);
-
-    // this.slider = document.createElement('span');
-    // this.slider.classList.add('free-slider');
-
-    // this.track = new Track(this.observer, settings.type, settings.orientation);
-    // this.bar = new Bar(settings.type, settings.orientation);
-    // this.slider.append(this.track.root, this.bar.root);
-
-    // if (settings.tooltips) {
-    //   this.tooltips = new Tooltips();
-    //   this.tooltips.updateValues(settings.min, settings.max);
-    //   this.slider.append(this.tooltips.min.root);
-    //   this.slider.append(this.tooltips.max.root);
-    // }
-
-    // if (settings.scale) {
-    //   this.scale = new Scale(this.observer);
-    //   this.slider.append(this.scale.root);
-    // }
-
-    // this.thumbs = new Thumbs(
-    //   this.observer,
-    //   settings.type,
-    //   settings.orientation
-    // );
-    // this.slider.append(...this.thumbs.getRoot());
-    // this.root.append(this.slider);
-
-    // this.changeSliderClass(settings.orientation);
-    // this.changeSlider(settings);
+    this.update(settings);
   }
 
   private render(settings: Settings): void {
@@ -81,25 +41,22 @@ export default class View {
     } else if (settings.orientation === 'horizontal') {
       this.slider.classList.add('free-slider');
     }
+    this.root.append(this.slider);
 
     this.track = new Track(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
     });
-    this.bar = new Bar(this.slider, this.percentFromValues(settings.values), {
+    this.bar = new Bar(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
     });
-    this.thumbs = new Thumbs(
-      this.slider,
-      this.percentFromValues(settings.values),
-      {
-        type: settings.type,
-        orientation: settings.orientation,
-        min: settings.min,
-        max: settings.max,
-      }
-    );
+    this.thumbs = new Thumbs(this.slider, {
+      type: settings.type,
+      orientation: settings.orientation,
+      min: settings.min,
+      max: settings.max,
+    });
     if (settings.scale) {
       // this.scale = new Scale();
     }
@@ -109,90 +66,69 @@ export default class View {
         max: settings.max,
       });
     }
-
-    this.root.append(this.slider);
   }
 
-  private percentFromValues(values: Array<number>): Array<number> {
+  public update(settings: Settings): void {
+    this.updateState(settings);
+    const percentsToView: Array<number> = this.formatPercentsToSubview(
+      settings.percents
+    );
+    this.thumbs.update(percentsToView, settings.values);
+    this.bar.update(percentsToView);
+
+    // this.onChange(settings.values);
+  }
+
+  private formatPercentsToSubview(percents: Array<number>): Array<number> {
+    const trackSize: number = this.track.getTrackSize();
+    const thumbsSize: number = this.thumbs.getThumbSize();
+    const ratio: number = (trackSize - thumbsSize) / trackSize;
     if (this.state.type === 'single') {
-      return [(values[0] - this.min) / (this.max - this.min)];
+      return [percents[0] * ratio];
     } else if (this.state.type === 'range') {
-      return [
-        (values[0] - this.min) / (this.max - this.min),
-        (values[1] - this.min) / (this.max - this.min),
-      ];
+      return [percents[0] * ratio, percents[1] * ratio];
     }
   }
 
   public viewChanged(handler: Function) {
-    // this.thumbs.getThumbsShift();
-    // this.thumbs.mouseEvent(handler);
-    // this.track.addMousedownListener(handler)
+    this.thumbs.mouseEvent((thumbShift: number, type: string) => {
+      const percent = this.percentFromThumbShift(thumbShift);
+      handler(percent, type);
+    });
+    // this.track.clickEvent((clickCoord: number) => {
+
+    //   handler(percent, type);
+    // });
   }
 
-  // public changeSlider(settings: Settings): void {
-  //   this.inputValues =
-  //     settings.type === 'range'
-  //       ? [settings.from, settings.to]
-  //       : [settings.value];
+  private percentFromThumbShift(thumbShift: number): number {
+    const trackSize: number = this.track.getTrackSize();
+    const distanceFromTrackToScreen: number = this.track.getDistanceToScreen();
+    const thumbSize: number = this.thumbs.getThumbSize();
 
-  //   this.thumbs.updateInputTooltip(this.inputValues);
-  //   this.updatePins(settings);
+    // shiftFromTrack px - ( thumbSize - distanceFromTrackToScreen )
+    // 100% in px -        ( trackSIze - thumbSize )
+    let percent: number =
+      (thumbShift - distanceFromTrackToScreen) / (trackSize - thumbSize);
 
-  //   if (!this.isFirstChange && this.onChange) {
-  //     this.onChange(this.inputValues);
-  //     this.isFirstChange = false;
-  //   }
+    if (percent <= 0) {
+      percent = 0;
+    }
+    if (percent >= 1) {
+      percent = 1;
+    }
+    return percent;
+  }
+
+  // public update(settings: Settings): void {
+  // this.updateState(settings);
+  // const percent: Array<number> = this.percentFromValues(settings.values);
+  // this.thumbs.update(percent);
+  // this.bar.update(percent);
+  // this.onChange(settings.values);
   // }
 
-  // private updatePins(settings: Settings): void {
-  //   const thumbShift: Array<number> = this.getThumbShift(
-  //     this.thumbs.getThumbsSize(),
-  //     this.inputValues,
-  //     settings
-  //   );
-
-  //   this.thumbs.moveThumbs(thumbShift);
-  //   this.bar.moveBar(thumbShift);
-  // }
-
-  // private getThumbShift(
-  //   thumbsOffsetSize: Array<number>,
-  //   values: Array<number>,
-  //   settings: Settings
-  // ): Array<number> {
-  //   const thumbsShift: Array<number> = [];
-
-  //   thumbsOffsetSize.forEach((thumbSize, index) => {
-  //     thumbsShift.push(
-  //       ((this.track.getTrackSize() - thumbSize) *
-  //         (values[index] - settings.min)) /
-  //         (settings.max - settings.min) +
-  //         thumbSize / 2
-  //     );
-  //   });
-
-  //   return thumbsShift;
-  // }
-
-  // private changeSliderClass(orientation: string): void {
-  //   console.log(this.slider);
-
-  //   if (orientation === 'vertical') {
-  //     this.slider.classList.add('free-slider--vertical');
-  //   } else if (orientation === 'horizontal') {
-  //     this.slider.classList.remove('free-slider--vertical');
-  //   }
-  // }
-
-  // public updateView(handler: Function): void {
-  //   this.track.addMousedownListener(handler);
-  //   this.thumbs.mouseEvent(handler);
-  // }
-
-  // private runOnFinish(): void {
-  //   if (this.onFinish) {
-  //     this.onFinish(this.inputValues);
-  //   }
-  // }
+  private updateState(settings: Settings) {
+    this.state = { type: settings.type, orientation: settings.orientation };
+  }
 }

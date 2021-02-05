@@ -9,12 +9,12 @@ slider.freeSlider({
   max: 50,
   value: -50,
   step: 0.1,
-  // onChange: function(value) {
-  //   console.log('OnChange Value: ', value);
-  // },
-  // onFinish: function (value) {
-  //   console.log('OnFinish Value: ', value);
-  // }
+  onChange: function (value) {
+    console.log('OnChange Value: ', value);
+  },
+  onFinish: function (value) {
+    console.log('OnFinish Value: ', value);
+  },
 });
 
 // console.log(slider.freeSlider('getValue'));
@@ -25,13 +25,13 @@ $('.slider--range').freeSlider({
   max: 300,
   from: 30,
   to: 100,
-  step: 2,
-  // onChange: function(value) {
-  //   console.log('OnChange Value: ', value);
-  // },
-  // onFinish: function (value) {
-  //   console.log('OnFinish Value: ', value);
-  // }
+  step: 10,
+  onChange: function (value) {
+    console.log('OnChange Value: ', value);
+  },
+  onFinish: function (value) {
+    console.log('OnFinish Value: ', value);
+  },
 });
 
 $('.slider--vertical').freeSlider({

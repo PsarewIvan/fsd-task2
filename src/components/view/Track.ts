@@ -9,17 +9,26 @@ export default class TrackView extends SliderElement {
     this.state = state;
   }
 
-  // public getTrackSize(): number {
-  //   let trackSize: number;
+  public getTrackSize(): number {
+    let trackSize: number;
 
-  //   if (this.orientation === 'horizontal') {
-  //     trackSize = this.root.offsetWidth;
-  //   } else if (this.orientation === 'vertical') {
-  //     trackSize = this.root.offsetHeight;
-  //   }
+    if (this.state.orientation === 'horizontal') {
+      trackSize = this.root.offsetWidth;
+    } else if (this.state.orientation === 'vertical') {
+      trackSize = this.root.offsetHeight;
+    }
 
-  //   return trackSize;
-  // }
+    return trackSize;
+  }
+
+  public getDistanceToScreen(): number {
+    const trackRect: DOMRect = this.root.getBoundingClientRect();
+    if (this.state.orientation === 'horizontal') {
+      return trackRect.left;
+    } else if (this.state.orientation === 'vertical') {
+      return trackRect.top;
+    }
+  }
 
   // public getTrackWorkingSize(thumbsSize: Array<number>): number {
   //   let trackWorkingSize: number;
