@@ -59,7 +59,13 @@ export default class View {
       max: settings.max,
     });
     if (settings.scale) {
-      // this.scale = new Scale();
+      this.scale = new Scale(
+        this.slider,
+        settings.scaleMark,
+        settings.subScaleMark,
+        settings.min,
+        settings.max
+      );
     }
     if (settings.tooltips) {
       this.tooltips = new Tooltips(this.slider, {

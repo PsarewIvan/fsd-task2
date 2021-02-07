@@ -19,6 +19,9 @@ export default class SliderModel {
       type: 'single',
       orientation: 'horizontal',
       tooltips: true,
+      scale: false,
+      scaleMark: 4,
+      subScaleMark: 5,
     };
     this.defaultParamRange = {
       min: 0,
@@ -29,6 +32,9 @@ export default class SliderModel {
       type: 'range',
       orientation: 'horizontal',
       tooltips: true,
+      scale: false,
+      scaleMark: 4,
+      subScaleMark: 5,
     };
 
     // Очень хрупко, нужны дополнительные проверки

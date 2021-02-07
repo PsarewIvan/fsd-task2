@@ -9,6 +9,7 @@ slider.freeSlider({
   max: 50,
   value: -50,
   step: 0.1,
+  scale: true,
   // onChange: function (value) {
   //   console.log('OnChange Value: ', value);
   // },

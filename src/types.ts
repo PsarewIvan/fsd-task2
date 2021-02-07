@@ -10,6 +10,8 @@ export interface Settings {
   type?: string;
   orientation?: string;
   scale?: boolean;
+  scaleMark: number;
+  subScaleMark: number;
   tooltips?: boolean;
   onChange?: (value: number) => void;
   onFinish?: (value: number) => void;
