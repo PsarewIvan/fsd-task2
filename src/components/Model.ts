@@ -11,30 +11,31 @@ export default class SliderModel {
 
   constructor(options: Partial<Settings>) {
     this.modelChangedSubject = new MakeObservableSubject();
-    this.defaultParamSingle = {
+    const defaultParam: Settings = {
       min: 0,
       max: 100,
-      value: 50,
       step: 1,
-      type: 'single',
       orientation: 'horizontal',
       tooltips: true,
       scale: false,
+      hints: true,
       scaleMark: 4,
       subScaleMark: 5,
     };
+    this.defaultParamSingle = {
+      ...defaultParam,
+      ...{
+        value: 50,
+        type: 'single',
+      },
+    };
     this.defaultParamRange = {
-      min: 0,
-      max: 100,
-      from: 10,
-      to: 90,
-      step: 1,
-      type: 'range',
-      orientation: 'horizontal',
-      tooltips: true,
-      scale: false,
-      scaleMark: 4,
-      subScaleMark: 5,
+      ...defaultParam,
+      ...{
+        from: 10,
+        to: 90,
+        type: 'range',
+      },
     };
 
     // Очень хрупко, нужны дополнительные проверки
