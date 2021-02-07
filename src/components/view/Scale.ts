@@ -39,7 +39,8 @@ export default class Scale extends SliderElement {
       this.setPosition(markElement, i);
       if (i % this.subMarkNumber === 0) {
         const markTextElement: HTMLElement = document.createElement('span');
-        markTextElement.classList.add('free-slider__scale-mark--text');
+        this.root.append(markTextElement);
+        markTextElement.classList.add('free-slider__scale-text');
         this.setPosition(markTextElement, i);
         markTextElement.innerHTML = (stepValue * i + this.min).toString();
         markElement.classList.add('free-slider__scale-mark--big');

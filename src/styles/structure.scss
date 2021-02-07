@@ -81,6 +81,11 @@
   &__scale-mark {
     position: absolute;
   }
+
+  &__scale-text {
+    position: absolute;
+    font-size: 0.7em;
+  }
 }
 
 // --- Horizontal styles ---
@@ -151,13 +156,18 @@
         height: 10px;
       }
     }
+
+    &__scale-text {
+      top: 17px;
+      transform: translateX(-50%);
+    }
   }
 }
 
 // --- Vertical styles ---
 
 .free-slider--vertical {
-  width: 65px;
+  width: 75px;
   height: 100%;
 
   .free-slider {
@@ -178,7 +188,7 @@
     &__min,
     &__max {
       left: auto;
-      right: 43px;
+      right: 70%;
     }
 
     &__max {
@@ -223,6 +233,11 @@
         width: 10px;
         height: 100%;
       }
+    }
+
+    &__scale-text {
+      left: 20px;
+      transform: translateY(-50%);
     }
   }
 }
