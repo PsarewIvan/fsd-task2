@@ -31,7 +31,9 @@ export default class ThumbView {
   // Обновляет состояние ползунков
   public update(percents: Array<number>, values: Array<number>): void {
     this.updatePosition(percents);
-    this.updateHints(values);
+    if (this.state.isHints) {
+      this.updateHints(values);
+    }
   }
 
   // Обновляет местоположение ползунков на слайдере

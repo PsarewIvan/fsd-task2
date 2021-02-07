@@ -44,6 +44,7 @@ $('.slider--vertical').freeSlider({
   value: 30,
   step: 1,
   scale: true,
+  hints: false,
 });
 
 $('.slider--vertical--range').freeSlider({
