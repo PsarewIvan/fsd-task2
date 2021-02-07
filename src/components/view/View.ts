@@ -40,7 +40,7 @@ export default class View {
     if (settings.orientation === 'vertical') {
       this.slider.classList.add('free-slider', 'free-slider--vertical');
     } else if (settings.orientation === 'horizontal') {
-      this.slider.classList.add('free-slider');
+      this.slider.classList.add('free-slider', 'free-slider--horizontal');
     }
     this.root.append(this.slider);
 
@@ -59,12 +59,18 @@ export default class View {
       max: settings.max,
     });
     if (settings.scale) {
+      const percentSize: number =
+        ((this.track.getTrackSize() - this.thumbs.getThumbSize()) /
+          this.track.getTrackSize()) *
+        100;
       this.scale = new Scale(
         this.slider,
+        settings.orientation,
         settings.scaleMark,
         settings.subScaleMark,
         settings.min,
-        settings.max
+        settings.max,
+        percentSize
       );
     }
     if (settings.tooltips) {

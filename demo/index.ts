@@ -43,6 +43,7 @@ $('.slider--vertical').freeSlider({
   max: 100,
   value: 30,
   step: 1,
+  scale: true,
 });
 
 $('.slider--vertical--range').freeSlider({

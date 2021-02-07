@@ -1,56 +1,48 @@
+// --- Common styles ---
+
 .free-slider {
   position: relative;
 
   display: block;
-  height: 50px;
 
   &__track {
     position: relative;
-    top: 36px;
 
     display: block;
     box-sizing: border-box;
-    width: 100%;
-    height: 7px;
+
+    // вспомогательная штука
+    &::after {
+      content: '';
+      position: absolute;
+      top: -10px;
+
+      width: 100%;
+      height: 10px;
+
+      background-color: rgba(0, 0, 0, 0.2);
+    }
   }
 
   &__min,
-  &__max,
-  &__value {
+  &__max {
     position: absolute;
     top: 0;
     display: block;
   }
 
-  &__min {
-    left: 0;
-  }
-
-  &__max {
-    right: 0;
-  }
-
-  &__value {
-    left: 50%;
-    transform: translateX(-50%);
-  }
-
   &__bar {
     position: absolute;
-    top: 36px;
 
     display: block;
     box-sizing: border-box;
-    width: 50%;
-    height: 7px;
   }
 
   &__thumb,
   &__thumb--from,
   &__thumb--to {
+    z-index: 1;
     position: absolute;
-    top: 30px;
-    left: 50%;
 
     display: block;
     box-sizing: border-box;
@@ -58,18 +50,12 @@
     height: 20px;
     border-radius: 50%;
 
-    transform: translateX(-50%);
-
     cursor: pointer;
 
     &::after {
       position: absolute;
-      top: -1.2em;
 
       display: block;
-      margin-left: 50%;
-
-      transform: translateX(-50%);
     }
   }
 
@@ -84,58 +70,149 @@
   &__thumb--to::after {
     content: var(--to-input-value);
   }
-}
 
-// --- Vertical slider style ---
-
-.free-slider--vertical {
-  width: 50px;
-  height: 100%;
-
-  .free-slider__input {
-    left: 0;
-    top: -30px;
-    width: 50px;
-  }
-
-  .free-slider__track {
-    top: 0;
-    left: 30px;
-
-    width: 7px;
-    height: 100%;
-  }
-
-  .free-slider__min,
-  .free-slider__max {
-    left: auto;
-    right: 33px;
-  }
-
-  .free-slider__max {
-    top: auto;
-    bottom: 0;
-  }
-
-  .free-slider__thumb,
-  .free-slider__thumb--from,
-  .free-slider__thumb--to {
-    top: 50%;
-    left: 23px;
-
-    transform: translateY(-50%);
+  &__scale {
+    position: absolute;
 
     &::after {
-      top: auto;
-      right: 1.6em;
+      content: '';
+      position: absolute;
+
+      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 
-  .free-slider__bar {
-    top: 0;
-    left: 30px;
+  &__scale-mark {
+    position: absolute;
+  }
+}
 
-    width: 7px;
-    height: 50%;
+// --- Horizontal styles ---
+
+.free-slider--horizontal {
+  height: 55px;
+
+  .free-slider {
+    &__track {
+      top: 25px;
+
+      width: 100%;
+      height: 7px;
+    }
+
+    &__min {
+      left: 0;
+    }
+
+    &__max {
+      right: 0;
+    }
+
+    &__bar {
+      top: 25px;
+
+      width: 50%;
+      height: 7px;
+    }
+
+    &__thumb,
+    &__thumb--from,
+    &__thumb--to {
+      top: 18px;
+      left: 50%;
+
+      transform: translateX(-50%);
+
+      &::after {
+        top: -18px;
+
+        margin-left: 50%;
+
+        transform: translateX(-50%);
+      }
+    }
+
+    &__scale {
+      top: 30px;
+      height: 30px;
+
+      width: 100%;
+      padding-top: 10px;
+      margin-left: 50%;
+      transform: translateX(-50%);
+
+      &::after {
+        top: 0;
+
+        width: 100%;
+        height: 10px;
+      }
+    }
+  }
+}
+
+// --- Vertical styles ---
+
+.free-slider--vertical {
+  width: 65px;
+  height: 100%;
+
+  .free-slider {
+    &__track {
+      left: 30px;
+
+      width: 7px;
+      height: 100%;
+    }
+
+    &__min,
+    &__max {
+      left: auto;
+      right: 43px;
+    }
+
+    &__max {
+      top: auto;
+      bottom: 0;
+    }
+
+    &__thumb,
+    &__thumb--from,
+    &__thumb--to {
+      top: 50%;
+      left: 23px;
+
+      transform: translateY(-50%);
+
+      &::after {
+        top: auto;
+        right: 20px;
+        transform: none;
+      }
+    }
+
+    &__bar {
+      top: 0;
+      left: 30px;
+
+      width: 7px;
+      height: 50%;
+    }
+
+    &__scale {
+      top: 50%;
+      left: 35px;
+
+      width: 30px;
+      padding-left: 10px;
+      transform: translateY(-50%);
+
+      &::after {
+        left: 0;
+
+        width: 10px;
+        height: 100%;
+      }
+    }
   }
 }

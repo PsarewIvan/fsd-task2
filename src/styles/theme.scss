@@ -1,3 +1,5 @@
+// --- Common styles ---
+
 .free-slider {
   &__track {
     background-image: linear-gradient(to bottom, lightgray -200%, white 100%);
@@ -22,18 +24,62 @@
     border: 1px solid grey;
     background-color: lightgray;
   }
+
+  &__scale-mark {
+    background-color: mediumpurple;
+  }
 }
 
-// --- Vertical slider ---
+// --- Horizontal styles ---
+
+.free-slider--horizontal {
+  .free-slider {
+    &__bar {
+      background-image: linear-gradient(
+        to bottom,
+        white 0%,
+        lightskyblue 20%,
+        #e7f9ff 100%
+      );
+      border-radius: 7px 0 0 7px;
+    }
+
+    &__scale-mark {
+      width: 1px;
+      height: 4px;
+
+      transform: translateX(-50%);
+    }
+
+    &__scale-mark--big {
+      height: 8px;
+    }
+  }
+}
+
+// --- Vertical styles ---
 
 .free-slider--vertical {
-  .free-slider__bar {
-    background-image: linear-gradient(
-      to right,
-      white 0%,
-      lightskyblue 20%,
-      #e7f9ff 100%
-    );
-    border-radius: 7px 7px 0 0;
+  .free-slider {
+    &__bar {
+      background-image: linear-gradient(
+        to right,
+        white 0%,
+        lightskyblue 20%,
+        #e7f9ff 100%
+      );
+      border-radius: 7px 7px 0 0;
+    }
+
+    &__scale-mark {
+      width: 4px;
+      height: 1px;
+
+      transform: translateY(-50%);
+    }
+
+    &__scale-mark--big {
+      width: 8px;
+    }
   }
 }
