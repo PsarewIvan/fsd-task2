@@ -14,9 +14,6 @@
     &::after {
       content: '';
       position: absolute;
-
-      // вспомогательная штука
-      background-color: rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -73,8 +70,6 @@
     &::after {
       content: '';
       position: absolute;
-
-      background-color: rgba(0, 0, 0, 0.1);
     }
   }
 
@@ -85,6 +80,8 @@
   &__scale-text {
     position: absolute;
     font-size: 0.7em;
+
+    cursor: default;
   }
 }
 
