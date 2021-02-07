@@ -13,6 +13,7 @@ export interface Settings {
   scaleMark: number;
   subScaleMark: number;
   tooltips?: boolean;
+  hints?: boolean;
   onChange?: (value: number) => void;
   onFinish?: (value: number) => void;
 }
@@ -24,6 +25,15 @@ export interface State {
 export interface ExpandedState {
   type: string;
   orientation: string;
+  min: number;
+  max: number;
+  isHints: boolean;
+}
+
+export interface ScaleState {
+  orientation: string;
+  markNumber: number;
+  subMarkNumber: number;
   min: number;
   max: number;
 }

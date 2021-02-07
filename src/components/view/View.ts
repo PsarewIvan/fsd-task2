@@ -57,21 +57,20 @@ export default class View {
       orientation: settings.orientation,
       min: settings.min,
       max: settings.max,
+      isHints: settings.hints,
     });
     if (settings.scale) {
       const percentSize: number =
         ((this.track.getTrackSize() - this.thumbs.getThumbSize()) /
           this.track.getTrackSize()) *
         100;
-      this.scale = new Scale(
-        this.slider,
-        settings.orientation,
-        settings.scaleMark,
-        settings.subScaleMark,
-        settings.min,
-        settings.max,
-        percentSize
-      );
+      this.scale = new Scale(this.slider, percentSize, {
+        orientation: settings.orientation,
+        markNumber: settings.scaleMark,
+        subMarkNumber: settings.subScaleMark,
+        min: settings.min,
+        max: settings.max,
+      });
     }
     if (settings.tooltips) {
       this.tooltips = new Tooltips(this.slider, {
@@ -112,28 +111,44 @@ export default class View {
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
   public viewChanged(handler: Function) {
+    // Слушатель на ползунки
     this.thumbs.addMouseListener((thumbShift: number, type: string) => {
       const percent = this.percentFromThumbShift(thumbShift);
       handler(percent, type);
     });
 
+    // Слушатель на клики по треку
     this.track.clickEvent((clickCoord: number, evt: MouseEvent) => {
-      const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
-      const percent = this.percentFromThumbShift(clickOffset);
-      const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(
-        clickOffset
-      );
-      handler(percent, requiredThumb.name);
-
-      this.thumbs.mouseMoveEvent(
-        requiredThumb.root,
-        evt,
-        (thumbShift: number) => {
-          const percent = this.percentFromThumbShift(thumbShift);
-          handler(percent, requiredThumb.name);
-        }
-      );
+      this.clickHandler(clickCoord, handler, evt);
     });
+
+    // Слушатель на шкалу значений
+    if (this.scale) {
+      this.scale.clickEvent((clickCoord: number, evt: MouseEvent) => {
+        this.clickHandler(clickCoord, handler, evt);
+      });
+    }
+  }
+
+  // Функция обработчик, вызывающаяся для перемещения ползунков
+  private clickHandler(
+    clickCoord: number,
+    handler: Function,
+    evt: MouseEvent
+  ): void {
+    const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
+    const percent = this.percentFromThumbShift(clickOffset);
+    const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickOffset);
+    handler(percent, requiredThumb.name);
+
+    this.thumbs.mouseMoveEvent(
+      requiredThumb.root,
+      evt,
+      (thumbShift: number) => {
+        const percent = this.percentFromThumbShift(thumbShift);
+        handler(percent, requiredThumb.name);
+      }
+    );
   }
 
   // Возвращает значение смещения ползунка в процентах, относительно

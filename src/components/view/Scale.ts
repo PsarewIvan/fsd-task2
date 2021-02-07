@@ -1,30 +1,15 @@
 import SliderElement from './SliderElement';
+import { ScaleState } from '../../types';
 
 export default class Scale extends SliderElement {
-  private markNumber: number;
-  private subMarkNumber: number;
-  private min: number;
-  private max: number;
-  private orientation: string;
+  private state: ScaleState;
 
-  constructor(
-    rootNode: HTMLElement,
-    orientation: string,
-    scaleMark: number,
-    subScaleMark: number,
-    min: number,
-    max: number,
-    size: number
-  ) {
+  constructor(rootNode: HTMLElement, size: number, state: ScaleState) {
     super(rootNode, ['free-slider__scale']);
-    this.markNumber = scaleMark;
-    this.subMarkNumber = subScaleMark;
-    this.orientation = orientation;
-    this.min = min;
-    this.max = max;
-    if (this.orientation === 'horizontal') {
+    this.state = state;
+    if (this.state.orientation === 'horizontal') {
       this.root.style.width = `${size}%`;
-    } else if (this.orientation === 'vertical') {
+    } else if (this.state.orientation === 'vertical') {
       this.root.style.height = `${size}%`;
     }
     this.renderMark();
@@ -32,12 +17,17 @@ export default class Scale extends SliderElement {
 
   private renderMark(): void {
     let stepValue: number =
-      (this.max - this.min) / (this.markNumber * this.subMarkNumber);
-    for (let i = 0; i <= this.markNumber * this.subMarkNumber; i++) {
+      (this.state.max - this.min) /
+      (this.state.markNumber * this.state.subMarkNumber);
+    for (
+      let i = 0;
+      i <= this.state.markNumber * this.state.subMarkNumber;
+      i++
+    ) {
       const markElement: HTMLElement = document.createElement('span');
       markElement.classList.add('free-slider__scale-mark');
       this.setPosition(markElement, i);
-      if (i % this.subMarkNumber === 0) {
+      if (i % this.state.subMarkNumber === 0) {
         const markTextElement: HTMLElement = document.createElement('span');
         this.root.append(markTextElement);
         markTextElement.classList.add('free-slider__scale-text');
@@ -50,14 +40,27 @@ export default class Scale extends SliderElement {
   }
 
   private setPosition(element: HTMLElement, i: number): void {
-    if (this.orientation === 'horizontal') {
+    if (this.state.orientation === 'horizontal') {
       element.style.left = `${
-        (i * 100) / (this.markNumber * this.subMarkNumber)
+        (i * 100) / (this.state.markNumber * this.state.subMarkNumber)
       }%`;
-    } else if (this.orientation === 'vertical') {
+    } else if (this.state.orientation === 'vertical') {
       element.style.top = `${
-        (i * 100) / (this.markNumber * this.subMarkNumber)
+        (i * 100) / (this.state.markNumber * this.state.subMarkNumber)
       }%`;
     }
+  }
+
+  public clickEvent(handler: Function): void {
+    this.root.addEventListener('mousedown', (evt: MouseEvent) => {
+      evt.preventDefault();
+      let clientOffset: number;
+      if (this.state.orientation === 'horizontal') {
+        clientOffset = evt.clientX;
+      } else if (this.state.orientation === 'vertical') {
+        clientOffset = evt.clientY;
+      }
+      handler(clientOffset, evt);
+    });
   }
 }
