@@ -17,7 +17,7 @@ export default class Scale extends SliderElement {
 
   private renderMark(): void {
     let stepValue: number =
-      (this.state.max - this.min) /
+      (this.state.max - this.state.min) /
       (this.state.markNumber * this.state.subMarkNumber);
     for (
       let i = 0;
@@ -32,7 +32,7 @@ export default class Scale extends SliderElement {
         this.root.append(markTextElement);
         markTextElement.classList.add('free-slider__scale-text');
         this.setPosition(markTextElement, i);
-        markTextElement.innerHTML = (stepValue * i + this.min).toString();
+        markTextElement.innerHTML = (stepValue * i + this.state.min).toString();
         markElement.classList.add('free-slider__scale-mark--big');
       }
       this.root.append(markElement);
