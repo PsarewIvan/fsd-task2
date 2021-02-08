@@ -4,7 +4,7 @@ import { Settings, Methods } from './types';
 
 (($) => {
   const methods: Methods = {
-    init(options?: Partial<Settings>) {
+    init(options?: Partial<Settings>): JQuery {
       return this.each((i: number, node: HTMLElement) => {
         const freeSlider: FreeSlider = new FreeSlider(node, options);
 
@@ -24,8 +24,8 @@ import { Settings, Methods } from './types';
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
     args?: Array<number>
-  ) {
-    let method: any;
+  ): number[] | void | JQuery {
+    let method: number[] | void | JQuery;
     if (typeof action === 'string' && methods[action]) {
       method = methods[action].call(this, args);
     } else if (typeof action === 'object' || !action) {

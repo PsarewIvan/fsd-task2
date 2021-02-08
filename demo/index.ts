@@ -2,42 +2,47 @@ import './styles.scss';
 import $ from 'jquery';
 import '../src/';
 
-const slider = $('#slider-1');
+class Slider {
+  private slider: JQuery;
 
-slider.freeSlider({
+  constructor(element: JQuery, options: Object) {
+    this.slider = element;
+    this.slider.freeSlider(options);
+  }
+
+  public getValue(): number[] {
+    return this.slider.freeSlider('getValue');
+  }
+
+  public setValue(values: number[]): void {
+    this.slider.freeSlider('setValue', values);
+  }
+}
+
+const Slider1 = new Slider($('#slider-1'), {
   min: -100,
   max: 50,
   value: -50,
   step: 0.1,
   scale: true,
-  onChange: function (values) {
-    console.log('OnChange Values: ', values);
-  },
-  onFinish: function (values) {
-    console.log('OnFinish Values: ', values);
-  },
+  // onChange: function (values: number[]) {
+  //   console.log('OnChange Values: ', values);
+  // },
+  // onFinish: function (values: number[]) {
+  //   console.log('OnFinish Values: ', values);
+  // },
 });
 
-// console.log(slider.freeSlider('getValue'));
-
-const slider2 = $('#slider-2');
-slider2.freeSlider({
+const Slider2 = new Slider($('#slider-2'), {
   type: 'range',
   min: -100,
   max: 300,
   from: 30,
   to: 100,
   step: 10,
-  onChange: function (values) {
-    console.log('OnChange Values: ', values);
-  },
-  onFinish: function (values) {
-    console.log('OnFinish Values: ', values);
-  },
 });
-// slider2.freeSlider('setValue', [null, 50]);
 
-$('#slider-3').freeSlider({
+const SLider3 = new Slider($('#slider-3'), {
   orientation: 'vertical',
   min: 0,
   max: 100,
@@ -47,7 +52,7 @@ $('#slider-3').freeSlider({
   hints: false,
 });
 
-$('#slider-4').freeSlider({
+const Slider4 = new Slider($('#slider-4'), {
   orientation: 'vertical',
   type: 'range',
   min: -100,

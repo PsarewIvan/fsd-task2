@@ -59,6 +59,6 @@ declare global {
     freeSlider: (
       options?: Partial<Settings> | string,
       arg?: Array<number>
-    ) => JQuery;
+    ) => number[] | void | JQuery;
   }
 }
