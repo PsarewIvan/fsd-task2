@@ -1,23 +1,7 @@
 import './styles.scss';
 import $ from 'jquery';
 import '../src/';
-
-class Slider {
-  private slider: JQuery;
-
-  constructor(element: JQuery, options: Object) {
-    this.slider = element;
-    this.slider.freeSlider(options);
-  }
-
-  public getValue(): number[] {
-    return this.slider.freeSlider('getValue');
-  }
-
-  public setValue(values: number[]): void {
-    this.slider.freeSlider('setValue', values);
-  }
-}
+import Slider from './Slider';
 
 const Slider1 = new Slider($('#slider-1'), {
   min: -100,
