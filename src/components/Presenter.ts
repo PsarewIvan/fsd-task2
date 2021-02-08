@@ -17,9 +17,16 @@ export default class SliderPresenter {
 
     // Подписываемся на изменения положения ползунков во View
     // и передаем изменения в Model для записи новых значений
-    this.view.viewChanged((thumbPercentOffset: number, thumbName: string) => {
-      this.model.setNewValue(thumbPercentOffset, thumbName);
-    });
+    this.view.viewChanged(
+      (thumbPercentOffset: number, thumbName: string) => {
+        this.model.setNewValue(thumbPercentOffset, thumbName);
+      },
+      () => {
+        if (options.onFinish) {
+          options.onFinish(this.model.getSettings().values);
+        }
+      }
+    );
 
     // Слушатель изменения значений в модели. При изменении значений
     // вызывает метод перемещения ползунков во View

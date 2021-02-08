@@ -90,21 +90,25 @@ export default class ThumbView {
 
   // Создает слушателей на ползунках для обработки событий
   // работы пользователя
-  public addMouseListener(handler: Function): void {
+  public addMouseListener(handler: Function, onFinish: Function): void {
     if (this.state.type === 'range') {
-      this.mouseListener(this.from.root, handler);
-      this.mouseListener(this.to.root, handler);
+      this.mouseListener(this.from.root, handler, onFinish);
+      this.mouseListener(this.to.root, handler, onFinish);
     } else {
-      this.mouseListener(this.single.root, handler);
+      this.mouseListener(this.single.root, handler, onFinish);
     }
   }
 
   // Слушатель для обработки пользовательских событий
   // при клике на ползунок и его движении
-  private mouseListener(currentThumb: HTMLElement, handler: Function): void {
+  private mouseListener(
+    currentThumb: HTMLElement,
+    handler: Function,
+    onFinish: Function
+  ): void {
     currentThumb.addEventListener('mousedown', (evt) => {
       evt.preventDefault();
-      this.mouseMoveEvent(currentThumb, evt, handler);
+      this.mouseMoveEvent(currentThumb, evt, handler, onFinish);
     });
 
     currentThumb.ondragstart = function () {
@@ -116,7 +120,8 @@ export default class ThumbView {
   public mouseMoveEvent(
     currentThumb: HTMLElement,
     evt: MouseEvent,
-    handler: Function
+    handler: Function,
+    onFinish: Function
   ): void {
     let clickOffset: number;
     if (this.state.orientation === 'vertical') {
@@ -131,6 +136,7 @@ export default class ThumbView {
     };
 
     const onMouseUp = (): void => {
+      onFinish();
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };

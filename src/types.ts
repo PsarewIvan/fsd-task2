@@ -14,8 +14,8 @@ export interface Settings {
   subScaleMark: number;
   tooltips?: boolean;
   hints?: boolean;
-  onChange?: (value: number) => void;
-  onFinish?: (value: number) => void;
+  onChange?: (value: Array<number>) => void;
+  onFinish?: (value: Array<number>) => void;
 }
 
 export interface State {

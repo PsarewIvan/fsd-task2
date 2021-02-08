@@ -13,7 +13,6 @@ export default class View {
   private root: HTMLElement;
   private slider: HTMLElement;
   private onChange: Function | undefined;
-  private onFinish: Function | undefined;
   private isFirstChange: boolean;
   private track: Track;
   private bar: Bar;
@@ -25,7 +24,6 @@ export default class View {
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
     this.onChange = settings.onChange;
-    this.onFinish = settings.onFinish;
     this.isFirstChange = true;
 
     this.render(settings);
@@ -110,22 +108,22 @@ export default class View {
 
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
-  public viewChanged(handler: Function) {
+  public viewChanged(handler: Function, onFinish: Function) {
     // Слушатель на ползунки
     this.thumbs.addMouseListener((thumbShift: number, type: string) => {
       const percent = this.percentFromThumbShift(thumbShift);
       handler(percent, type);
-    });
+    }, onFinish);
 
     // Слушатель на клики по треку
     this.track.clickEvent((clickCoord: number, evt: MouseEvent) => {
-      this.clickHandler(clickCoord, handler, evt);
+      this.clickHandler(clickCoord, handler, evt, onFinish);
     });
 
     // Слушатель на шкалу значений
     if (this.scale) {
       this.scale.clickEvent((clickCoord: number, evt: MouseEvent) => {
-        this.clickHandler(clickCoord, handler, evt);
+        this.clickHandler(clickCoord, handler, evt, onFinish);
       });
     }
   }
@@ -134,7 +132,8 @@ export default class View {
   private clickHandler(
     clickCoord: number,
     handler: Function,
-    evt: MouseEvent
+    evt: MouseEvent,
+    onFinish: Function
   ): void {
     const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
     const percent = this.percentFromThumbShift(clickOffset);
@@ -147,7 +146,8 @@ export default class View {
       (thumbShift: number) => {
         const percent = this.percentFromThumbShift(thumbShift);
         handler(percent, requiredThumb.name);
-      }
+      },
+      onFinish
     );
   }
 
