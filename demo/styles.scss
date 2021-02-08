@@ -14,13 +14,28 @@ body {
   }
 }
 
+.slider {
+  &--vertical {
+    height: 1px;
+    min-height: 200px;
+  }
+
+  &:not(.slider--vertical) {
+    margin-bottom: 20px;
+  }
+}
+
 .slider__wrapper {
   max-width: 700px;
   margin: 0 auto 40px;
 
   &--vertical {
     display: flex;
-    height: 200px;
+    align-items: flex-start;
     gap: 50px;
+
+    &:not(:last-of-type) {
+      margin-bottom: 30px;
+    }
   }
 }

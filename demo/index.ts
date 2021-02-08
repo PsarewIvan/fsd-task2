@@ -2,7 +2,7 @@ import './styles.scss';
 import $ from 'jquery';
 import '../src/';
 
-const slider = $('.slider');
+const slider = $('#slider-1');
 
 slider.freeSlider({
   min: -100,
@@ -20,7 +20,7 @@ slider.freeSlider({
 
 // console.log(slider.freeSlider('getValue'));
 
-const slider2 = $('.slider--range');
+const slider2 = $('#slider-2');
 slider2.freeSlider({
   type: 'range',
   min: -100,
@@ -37,7 +37,7 @@ slider2.freeSlider({
 });
 // slider2.freeSlider('setValue', [null, 50]);
 
-$('.slider--vertical').freeSlider({
+$('#slider-3').freeSlider({
   orientation: 'vertical',
   min: 0,
   max: 100,
@@ -47,7 +47,7 @@ $('.slider--vertical').freeSlider({
   hints: false,
 });
 
-$('.slider--vertical--range').freeSlider({
+$('#slider-4').freeSlider({
   orientation: 'vertical',
   type: 'range',
   min: -100,
