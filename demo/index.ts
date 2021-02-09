@@ -9,12 +9,6 @@ const Slider1 = new Slider($('#slider-1'), {
   value: -50,
   step: 0.1,
   scale: true,
-  // onChange: function (values: number[]) {
-  //   console.log('OnChange Values: ', values);
-  // },
-  // onFinish: function (values: number[]) {
-  //   console.log('OnFinish Values: ', values);
-  // },
 });
 
 const Slider2 = new Slider($('#slider-2'), {
