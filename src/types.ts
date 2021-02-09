@@ -16,6 +16,7 @@ export interface Settings {
   hints?: boolean;
   onChange?: (value: Array<number>) => void;
   onFinish?: (value: Array<number>) => void;
+  onUpdate?: (value: Array<number>) => void;
 }
 
 export interface State {

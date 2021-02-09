@@ -13,6 +13,7 @@ export default class View {
   private root: HTMLElement;
   private slider: HTMLElement;
   private onChange: Function | undefined;
+  private onUpdate: Function | undefined;
   private isFirstChange: boolean;
   private track: Track;
   private bar: Bar;
@@ -24,6 +25,7 @@ export default class View {
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
     this.onChange = settings.onChange;
+    this.onUpdate = settings.onUpdate;
     this.isFirstChange = true;
 
     this.render(settings);
@@ -87,6 +89,9 @@ export default class View {
     this.thumbs.update(percentsToView, settings.values);
     this.bar.update(percentsToView);
 
+    if (this.onUpdate && this.isFirstChange) {
+      this.onUpdate(settings.values);
+    }
     if (this.onChange && !this.isFirstChange) {
       this.onChange(settings.values);
     }
