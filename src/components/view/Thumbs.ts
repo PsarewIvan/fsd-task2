@@ -1,11 +1,17 @@
 import SliderElement from './SliderElement';
-import { ExpandedState, RequiredThumb } from '../../types';
+import {
+  ExpandedState,
+  RequiredThumb,
+  ThumbType,
+  DirectionType,
+  SizeType,
+  CoordType,
+} from '../../types';
+import sliderElement from './SliderElement';
 
 export default class ThumbView {
   private state: ExpandedState;
-  private single?: SliderElement;
-  private from?: SliderElement;
-  private to?: SliderElement;
+  private thumbs: sliderElement[];
 
   constructor(rootNode: HTMLElement, state: ExpandedState) {
     this.state = state;
@@ -15,16 +21,15 @@ export default class ThumbView {
   // Отрисовывает необходимые ползунки в родительском элементе
   private render(rootNode: HTMLElement): void {
     if (this.state.type === 'range') {
-      this.from = new SliderElement(rootNode, [
-        'free-slider__thumb',
-        'free-slider__thumb--from',
-      ]);
-      this.to = new SliderElement(rootNode, [
-        'free-slider__thumb',
-        'free-slider__thumb--to',
-      ]);
+      this.thumbs = [
+        new SliderElement(rootNode, ['free-slider__thumb']),
+        new SliderElement(rootNode, [
+          'free-slider__thumb',
+          'free-slider__thumb--second',
+        ]),
+      ];
     } else {
-      this.single = new SliderElement(rootNode, ['free-slider__thumb']);
+      this.thumbs = [new SliderElement(rootNode, ['free-slider__thumb'])];
     }
   }
 
@@ -39,64 +44,33 @@ export default class ThumbView {
   // Обновляет местоположение ползунков на слайдере
   public updatePosition(percents: Array<number>): void {
     const shift = this.getThumbSize() / 2;
-    if (this.state.orientation === 'vertical') {
-      if (this.state.type === 'range') {
-        this.from.root.style.top = `calc(${percents[0] * 100}% + ${shift}px)`;
-        this.to.root.style.top = `calc(${percents[1] * 100}% + ${shift}px)`;
-      } else {
-        this.single.root.style.top = `calc(${percents[0] * 100}% + ${shift}px)`;
-      }
-    } else if (this.state.orientation === 'horizontal') {
-      if (this.state.type === 'range') {
-        this.from.root.style.left = `calc(${percents[0] * 100}% + ${shift}px)`;
-        this.to.root.style.left = `calc(${percents[1] * 100}% + ${shift}px)`;
-      } else {
-        this.single.root.style.left = `calc(${
-          percents[0] * 100
-        }% + ${shift}px)`;
-      }
-    }
+    const direction = this.getDirectionType();
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      thumb.root.style[direction] = `calc(${percents[i] * 100}% + ${shift}px)`;
+    });
   }
 
   // Обновляет числовое значение над ползунком
   public updateHints(values: Array<number>): void {
-    if (this.state.type === 'range') {
-      this.from.root.style.setProperty('--from-input-value', `"${values[0]}"`);
-      this.to.root.style.setProperty('--to-input-value', `"${values[1]}"`);
-    } else if (this.state.type === 'single') {
-      this.single.root.style.setProperty('--input-value', `"${values[0]}"`);
-    }
+    const property = ['--input-value-first', '--input-value-second'];
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      thumb.root.style.setProperty(property[i], `"${values[i]}"`);
+    });
   }
 
   // Возвращает ширину или высоту ползунков
   // в зависимости от ориентации слайдера
   public getThumbSize(): number {
-    let thumbDiameter: number;
-    if (this.state.orientation === 'horizontal') {
-      if (this.state.type === 'single') {
-        thumbDiameter = this.single.root.offsetWidth;
-      } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.offsetWidth;
-      }
-    } else if (this.state.orientation === 'vertical') {
-      if (this.state.type === 'single') {
-        thumbDiameter = this.single.root.offsetHeight;
-      } else if (this.state.type === 'range') {
-        thumbDiameter = this.from.root.offsetHeight;
-      }
-    }
-    return thumbDiameter;
+    const size = this.getSizeType();
+    return this.thumbs[0].root[size];
   }
 
   // Создает слушателей на ползунках для обработки событий
   // работы пользователя
   public addMouseListener(handler: Function, onFinish: Function): void {
-    if (this.state.type === 'range') {
-      this.mouseListener(this.from.root, handler, onFinish);
-      this.mouseListener(this.to.root, handler, onFinish);
-    } else {
-      this.mouseListener(this.single.root, handler, onFinish);
-    }
+    this.thumbs.forEach((thumb: SliderElement) => {
+      this.mouseListener(thumb.root, handler, onFinish);
+    });
   }
 
   // Слушатель для обработки пользовательских событий
@@ -124,11 +98,9 @@ export default class ThumbView {
     onFinish: Function
   ): void {
     let clickOffset: number;
-    if (this.state.orientation === 'vertical') {
-      clickOffset = evt.clientY - currentThumb.getBoundingClientRect().top;
-    } else if (this.state.orientation === 'horizontal') {
-      clickOffset = evt.clientX - currentThumb.getBoundingClientRect().left;
-    }
+    const coord = this.getCoordType();
+    const direction = this.getDirectionType();
+    clickOffset = evt[coord] - currentThumb.getBoundingClientRect()[direction];
 
     const onMouseMove = (evt: MouseEvent): void => {
       evt.preventDefault();
@@ -153,25 +125,18 @@ export default class ThumbView {
     handler: Function
   ): void {
     let thumbShift: number;
-    let type: string;
-
-    if (this.state.orientation === 'vertical') {
-      thumbShift = evt.clientY - clickOffset;
-    }
-    if (this.state.orientation === 'horizontal') {
-      thumbShift = evt.clientX - clickOffset;
-    }
-    if (this.state.type === 'single') {
-      type = 'single';
-    }
-    if (this.state.type === 'range') {
-      if (currentThumb === this.from.root) {
-        type = 'from';
-      } else if (currentThumb === this.to.root) {
-        type = 'to';
-      }
-    }
+    let type: ThumbType = this.getCurrentThumbType(currentThumb);
+    const coord = this.getCoordType();
+    thumbShift = evt[coord] - clickOffset;
     handler(thumbShift, type);
+  }
+
+  // Вспомогательный метод, возвращающий тип переданного в параметры ползунка
+  private getCurrentThumbType(currentThumb: HTMLElement): ThumbType {
+    const rangeThumbTypes: Array<ThumbType> = ['single', 'from', 'to'];
+    if (this.state.type === 'single') return rangeThumbTypes[0];
+    const i = this.thumbs.findIndex((thumb) => thumb.root === currentThumb);
+    return rangeThumbTypes[i + 1];
   }
 
   // Возвращает объект с данными ползунка, который необходимо
@@ -180,35 +145,44 @@ export default class ThumbView {
     if (this.state.type === 'single') {
       return {
         name: 'single',
-        root: this.single.root,
+        root: this.thumbs[0].root,
       };
     }
-    if (this.state.type === 'range') {
-      const range: number =
-        this.getDistance(this.to.root) - this.getDistance(this.from.root);
-      if (clickOffset <= this.getDistance(this.from.root) + range / 2) {
-        return {
-          name: 'from',
-          root: this.from.root,
-        };
-      } else {
-        return {
-          name: 'to',
-          root: this.to.root,
-        };
-      }
+
+    const range: number =
+      this.getDistance(this.thumbs[1].root) -
+      this.getDistance(this.thumbs[0].root);
+    if (clickOffset <= this.getDistance(this.thumbs[0].root) + range / 2) {
+      return {
+        name: 'from',
+        root: this.thumbs[0].root,
+      };
+    } else {
+      return {
+        name: 'to',
+        root: this.thumbs[1].root,
+      };
     }
   }
 
   // Вспомогательный метод, возвращает значение от ползунка
   // до края экрана
   private getDistance(elem: HTMLElement): number {
-    let distanceToScreen: number;
-    if (this.state.orientation === 'horizontal') {
-      distanceToScreen = elem.getBoundingClientRect().left;
-    } else if (this.state.orientation === 'vertical') {
-      distanceToScreen = elem.getBoundingClientRect().top;
-    }
-    return distanceToScreen;
+    return elem.getBoundingClientRect()[this.getDirectionType()];
+  }
+
+  private getDirectionType(): DirectionType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'left' : 'top';
+  }
+
+  private getSizeType(): SizeType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
+  }
+
+  private getCoordType(): CoordType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }
