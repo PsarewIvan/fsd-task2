@@ -2,7 +2,7 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
-import { Settings, State, RequiredThumb } from '../../types';
+import { Settings, State, RequiredThumb, ThumbType } from '../../types';
 import Track from './Track';
 import Thumbs from './Thumbs';
 import Bar from './Bar';
