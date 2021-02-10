@@ -18,6 +18,7 @@ const Slider2 = new Slider($('#slider-2'), {
   from: 30,
   to: 100,
   step: 10,
+  scale: true,
 });
 
 const SLider3 = new Slider($('#slider-3'), {
