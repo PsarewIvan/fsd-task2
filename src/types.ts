@@ -7,8 +7,8 @@ export interface Settings {
   to?: number;
   values?: Array<number>;
   percents?: Array<number>;
-  type?: string;
-  orientation?: string;
+  type?: SliderType;
+  orientation?: SliderOrientation;
   scale?: boolean;
   scaleMark: number;
   subScaleMark: number;
@@ -20,19 +20,19 @@ export interface Settings {
 }
 
 export interface State {
-  type: string;
-  orientation: string;
+  type: SliderType;
+  orientation: SliderOrientation;
 }
 export interface ExpandedState {
-  type: string;
-  orientation: string;
+  type: SliderType;
+  orientation: SliderOrientation;
   min: number;
   max: number;
   isHints: boolean;
 }
 
 export interface ScaleState {
-  orientation: string;
+  orientation: SliderOrientation;
   markNumber: number;
   subMarkNumber: number;
   min: number;
@@ -51,9 +51,15 @@ export interface Methods {
 }
 
 export interface RequiredThumb {
-  name: string;
+  name: ThumbType;
   root: HTMLElement;
 }
+
+export type ThumbType = 'single' | 'from' | 'to';
+
+export type SliderType = 'single' | 'range';
+
+export type SliderOrientation = 'vertical' | 'horizontal';
 
 declare global {
   interface JQuery {
