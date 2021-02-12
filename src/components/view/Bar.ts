@@ -1,5 +1,5 @@
 import SliderElement from './SliderElement';
-import { State } from '../../types';
+import { State, DirectionType, SizeTypeCss } from '../../types';
 
 export default class TrackView extends SliderElement {
   private state: State;
@@ -12,20 +12,23 @@ export default class TrackView extends SliderElement {
 
   // Обновляет расположение бара
   public update(percents: Array<number>): void {
-    if (this.state.orientation === 'vertical') {
-      if (this.state.type === 'range') {
-        this.root.style.top = `${percents[0] * 100}%`;
-        this.root.style.height = `${(percents[1] - percents[0]) * 100}%`;
-      } else if (this.state.type === 'single') {
-        this.root.style.height = `${percents[0] * 100}%`;
-      }
-    } else if (this.state.orientation === 'horizontal') {
-      if (this.state.type === 'range') {
-        this.root.style.left = `${percents[0] * 100}%`;
-        this.root.style.width = `${(percents[1] - percents[0]) * 100}%`;
-      } else if (this.state.type === 'single') {
-        this.root.style.width = `${percents[0] * 100}%`;
-      }
+    if (this.state.type === 'range') {
+      this.root.style[this.getDirectionType()] = `${percents[0] * 100}%`;
+      this.root.style[this.getSizeType()] = `${
+        (percents[1] - percents[0]) * 100
+      }%`;
+    } else {
+      this.root.style[this.getSizeType()] = `${percents[0] * 100}%`;
     }
+  }
+
+  private getDirectionType(): DirectionType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'left' : 'top';
+  }
+
+  private getSizeType(): SizeTypeCss {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'width' : 'height';
   }
 }
