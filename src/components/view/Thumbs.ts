@@ -2,7 +2,6 @@ import SliderElement from './SliderElement';
 import {
   ExpandedState,
   RequiredThumb,
-  ThumbType,
   DirectionType,
   SizeType,
   CoordType,
@@ -125,43 +124,34 @@ export default class ThumbView {
     handler: Function
   ): void {
     let thumbShift: number;
-    let type: ThumbType = this.getCurrentThumbType(currentThumb);
+    let index: number = this.getCurrentThumbIndex(currentThumb);
     thumbShift = evt[this.getCoordType()] - clickOffset;
-    handler(thumbShift, type);
+    handler(thumbShift, index);
   }
 
-  // Вспомогательный метод, возвращающий тип переданного в параметры ползунка
-  private getCurrentThumbType(currentThumb: HTMLElement): ThumbType {
-    const rangeThumbTypes: Array<ThumbType> = ['single', 'from', 'to'];
-    if (this.state.type === 'single') return rangeThumbTypes[0];
-    const i = this.thumbs.findIndex((thumb) => thumb.root === currentThumb);
-    return rangeThumbTypes[i + 1];
+  private getCurrentThumbIndex(currentThumb: HTMLElement): number {
+    return this.thumbs.findIndex((thumb) => thumb.root === currentThumb);
   }
 
   // Возвращает объект с данными ползунка, который необходимо
   // подвинуть при клике на Track
   public requiredThumb(clickOffset: number): RequiredThumb {
+    const reqThumdState: RequiredThumb = {
+      index: 0,
+      root: this.thumbs[0].root,
+    };
     if (this.state.type === 'single') {
-      return {
-        name: 'single',
-        root: this.thumbs[0].root,
-      };
+      return reqThumdState;
     }
 
     const range: number =
       this.getDistance(this.thumbs[1].root) -
       this.getDistance(this.thumbs[0].root);
-    if (clickOffset <= this.getDistance(this.thumbs[0].root) + range / 2) {
-      return {
-        name: 'from',
-        root: this.thumbs[0].root,
-      };
-    } else {
-      return {
-        name: 'to',
-        root: this.thumbs[1].root,
-      };
+    if (clickOffset > this.getDistance(this.thumbs[0].root) + range / 2) {
+      reqThumdState.index = 1;
+      reqThumdState.root = this.thumbs[1].root;
     }
+    return reqThumdState;
   }
 
   // Вспомогательный метод, возвращает значение от ползунка

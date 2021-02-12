@@ -2,9 +2,6 @@ export interface Settings {
   min: number;
   max: number;
   step: number;
-  value?: number;
-  from?: number;
-  to?: number;
   values?: Array<number>;
   percents?: Array<number>;
   type?: SliderType;
@@ -52,7 +49,7 @@ export interface Methods {
 }
 
 export interface RequiredThumb {
-  name: ThumbType;
+  index: number;
   root: HTMLElement;
 }
 

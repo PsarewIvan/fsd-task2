@@ -115,9 +115,9 @@ export default class View {
   // при взаимодействии пользователя
   public viewChanged(handler: Function, onFinish: Function) {
     // Слушатель на ползунки
-    this.thumbs.addMouseListener((thumbShift: number, type: string) => {
+    this.thumbs.addMouseListener((thumbShift: number, index: number) => {
       const percent = this.percentFromThumbShift(thumbShift);
-      handler(percent, type);
+      handler(percent, index);
     }, onFinish);
 
     // Слушатель на клики по треку
@@ -143,14 +143,14 @@ export default class View {
     const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
     const percent = this.percentFromThumbShift(clickOffset);
     const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickOffset);
-    handler(percent, requiredThumb.name);
+    handler(percent, requiredThumb.index);
 
     this.thumbs.mouseMoveEvent(
       requiredThumb.root,
       evt,
       (thumbShift: number) => {
         const percent = this.percentFromThumbShift(thumbShift);
-        handler(percent, requiredThumb.name);
+        handler(percent, requiredThumb.index);
       },
       onFinish
     );

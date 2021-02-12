@@ -11,7 +11,7 @@ export default class SliderModel {
 
   constructor(options: Partial<Settings>) {
     this.modelChangedSubject = new MakeObservableSubject();
-    const defaultParam: Settings = {
+    let defaultParam: Settings = {
       min: 0,
       max: 100,
       step: 1,
@@ -21,35 +21,29 @@ export default class SliderModel {
       hints: true,
       scaleMark: 4,
       subScaleMark: 5,
-    };
-    this.defaultParamSingle = {
-      ...defaultParam,
-      ...{
-        value: 50,
-        type: 'single',
-      },
-    };
-    this.defaultParamRange = {
-      ...defaultParam,
-      ...{
-        from: 10,
-        to: 90,
-        type: 'range',
-      },
+      percents: [],
     };
 
-    // Очень хрупко, нужны дополнительные проверки
-    const isRangeType = options && options.type === 'range';
-    const isEmptyType =
-      options && !options.hasOwnProperty('type') && options.from && options.to;
-    if (isRangeType || isEmptyType) {
-      if (options.from > options.to) {
-        [options.min, options.max] = [options.max, options.min];
-      }
-      this.setSettings(options, this.defaultParamRange);
+    if (options.type === 'range') {
+      defaultParam = {
+        ...defaultParam,
+        ...{
+          values: [10, 90],
+          type: 'range',
+        },
+      };
     } else {
-      this.setSettings(options, this.defaultParamSingle);
+      defaultParam = {
+        ...defaultParam,
+        ...{
+          values: [50],
+          type: 'single',
+        },
+      };
     }
+
+    // Тут нужны дополнительные проверки входных данных
+    this.setSettings(options, defaultParam);
   }
 
   // Записывает новые значения слайдера, объединяя новые значения
@@ -58,50 +52,35 @@ export default class SliderModel {
     newSettings: Partial<Settings>,
     oldSettings: Settings = this.settings
   ): void {
-    this.settings = { ...oldSettings, ...newSettings };
-    this.modelChangedSubject.notify(this.getSettings());
+    const newValues = newSettings.values.slice().sort((a, b) => a - b);
+    if (this.isEqual(newSettings.values, newValues)) {
+      this.settings = { ...oldSettings, ...newSettings };
+      this.modelChangedSubject.notify(this.getSettings());
+    }
   }
 
   // Возвращает значения с дополнительными полями, требуемыми для
   // корректной работы View:
   // settings.percents - массив значений в процентах
-  // settings.values - массив значений
   public getSettings(): Settings {
     const upgradeSettings: Settings = { ...this.settings };
     const range: number = this.settings.max - this.settings.min;
-    if (this.settings.type === 'single') {
-      upgradeSettings.percents = [
-        (this.settings.value - this.settings.min) / range,
-      ];
-      upgradeSettings.values = [this.settings.value];
-    } else if (this.settings.type === 'range') {
-      upgradeSettings.percents = [
-        (this.settings.from - this.settings.min) / range,
-        (this.settings.to - this.settings.min) / range,
-      ];
-      upgradeSettings.values = [this.settings.from, this.settings.to];
-    }
+    this.settings.values.forEach((value: number, i: number) => {
+      upgradeSettings.percents[i] = (value - this.settings.min) / range;
+    });
     return upgradeSettings;
   }
 
   // Устанавливает новые значения слайдера в зависимости от
   // смещения конкртеного ползунка в процентах
-  public setNewValue(thumbPercentOffset: number, thumbName: string): void {
-    const value = this.calcValue(thumbPercentOffset);
-    if (thumbName === 'single' && value !== this.settings.value) {
-      this.setSettings({ value: value });
-    } else if (
-      thumbName === 'to' &&
-      value !== this.settings.to &&
-      value >= this.settings.from
-    ) {
-      this.setSettings({ to: value });
-    } else if (
-      thumbName === 'from' &&
-      value !== this.settings.from &&
-      value <= this.settings.to
-    ) {
-      this.setSettings({ from: value });
+  public setNewValue(thumbPercentOffset: number, index: number): void {
+    const calcValue = this.calcValue(thumbPercentOffset);
+    if (this.settings.type === 'single') {
+      this.setSettings({ values: [calcValue] });
+    } else {
+      const values = this.settings.values;
+      values[index] = calcValue;
+      this.setSettings({ values: values });
     }
   }
 
@@ -137,5 +116,11 @@ export default class SliderModel {
     base = Math.pow(10, digits)
   ): number {
     return Math.round(base * number) / base;
+  }
+
+  private isEqual(arr1: number[], arr2: number[]): boolean {
+    if (arr1.length !== arr2.length || arr1.join() !== arr2.join())
+      return false;
+    return true;
   }
 }

@@ -18,8 +18,8 @@ export default class SliderPresenter {
     // Подписываемся на изменения положения ползунков во View
     // и передаем изменения в Model для записи новых значений
     this.view.viewChanged(
-      (thumbPercentOffset: number, thumbName: ThumbType) => {
-        this.model.setNewValue(thumbPercentOffset, thumbName);
+      (thumbPercentOffset: number, index: number) => {
+        this.model.setNewValue(thumbPercentOffset, index);
       },
       () => {
         if (options.onFinish) {
@@ -40,25 +40,25 @@ export default class SliderPresenter {
     return this.model.getSettings().values;
   }
 
-  public setValue(values: Array<number>): void {
-    const settings = this.model.getSettings();
-    if (settings.type === 'single') {
-      this.model.setSettings({ value: values[0] });
-    } else if (settings.type === 'range') {
-      if (values.length === 1) {
-        this.model.setSettings({
-          from: values[0],
-        });
-      } else if (values[0] === null) {
-        this.model.setSettings({
-          to: values[1],
-        });
-      } else {
-        this.model.setSettings({
-          from: values[0],
-          to: values[1],
-        });
-      }
-    }
-  }
+  // public setValue(values: Array<number>): void {
+  //   const settings = this.model.getSettings();
+  //   if (settings.type === 'single') {
+  //     this.model.setSettings({ value: values[0] });
+  //   } else if (settings.type === 'range') {
+  //     if (values.length === 1) {
+  //       this.model.setSettings({
+  //         from: values[0],
+  //       });
+  //     } else if (values[0] === null) {
+  //       this.model.setSettings({
+  //         to: values[1],
+  //       });
+  //     } else {
+  //       this.model.setSettings({
+  //         from: values[0],
+  //         to: values[1],
+  //       });
+  //     }
+  //   }
+  // }
 }
