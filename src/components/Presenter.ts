@@ -3,7 +3,7 @@
 // реагирует на сообщения об обновлении модели и обновляет отображение
 import SliderModel from './Model';
 import View from './view/View';
-import { Settings } from '../types';
+import { Settings, ThumbType } from '../types';
 
 export default class SliderPresenter {
   private model: SliderModel;
@@ -18,7 +18,7 @@ export default class SliderPresenter {
     // Подписываемся на изменения положения ползунков во View
     // и передаем изменения в Model для записи новых значений
     this.view.viewChanged(
-      (thumbPercentOffset: number, thumbName: string) => {
+      (thumbPercentOffset: number, thumbName: ThumbType) => {
         this.model.setNewValue(thumbPercentOffset, thumbName);
       },
       () => {
