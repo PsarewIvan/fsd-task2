@@ -59,10 +59,10 @@ export default class ThumbView {
   }
 
   // Возвращает ширину или высоту ползунков
-  // в зависимости от ориентации слайдера
+  // в зависимости от ориентации слайдера.
+  // В случае нескольких ползунков, возвращает ширину первого
   public getThumbSize(): number {
-    const size = this.getSizeType();
-    return this.thumbs[0].root[size];
+    return this.thumbs[0].root[this.getSizeType()];
   }
 
   // Создает слушателей на ползунках для обработки событий
@@ -126,8 +126,7 @@ export default class ThumbView {
   ): void {
     let thumbShift: number;
     let type: ThumbType = this.getCurrentThumbType(currentThumb);
-    const coord = this.getCoordType();
-    thumbShift = evt[coord] - clickOffset;
+    thumbShift = evt[this.getCoordType()] - clickOffset;
     handler(thumbShift, type);
   }
 
