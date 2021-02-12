@@ -1,5 +1,5 @@
 import SliderElement from './SliderElement';
-import { State } from '../../types';
+import { State, SizeType, DirectionType, CoordType } from '../../types';
 
 export default class TrackView extends SliderElement {
   private state: State;
@@ -10,38 +10,34 @@ export default class TrackView extends SliderElement {
   }
 
   public getTrackSize(): number {
-    let trackSize: number;
-
-    if (this.state.orientation === 'horizontal') {
-      trackSize = this.root.offsetWidth;
-    } else if (this.state.orientation === 'vertical') {
-      trackSize = this.root.offsetHeight;
-    }
-
-    return trackSize;
+    return this.root[this.getSizeType()];
   }
 
   // Возвращает расстояние от трека до края экрана
   public getDistanceToScreen(): number {
-    const trackRect: DOMRect = this.root.getBoundingClientRect();
-    if (this.state.orientation === 'horizontal') {
-      return trackRect.left;
-    } else if (this.state.orientation === 'vertical') {
-      return trackRect.top;
-    }
+    return this.root.getBoundingClientRect()[this.getDirectionType()];
   }
 
   // Слушатель для обработки клика по треку
   public clickEvent(handler: Function): void {
     this.root.addEventListener('mousedown', (evt: MouseEvent) => {
       evt.preventDefault();
-      let clientOffset: number;
-      if (this.state.orientation === 'horizontal') {
-        clientOffset = evt.clientX;
-      } else if (this.state.orientation === 'vertical') {
-        clientOffset = evt.clientY;
-      }
-      handler(clientOffset, evt);
+      handler(evt[this.getCoordType()], evt);
     });
+  }
+
+  private getDirectionType(): DirectionType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'left' : 'top';
+  }
+
+  private getSizeType(): SizeType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
+  }
+
+  private getCoordType(): CoordType {
+    const { orientation } = this.state;
+    return orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }
