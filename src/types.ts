@@ -60,6 +60,7 @@ export type SliderType = 'single' | 'range';
 export type SliderOrientation = 'vertical' | 'horizontal';
 export type DirectionType = 'left' | 'top';
 export type SizeType = 'offsetWidth' | 'offsetHeight';
+export type SizeTypeCss = 'width' | 'height';
 export type CoordType = 'clientX' | 'clientY';
 
 declare global {
