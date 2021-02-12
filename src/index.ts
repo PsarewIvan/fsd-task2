@@ -19,6 +19,10 @@ import { Settings, Methods } from './types';
     setValue(values: number[]): void {
       $(this).data().freeSlider.method().setValue(values);
     },
+
+    onChange(values: number[], handler: number): void {
+      $(this).data().freeSlider.method().onChange(values, handler);
+    },
   };
 
   $.fn.freeSlider = function (

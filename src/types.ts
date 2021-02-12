@@ -47,7 +47,8 @@ export interface TooltipsState {
 export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
   getValue: () => Array<number>;
-  setValue: (value: Array<number>) => void;
+  setValue: (value: number[]) => void;
+  onChange: (values: number[], handler: number) => void;
 }
 
 export interface RequiredThumb {
