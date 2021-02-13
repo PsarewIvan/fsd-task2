@@ -44,7 +44,7 @@ export interface TooltipsState {
 export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
   getValue: () => Array<number>;
-  setValue: (value: number[]) => void;
+  setValue: (values: number[]) => void;
   onChange: (values: number[], handler: number) => void;
 }
 
