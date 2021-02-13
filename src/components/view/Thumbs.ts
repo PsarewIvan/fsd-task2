@@ -6,11 +6,10 @@ import {
   SizeType,
   CoordType,
 } from '../../types';
-import sliderElement from './SliderElement';
 
 export default class ThumbView {
   private state: ExpandedState;
-  private thumbs: sliderElement[];
+  private thumbs: SliderElement[];
 
   constructor(rootNode: HTMLElement, state: ExpandedState) {
     this.state = state;
