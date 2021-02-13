@@ -40,25 +40,13 @@ export default class SliderPresenter {
     return this.model.getSettings().values;
   }
 
-  // public setValue(values: Array<number>): void {
-  //   const settings = this.model.getSettings();
-  //   if (settings.type === 'single') {
-  //     this.model.setSettings({ value: values[0] });
-  //   } else if (settings.type === 'range') {
-  //     if (values.length === 1) {
-  //       this.model.setSettings({
-  //         from: values[0],
-  //       });
-  //     } else if (values[0] === null) {
-  //       this.model.setSettings({
-  //         to: values[1],
-  //       });
-  //     } else {
-  //       this.model.setSettings({
-  //         from: values[0],
-  //         to: values[1],
-  //       });
-  //     }
-  //   }
-  // }
+  public setValue(values: Array<number>): void {
+    const currentValues = this.model.getSettings().values;
+    currentValues.forEach((value, i) => {
+      if (typeof values[i] === 'number' && value !== values[i]) {
+        currentValues[i] = values[i];
+      }
+    });
+    this.model.setSettings({ values: currentValues });
+  }
 }
