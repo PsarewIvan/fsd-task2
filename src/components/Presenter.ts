@@ -30,9 +30,12 @@ export default class SliderPresenter {
 
     // Слушатель изменения значений в модели. При изменении значений
     // вызывает метод перемещения ползунков во View
-    this.model.modelChangedSubject.subscribe((settings: Settings) => {
-      this.view.update(settings);
-    });
+    this.model.modelChangedSubject.subscribe(
+      'viewUpdate',
+      (settings: Settings) => {
+        this.view.update(settings);
+      }
+    );
   }
 
   // Публичные методы взаимодействия со слайдером
@@ -49,4 +52,21 @@ export default class SliderPresenter {
     });
     this.model.setSettings({ values: currentValues });
   }
+
+  public onChange(handler: Function) {
+    this.model.modelChangedSubject.subscribe(
+      'onChange',
+      (settings: Settings) => {
+        if (handler) {
+          handler(settings.values);
+        }
+      }
+    );
+  }
+
+  // public onLoad(arguments) {
+  //   if () {
+  //     handler(this.model.getSettings().values);
+  //   }
+  // }
 }

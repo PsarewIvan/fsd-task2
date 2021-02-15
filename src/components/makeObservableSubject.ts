@@ -1,28 +1,34 @@
 export default class MakeObservableSubject {
-  private observers: Array<Function>;
+  private observers: Object;
 
   constructor() {
-    this.observers = [];
+    this.observers = {};
   }
 
-  subscribe(observer: Function) {
+  subscribe(name: string, observer: Function): void {
     if (typeof observer !== 'function') {
       throw new Error('observer must be a function');
     }
-    if (this.observers.includes((obs: Function) => obs !== observer)) {
-      throw new Error('observer already in the list');
+    if (typeof name !== 'string') {
+      throw new Error('observer title must be a string type');
     }
-    this.observers.push(observer);
+    if (this.observers.hasOwnProperty(name)) {
+      throw new Error(`observer "${name}" already in the list in`);
+    }
+    this.observers.name = observer;
   }
 
-  unsubscribe(observer: Function) {
-    this.observers = this.observers.filter((obs) => obs !== observer);
+  unsubscribe(name: string): void {
+    if (!this.observers.hasOwnProperty(name)) {
+      throw new Error(`An accepted function "${name}" does not exist`);
+    } else {
+      delete this.observers.name;
+    }
   }
 
-  notify(value?: Object) {
-    const observersSnapshot = this.observers.slice(0);
-    observersSnapshot.forEach((obs) => {
-      obs(value);
-    });
+  notify(name: string, value?: Object): void {
+    if (this.observers.name) {
+      this.observers.name(value);
+    }
   }
 }

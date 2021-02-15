@@ -55,7 +55,7 @@ export default class SliderModel {
     const newValues = newSettings.values.slice().sort((a, b) => a - b);
     if (this.isEqual(newSettings.values, newValues)) {
       this.settings = { ...oldSettings, ...newSettings };
-      this.modelChangedSubject.notify(this.getSettings());
+      this.modelChangedSubject.notify('viewUpdate', this.getSettings());
     }
   }
 

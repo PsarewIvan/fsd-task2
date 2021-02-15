@@ -45,7 +45,7 @@ export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
   getValue: () => Array<number>;
   setValue: (values: number[]) => void;
-  onChange: (values: number[], handler: number) => void;
+  onChange: (handler: Function) => void;
 }
 
 export interface RequiredThumb {
@@ -65,7 +65,7 @@ declare global {
   interface JQuery {
     freeSlider: (
       options?: Partial<Settings> | string,
-      arg?: Array<number>
+      arg?: Array<number> | Function
     ) => number[] | void | JQuery;
   }
 }
