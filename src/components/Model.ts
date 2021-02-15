@@ -2,6 +2,7 @@
 
 import { Settings } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
+import _ from 'lodash';
 
 export default class SliderModel {
   readonly defaultParamSingle: Settings;
@@ -74,7 +75,7 @@ export default class SliderModel {
   // корректной работы View:
   // settings.percents - массив значений в процентах
   public getSettings(): Settings {
-    const upgradeSettings: Settings = { ...this.settings };
+    const upgradeSettings: Settings = _.cloneDeep(this.settings);
     const range: number = this.settings.max - this.settings.min;
     this.settings.values.forEach((value: number, i: number) => {
       upgradeSettings.percents[i] = (value - this.settings.min) / range;
