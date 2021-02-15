@@ -15,7 +15,7 @@ export default class MakeObservableSubject {
     if (this.observers.hasOwnProperty(name)) {
       throw new Error(`observer "${name}" already in the list in`);
     }
-    this.observers.name = observer;
+    this.observers[name] = observer;
   }
 
   unsubscribe(name: string): void {
@@ -27,8 +27,8 @@ export default class MakeObservableSubject {
   }
 
   notify(name: string, value?: Object): void {
-    if (this.observers.name) {
-      this.observers.name(value);
+    if (this.observers[name]) {
+      this.observers[name](value);
     }
   }
 }
