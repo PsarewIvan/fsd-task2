@@ -20,14 +20,14 @@ import { Settings, Methods } from './types';
       $(this).data().freeSlider.method().setValue(values);
     },
 
-    onChange(values: number[], handler: number): void {
-      $(this).data().freeSlider.method().onChange(values, handler);
+    onChange(handler: Function): void {
+      $(this).data().freeSlider.method().onChange(handler);
     },
   };
 
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
-    args?: number[]
+    args?: number[] | Function
   ): number[] | void | JQuery {
     let method: number[] | void | JQuery;
     if (typeof action === 'string' && methods[action]) {
