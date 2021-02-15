@@ -9,6 +9,7 @@ export default class Slider {
     this.slider.freeSlider(options);
     this.renderInput();
     this.inputEvent();
+    this.updateSlider();
   }
 
   private renderInput(): void {
@@ -37,6 +38,16 @@ export default class Slider {
   private updateInputs(values: number[]) {
     values.forEach((value: number, i: number) => {
       this.inputs[i].value = `${value}`;
+    });
+  }
+
+  private updateSlider() {
+    this.inputs.forEach((input: HTMLInputElement, i: number) => {
+      input.addEventListener('change', () => {
+        const values = [];
+        values[i] = Number(input.value);
+        this.setValue(values);
+      });
     });
   }
 
