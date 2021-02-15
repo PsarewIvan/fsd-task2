@@ -9,6 +9,7 @@ const Slider1 = new Slider($('#slider-1'), {
   values: [-50],
   step: 0.1,
   scale: true,
+  inputs: true,
 });
 Slider1.setValue([20]);
 
@@ -19,6 +20,7 @@ const Slider2 = new Slider($('#slider-2'), {
   values: [30, 100],
   step: 10,
   scale: true,
+  inputs: true,
 });
 Slider2.setValue([, 200]);
 
@@ -30,6 +32,7 @@ const SLider3 = new Slider($('#slider-3'), {
   step: 1,
   scale: true,
   hints: false,
+  inputs: true,
 });
 
 const Slider4 = new Slider($('#slider-4'), {
@@ -39,4 +42,5 @@ const Slider4 = new Slider($('#slider-4'), {
   max: 100,
   values: [0, 50],
   step: 5,
+  inputs: true,
 });

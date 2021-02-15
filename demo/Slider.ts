@@ -1,92 +1,46 @@
-import { InputState } from './types';
-
 export default class Slider {
   private slider: JQuery;
   private type: string | undefined;
-  private single?: HTMLInputElement;
-  private from?: HTMLInputElement;
-  private to?: HTMLInputElement;
-  private inputState: InputState;
+  private inputs?: HTMLInputElement[];
 
-  constructor(element: JQuery, options: Object) {
+  constructor(element: JQuery, options) {
     this.slider = element;
     this.type = options.type;
-    this.inputState = {
-      min: options.min,
-      max: options.max,
-      step: options.step,
-    };
-    this.renderInput();
-    options.onUpdate = this.updateInput.bind(this);
-    options.onChange = this.updateInput.bind(this);
     this.slider.freeSlider(options);
-    this.inputListener();
+    this.renderInput();
+    this.inputEvent();
   }
 
   private renderInput(): void {
-    if (this.type === 'range') {
-      this.from = this.createInput();
-      this.to = this.createInput();
-      this.slider.append(this.from, this.to);
-    } else {
-      this.single = this.createInput();
-      this.slider.append(this.single);
-    }
-  }
-
-  private updateInput(values: number[]) {
-    if (this.type === 'range') {
-      this.from.value = `${values[0]}`;
-      this.to.value = `${values[1]}`;
-    } else {
-      this.single.value = `${values[0]}`;
-    }
+    const container = document.createElement('div');
+    container.classList.add('slider__input-wrapper');
+    this.inputs = [];
+    this.getValue().forEach((value, i: number) => {
+      this.inputs.push(this.createInput());
+      container.append(this.inputs[i]);
+    });
+    this.slider.after(container);
   }
 
   private createInput(): HTMLInputElement {
     const elem: HTMLInputElement = document.createElement('input');
     elem.classList.add('slider__input');
     elem.type = 'number';
-    elem.min = this.inputState.min.toString();
-    elem.max = this.inputState.max.toString();
-    elem.step = this.inputState.step.toString();
     return elem;
   }
 
-  private inputListener() {
-    if (this.type === 'range') {
-      this.from.addEventListener('change', () => {
-        if (Number(this.from.value) > Number(this.to.value)) {
-          this.from.value = this.to.value;
-        }
-        if (Number(this.from.value) < this.inputState.min) {
-          this.from.value = this.inputState.min.toString();
-        }
-        this.setValue([Number(this.from.value)]);
-      });
-      this.to.addEventListener('change', () => {
-        if (Number(this.to.value) > this.inputState.max) {
-          this.to.value = this.inputState.max.toString();
-        }
-        if (Number(this.to.value) < Number(this.from.value)) {
-          this.to.value = this.from.value;
-        }
-        this.setValue([null, Number(this.to.value)]);
-      });
-    } else {
-      this.single.addEventListener('change', () => {
-        if (Number(this.single.value) > this.inputState.max) {
-          this.single.value = this.inputState.max.toString();
-        }
-        if (Number(this.single.value) < this.inputState.min) {
-          this.single.value = this.inputState.min.toString();
-        }
-        this.setValue([Number(this.single.value)]);
-      });
-    }
+  private inputEvent() {
+    this.slider.freeSlider('onLoad', this.updateInputs.bind(this));
+    this.slider.freeSlider('onChange', this.updateInputs.bind(this));
   }
 
-  public getValue() {
+  private updateInputs(values: number[]) {
+    values.forEach((value: number, i: number) => {
+      this.inputs[i].value = `${value}`;
+    });
+  }
+
+  public getValue(): number[] {
     return this.slider.freeSlider('getValue');
   }
 
