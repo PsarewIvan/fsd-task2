@@ -19,6 +19,14 @@ body {
     height: 1px;
     min-height: 200px;
   }
+
+  &__input {
+    width: 100px;
+
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+  }
 }
 
 .slider__wrapper {
