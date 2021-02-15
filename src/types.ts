@@ -65,7 +65,7 @@ declare global {
   interface JQuery {
     freeSlider: (
       options?: Partial<Settings> | string,
-      arg?: Array<number> | Function
+      arg?: Array<number>
     ) => number[] | void | JQuery;
   }
 }
