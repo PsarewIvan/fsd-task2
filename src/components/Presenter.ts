@@ -50,18 +50,15 @@ export default class SliderPresenter {
         currentValues[i] = values[i];
       }
     });
-    this.model.setSettings({ values: currentValues });
+    this.model.updateModel({ values: currentValues });
   }
 
   public onChange(handler: Function) {
-    this.model.modelChangedSubject.subscribe(
-      'onChange',
-      (settings: Settings) => {
-        if (handler) {
-          handler(settings.values);
-        }
+    this.model.modelChangedSubject.subscribe('onChange', (values: number[]) => {
+      if (handler) {
+        handler(values);
       }
-    );
+    });
   }
 
   // public onLoad(arguments) {

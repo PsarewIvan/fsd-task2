@@ -46,17 +46,28 @@ export default class SliderModel {
     this.setSettings(options, defaultParam);
   }
 
+  // Производит проверки перед обновлением модели
+  public updateModel(newSettings: Partial<Settings>) {
+    const sortValues = newSettings.values.slice().sort((a, b) => a - b);
+    const isValuesEqual = this.isEqual(newSettings.values, sortValues);
+    const isValuesUpdate = !this.isEqual(
+      newSettings.values,
+      this.settings.values
+    );
+    if (isValuesEqual && isValuesUpdate) {
+      this.setSettings(newSettings);
+      this.modelChangedSubject.notify('viewUpdate', this.getSettings());
+      this.modelChangedSubject.notify('onChange', this.getSettings().values);
+    }
+  }
+
   // Записывает новые значения слайдера, объединяя новые значения
   // со старыми
-  public setSettings(
+  private setSettings(
     newSettings: Partial<Settings>,
     oldSettings: Settings = this.settings
   ): void {
-    const newValues = newSettings.values.slice().sort((a, b) => a - b);
-    if (this.isEqual(newSettings.values, newValues)) {
-      this.settings = { ...oldSettings, ...newSettings };
-      this.modelChangedSubject.notify('viewUpdate', this.getSettings());
-    }
+    this.settings = { ...oldSettings, ...newSettings };
   }
 
   // Возвращает значения с дополнительными полями, требуемыми для
@@ -76,11 +87,11 @@ export default class SliderModel {
   public setNewValue(thumbPercentOffset: number, index: number): void {
     const calcValue = this.calcValue(thumbPercentOffset);
     if (this.settings.type === 'single') {
-      this.setSettings({ values: [calcValue] });
+      this.updateModel({ values: [calcValue] });
     } else {
-      const values = this.settings.values;
-      values[index] = calcValue;
-      this.setSettings({ values: values });
+      const newValues = this.arrCopy(this.settings.values);
+      newValues[index] = calcValue;
+      this.updateModel({ values: newValues });
     }
   }
 
@@ -122,5 +133,13 @@ export default class SliderModel {
     if (arr1.length !== arr2.length || arr1.join() !== arr2.join())
       return false;
     return true;
+  }
+
+  private arrCopy(arr: number[]): number[] {
+    const newArr = [];
+    arr.forEach((value: number, i: number) => {
+      newArr[i] = value;
+    });
+    return newArr;
   }
 }
