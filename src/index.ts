@@ -23,6 +23,10 @@ import { Settings, Methods } from './types';
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },
+
+    onLoad(handler: Function): void {
+      $(this).data().freeSlider.method().onLoad(handler);
+    },
   };
 
   $.fn.freeSlider = function (

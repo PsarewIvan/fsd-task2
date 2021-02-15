@@ -46,6 +46,7 @@ export interface Methods {
   getValue: () => Array<number>;
   setValue: (values: number[]) => void;
   onChange: (handler: Function) => void;
+  onLoad: (handler: Function) => void;
 }
 
 export interface RequiredThumb {

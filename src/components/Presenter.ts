@@ -61,9 +61,7 @@ export default class SliderPresenter {
     });
   }
 
-  // public onLoad(arguments) {
-  //   if () {
-  //     handler(this.model.getSettings().values);
-  //   }
-  // }
+  public onLoad(handler: Function) {
+    handler(this.model.getSettings().values);
+  }
 }
