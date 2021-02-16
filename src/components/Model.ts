@@ -56,7 +56,6 @@ export default class SliderModel {
       this.settings.values
     );
     const isValuesInRange: boolean = !newSettings.values.some((value) => {
-      console.log(value > this.settings.max);
       return value < this.settings.min || value > this.settings.max;
     });
     if (isValuesEqual && isValuesUpdate && isValuesInRange) {
