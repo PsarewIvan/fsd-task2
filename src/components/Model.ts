@@ -55,7 +55,11 @@ export default class SliderModel {
       newSettings.values,
       this.settings.values
     );
-    if (isValuesEqual && isValuesUpdate) {
+    const isValuesInRange: boolean = !newSettings.values.some((value) => {
+      console.log(value > this.settings.max);
+      return value < this.settings.min || value > this.settings.max;
+    });
+    if (isValuesEqual && isValuesUpdate && isValuesInRange) {
       this.setSettings(newSettings);
       this.modelChangedSubject.notify('viewUpdate', this.getSettings());
       this.modelChangedSubject.notify('onChange', this.getSettings().values);
