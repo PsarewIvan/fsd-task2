@@ -47,6 +47,7 @@ export default class Slider {
         const values = [];
         values[i] = Number(input.value);
         this.setValue(values);
+        input.value = this.getValue()[i].toString();
       });
     });
   }
