@@ -42,7 +42,7 @@ export default class Scale extends SliderElement {
   }
 
   public clickEvent(handler: Function): void {
-    this.root.addEventListener('mousedown', (evt: MouseEvent) => {
+    this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
       handler(evt[this.getCoordType()], evt);
     });

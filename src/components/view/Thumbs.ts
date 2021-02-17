@@ -78,7 +78,7 @@ export default class ThumbView {
     handler: Function,
     onFinish: Function
   ): void {
-    currentThumb.addEventListener('mousedown', (evt) => {
+    currentThumb.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
       this.mouseMoveEvent(currentThumb, evt, handler, onFinish);
     });
@@ -107,12 +107,12 @@ export default class ThumbView {
 
     const onMouseUp = (): void => {
       onFinish();
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      document.removeEventListener('pointermove', onMouseMove);
+      document.removeEventListener('pointerup', onMouseUp);
     };
 
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('pointermove', onMouseMove);
+    document.addEventListener('pointerup', onMouseUp);
   }
 
   // Вызывает переданный обработчик с параметрами движения ползунков
