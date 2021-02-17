@@ -11,7 +11,6 @@ const Slider1 = new Slider($('#slider-1'), {
   scale: true,
   inputs: true,
 });
-Slider1.setValue([20]);
 
 const Slider2 = new Slider($('#slider-2'), {
   type: 'range',
@@ -22,7 +21,6 @@ const Slider2 = new Slider($('#slider-2'), {
   scale: true,
   inputs: true,
 });
-Slider2.setValue([, 200]);
 
 const SLider3 = new Slider($('#slider-3'), {
   orientation: 'vertical',
