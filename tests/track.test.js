@@ -14,7 +14,5 @@ it('Render Track', () => {
 
 it('Accepts `className`', () => {
   const track = new Track(document.body, state);
-  // const hasClass = track.root.classList.contains('free-slider__track');
-  // expect(hasClass).toBe(true);
   expect(track.root).toHaveClass('free-slider__track');
 });
