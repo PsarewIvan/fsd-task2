@@ -25,6 +25,8 @@
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
     "@babel/preset-typescript": "^7.12.7",
+    "@testing-library/dom": "^7.29.4",
+    "@testing-library/jest-dom": "^5.11.9",
     "@types/jquery": "^3.5.5",
     "@types/lodash": "^4.14.168",
     "@types/webpack-env": "^1.16.0",
