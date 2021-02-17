@@ -16,7 +16,7 @@ export default class Slider {
     const container = document.createElement('div');
     container.classList.add('slider__input-wrapper');
     this.inputs = [];
-    this.getValue().forEach((value, i: number) => {
+    this.getValues().forEach((value, i: number) => {
       this.inputs.push(this.createInput());
       container.append(this.inputs[i]);
     });
@@ -46,17 +46,17 @@ export default class Slider {
       input.addEventListener('change', () => {
         const values = [];
         values[i] = Number(input.value);
-        this.setValue(values);
-        input.value = this.getValue()[i].toString();
+        this.setValues(values);
+        input.value = this.getValues()[i].toString();
       });
     });
   }
 
-  public getValue(): number[] {
+  public getValues(): number[] {
     return this.slider.freeSlider('getValue');
   }
 
-  public setValue(values: number[]): void {
+  public setValues(values: number[]): void {
     this.slider.freeSlider('setValue', values);
   }
 }
