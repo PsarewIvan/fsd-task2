@@ -61,7 +61,7 @@ export default class SliderModel {
     if (isValuesEqual && isValuesUpdate && isValuesInRange) {
       this.setSettings(newSettings);
       this.modelChangedSubject.notify('viewUpdate', this.getSettings());
-      this.modelChangedSubject.notify('onChange', this.getSettings().values);
+      this.modelChangedSubject.notify('onChange', this.getSettings());
     }
   }
 

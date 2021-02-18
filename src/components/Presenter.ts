@@ -54,15 +54,15 @@ export default class SliderPresenter {
   }
 
   public onChange(handler: Function) {
-    this.model.modelChangedSubject.subscribe('onChange', (values: number[]) => {
+    this.model.modelChangedSubject.subscribe('onChange', (state: Settings) => {
       if (handler) {
-        handler(values);
+        handler(state);
       }
     });
   }
 
   public onLoad(handler: Function) {
-    handler(this.model.getSettings().values);
+    handler(this.model.getSettings());
   }
 
   public getState(): Settings {
