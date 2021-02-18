@@ -1,5 +1,5 @@
 import ValuesInputs from './components/ValuesInputs';
-// import StepInput from './components/StepInput';
+import StepInput from './components/StepInput';
 // import MinInput from './components/MinInput';
 // import MaxInput from './components/MaxInput';
 // import ScaleCheck from './components/ScaleCheck';
@@ -10,12 +10,14 @@ import { Settings } from './types';
 export default class Slider {
   private slider: JQuery;
   private valuesInputs: ValuesInputs;
+  private stepInput: StepInput;
   private state: Settings;
 
   constructor(element: JQuery, options: Settings) {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
+    this.stepInput = new StepInput(this.slider, this.state);
     this.valuesInputs = new ValuesInputs(this.slider, this.state);
     this.inputEvent();
     this.updateInputs();
