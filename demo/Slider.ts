@@ -59,4 +59,8 @@ export default class Slider {
   public setValues(values: number[]): void {
     this.slider.freeSlider('setValue', values);
   }
+
+  public getState() {
+    return this.slider.freeSlider('getState');
+  }
 }
