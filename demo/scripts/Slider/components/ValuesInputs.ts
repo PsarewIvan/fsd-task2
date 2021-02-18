@@ -11,7 +11,7 @@ export default class ValuesInputs {
 
     state.values.forEach((_value, i: number) => {
       this.elements.push(this.createInput());
-      this.updateIuputAttr(state);
+      this.updateAttribute(state);
       this.root.append(this.elements[i]);
     });
     slider.after(this.root);
@@ -24,7 +24,18 @@ export default class ValuesInputs {
     return elem;
   }
 
-  private updateIuputAttr(state: Settings): void {
+  public updateInput(state: Settings): void {
+    this.updateValue(state.values);
+    this.updateAttribute(state);
+  }
+
+  private updateValue(values: number[]): void {
+    values.forEach((value: number, i: number) => {
+      this.elements[i].value = `${value}`;
+    });
+  }
+
+  private updateAttribute(state: Settings): void {
     this.elements.forEach((input: HTMLInputElement, i: number): void => {
       input.max = this.elements[i + 1]
         ? state.values[i + 1].toString()
@@ -34,12 +45,6 @@ export default class ValuesInputs {
           ? state.values[i - 1].toString()
           : state.min.toString();
       input.step = state.step.toString();
-    });
-  }
-
-  public updateValue(values: number[]): void {
-    values.forEach((value: number, i: number) => {
-      this.elements[i].value = `${value}`;
     });
   }
 

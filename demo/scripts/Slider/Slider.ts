@@ -12,31 +12,30 @@ export default class Slider {
   private valuesInputs: ValuesInputs;
   private state: Settings;
 
-  constructor(element: JQuery, options) {
+  constructor(element: JQuery, options: Settings) {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
     this.valuesInputs = new ValuesInputs(this.slider, this.state);
     this.inputEvent();
-    this.updateSlider();
+    this.updateInputs();
   }
 
-  private updateState(): void {
-    this.state = this.slider.freeSlider('getState');
+  private updateElements(state: Settings): void {
+    this.updateState(state);
+    this.valuesInputs.updateInput(this.state);
+  }
+
+  private updateState(state?: Settings): void {
+    this.state = state ? state : this.slider.freeSlider('getState');
   }
 
   private inputEvent(): void {
-    this.slider.freeSlider(
-      'onLoad',
-      this.valuesInputs.updateValue.bind(this.valuesInputs)
-    );
-    this.slider.freeSlider(
-      'onChange',
-      this.valuesInputs.updateValue.bind(this.valuesInputs)
-    );
+    this.slider.freeSlider('onLoad', this.updateElements.bind(this));
+    this.slider.freeSlider('onChange', this.updateElements.bind(this));
   }
 
-  private updateSlider(): void {
+  private updateInputs(): void {
     this.valuesInputs.addEvent(this.setValues.bind(this));
   }
 
