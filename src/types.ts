@@ -42,7 +42,7 @@ export interface TooltipsState {
 }
 
 export interface Methods {
-  init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
+  init: (options?: Partial<Settings>) => JQuery;
   getValue: () => Array<number>;
   setValue: (values: number[]) => void;
   getState: () => Settings;
@@ -68,6 +68,6 @@ declare global {
     freeSlider: (
       options?: Partial<Settings> | string,
       arg?: Array<number> | Function
-    ) => number[] | void | JQuery;
+    ) => JQuery | Array<number> | Settings | void;
   }
 }
