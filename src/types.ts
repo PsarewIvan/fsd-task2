@@ -45,6 +45,7 @@ export interface Methods {
   init: (options?: Partial<Settings>) => JQuery<HTMLElement>;
   getValue: () => Array<number>;
   setValue: (values: number[]) => void;
+  getState: () => Settings;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }

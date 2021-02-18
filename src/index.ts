@@ -20,6 +20,10 @@ import { Settings, Methods } from './types';
       $(this).data().freeSlider.method().setValue(values);
     },
 
+    getState(): Settings {
+      return $(this).data().freeSlider.method().getState();
+    },
+
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },
