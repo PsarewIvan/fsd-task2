@@ -1,7 +1,7 @@
-import './styles.scss';
+import './styles/styles.scss';
 import $ from 'jquery';
-import '../src/';
-import Slider from './Slider';
+import '../src';
+import Slider from './scripts/Slider/Slider';
 
 const Slider1 = new Slider($('#slider-1'), {
   min: -100,
