@@ -10,17 +10,26 @@ export default class ValuesInputs {
     this.elements = [];
 
     state.values.forEach((_value, i: number) => {
-      this.elements.push(this.createInput());
+      const label: HTMLLabelElement = this.createLabel(i);
+      this.elements.push(this.createInput(i));
       this.updateAttribute(state);
-      this.root.append(this.elements[i]);
+      label.append(this.elements[i]);
+      this.root.append(label);
     });
     slider.after(this.root);
   }
 
-  private createInput(): HTMLInputElement {
+  private createInput(i: number): HTMLInputElement {
     const elem: HTMLInputElement = document.createElement('input');
     elem.classList.add('slider__input');
     elem.type = 'number';
+    return elem;
+  }
+
+  private createLabel(i: number): HTMLLabelElement {
+    const elem: HTMLLabelElement = document.createElement('label');
+    elem.classList.add('slider__label', 'slider__label--thumb');
+    elem.innerHTML = `Thumb ${i + 1}: `;
     return elem;
   }
 
