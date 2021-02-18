@@ -18,7 +18,7 @@ export default class Scale extends SliderElement {
     for (
       let i = 0;
       i <= this.state.markNumber * this.state.subMarkNumber;
-      i++
+      i += 1
     ) {
       const markElement: HTMLElement = document.createElement('span');
       markElement.classList.add('free-slider__scale-mark');
