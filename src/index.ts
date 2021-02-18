@@ -5,7 +5,7 @@ import { Settings, Methods } from './types';
 (($) => {
   const methods: Methods = {
     init(options?: Partial<Settings>): JQuery {
-      return this.each((i: number, node: HTMLElement) => {
+      return this.each((_i: number, node: HTMLElement) => {
         const freeSlider: FreeSlider = new FreeSlider(node, options);
 
         $(this).data('freeSlider', freeSlider);
@@ -36,15 +36,13 @@ import { Settings, Methods } from './types';
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
     args?: number[] | Function
-  ): number[] | void | JQuery {
-    let method: number[] | void | JQuery;
+  ) {
     if (typeof action === 'string' && methods[action]) {
-      method = methods[action].call(this, args);
+      return methods[action].call(this, args);
     } else if (typeof action === 'object' || !action) {
-      method = methods.init.call(this, action);
+      return methods.init.call(this, action);
     } else {
       throw new Error(`Метода ${action} не существует для freeSlider`);
     }
-    return method;
   };
 })($);
