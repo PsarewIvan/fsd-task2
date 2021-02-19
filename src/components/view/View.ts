@@ -121,13 +121,13 @@ export default class View {
     }, onFinish);
 
     // Слушатель на клики по треку
-    this.track.clickEvent((clickCoord: number, evt: MouseEvent) => {
+    this.track.clickEvent((clickCoord: number, evt: PointerEvent) => {
       this.clickHandler(clickCoord, handler, evt, onFinish);
     });
 
     // Слушатель на шкалу значений
     if (this.scale) {
-      this.scale.clickEvent((clickCoord: number, evt: MouseEvent) => {
+      this.scale.clickEvent((clickCoord: number, evt: PointerEvent) => {
         this.clickHandler(clickCoord, handler, evt, onFinish);
       });
     }
@@ -137,7 +137,7 @@ export default class View {
   private clickHandler(
     clickCoord: number,
     handler: Function,
-    evt: MouseEvent,
+    evt: PointerEvent,
     onFinish: Function
   ): void {
     const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
