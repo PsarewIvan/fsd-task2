@@ -21,6 +21,7 @@ export default class Slider {
     this.valuesInputs = new ValuesInputs(this.slider, this.state);
     this.inputEvent();
     this.updateInputs();
+    this.updateStep();
   }
 
   private updateElements(state: Settings): void {
@@ -39,6 +40,14 @@ export default class Slider {
 
   private updateInputs(): void {
     this.valuesInputs.addEvent(this.setValues.bind(this));
+  }
+
+  private updateStep(): void {
+    this.stepInput.addEvent(this.changeStep.bind(this));
+  }
+
+  private changeStep(step: number): void {
+    this.slider.freeSlider('changeStep', step);
   }
 
   public getValues(): any {

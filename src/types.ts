@@ -46,6 +46,7 @@ export interface Methods {
   getValue: () => Array<number>;
   setValue: (values: number[]) => void;
   getState: () => Settings;
+  changeStep: (step: number) => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }
@@ -67,7 +68,7 @@ declare global {
   interface JQuery {
     freeSlider: (
       options?: Partial<Settings> | string,
-      arg?: Array<number> | Function
+      arg?: Array<number> | Function | number
     ) => JQuery | Array<number> | Settings | void;
   }
 }

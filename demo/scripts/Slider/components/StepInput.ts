@@ -16,4 +16,10 @@ export default class StepInput {
     label.append(this.root);
     slider.after(label);
   }
+
+  public addEvent(handler: Function): void {
+    this.root.addEventListener('change', () => {
+      handler(Number(this.root.value));
+    });
+  }
 }

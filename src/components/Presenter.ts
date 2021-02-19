@@ -68,4 +68,8 @@ export default class SliderPresenter {
   public getState(): Settings {
     return this.model.getSettings();
   }
+
+  public changeStep(step: number): void {
+    this.model.updateModel({ step: step });
+  }
 }

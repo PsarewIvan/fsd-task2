@@ -24,6 +24,10 @@ import { Settings, Methods } from './types';
       return $(this).data().freeSlider.method().getState();
     },
 
+    changeStep(step: number): void {
+      return $(this).data().freeSlider.method().changeStep(step);
+    },
+
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },
