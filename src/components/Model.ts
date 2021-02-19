@@ -49,20 +49,30 @@ export default class SliderModel {
 
   // Производит проверки перед обновлением модели
   public updateModel(newSettings: Partial<Settings>) {
-    const sortValues = newSettings.values.slice().sort((a, b) => a - b);
-    const isValuesEqual = this.isEqual(newSettings.values, sortValues);
-    const isValuesUpdate = !this.isEqual(
-      newSettings.values,
-      this.settings.values
-    );
-    const isValuesInRange: boolean = !newSettings.values.some((value) => {
+    if (newSettings.values) this.updateValues(newSettings.values);
+    if (newSettings.step) this.updateStep(newSettings.step);
+  }
+
+  // Проверяет и и вызывает метод записи новых значений слайдера
+  private updateValues(values: number[]): void {
+    const sortValues = values.slice().sort((a, b) => a - b);
+    const isValuesEqual = this.isEqual(values, sortValues);
+    const isValuesUpdate = !this.isEqual(values, this.settings.values);
+    const isValuesInRange: boolean = !values.some((value) => {
       return value < this.settings.min || value > this.settings.max;
     });
     if (isValuesEqual && isValuesUpdate && isValuesInRange) {
-      this.setSettings(newSettings);
-      this.modelChangedSubject.notify('viewUpdate', this.getSettings());
-      this.modelChangedSubject.notify('onChange', this.getSettings());
+      this.setSettings({ values: values });
     }
+  }
+
+  private updateStep(step: number): void {
+    if (typeof step !== 'number') return;
+    if (step < 0) step = 0;
+    if (step > this.settings.max - this.settings.min) {
+      step = this.settings.max - this.settings.min;
+    }
+    this.setSettings({ step: step });
   }
 
   // Записывает новые значения слайдера, объединяя новые значения
@@ -72,6 +82,8 @@ export default class SliderModel {
     oldSettings: Settings = this.settings
   ): void {
     this.settings = { ...oldSettings, ...newSettings };
+    this.modelChangedSubject.notify('viewUpdate', this.getSettings());
+    this.modelChangedSubject.notify('onChange', this.getSettings());
   }
 
   // Возвращает значения с дополнительными полями, требуемыми для
