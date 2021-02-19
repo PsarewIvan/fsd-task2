@@ -4,7 +4,7 @@ export default class ValuesInputs {
   private root: HTMLElement;
   private elements: HTMLInputElement[];
 
-  constructor(slider: JQuery, state: Settings) {
+  constructor(slider: JQuery, state: Partial<Settings>) {
     this.root = document.createElement('div');
     this.root.classList.add('slider__input-wrapper');
     this.elements = [];
@@ -33,7 +33,7 @@ export default class ValuesInputs {
     return elem;
   }
 
-  public updateInput(state: Settings): void {
+  public updateInput(state: Partial<Settings>): void {
     this.updateValue(state.values);
     this.updateAttribute(state);
   }
@@ -44,7 +44,7 @@ export default class ValuesInputs {
     });
   }
 
-  private updateAttribute(state: Settings): void {
+  private updateAttribute(state: Partial<Settings>): void {
     this.elements.forEach((input: HTMLInputElement, i: number): void => {
       input.max = this.elements[i + 1]
         ? state.values[i + 1].toString()

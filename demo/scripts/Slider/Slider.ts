@@ -13,7 +13,7 @@ export default class Slider {
   private stepInput: StepInput;
   private state: Settings;
 
-  constructor(element: JQuery, options: Settings) {
+  constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
@@ -24,12 +24,12 @@ export default class Slider {
     this.updateStep();
   }
 
-  private updateElements(state: Settings): void {
+  private updateElements(state: Partial<Settings>): void {
     this.updateState(state);
     this.valuesInputs.updateInput(this.state);
   }
 
-  private updateState(state?: Settings): void {
+  private updateState(state?: Partial<Settings>): void {
     this.state = state ? state : this.slider.freeSlider('getState');
   }
 
