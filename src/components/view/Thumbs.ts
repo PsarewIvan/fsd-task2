@@ -91,7 +91,7 @@ export default class ThumbView {
   // Метод считывает движения пользователя при движении ползунков
   public mouseMoveEvent(
     currentThumb: HTMLElement,
-    evt: MouseEvent,
+    evt: PointerEvent,
     handler: Function,
     onFinish: Function
   ): void {
@@ -100,7 +100,7 @@ export default class ThumbView {
     const direction = this.getDirectionType();
     clickOffset = evt[coord] - currentThumb.getBoundingClientRect()[direction];
 
-    const onMouseMove = (evt: MouseEvent): void => {
+    const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
       this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
     };
@@ -117,7 +117,7 @@ export default class ThumbView {
 
   // Вызывает переданный обработчик с параметрами движения ползунков
   private updateThumbsShift(
-    evt: MouseEvent,
+    evt: PointerEvent,
     currentThumb: HTMLElement,
     clickOffset: number,
     handler: Function
