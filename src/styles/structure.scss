@@ -106,7 +106,6 @@
     &__thumb {
       top: 18px;
       left: 50%;
-      transform: translateX(-50%);
 
       &::after {
         top: -18px;
@@ -170,7 +169,6 @@
     &__thumb {
       top: 50%;
       left: 23px;
-      transform: translateY(-50%);
 
       &::after {
         top: auto;

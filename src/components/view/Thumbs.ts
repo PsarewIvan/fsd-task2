@@ -44,7 +44,7 @@ export default class ThumbView {
     const shift = this.getThumbSize() / 2;
     const direction = this.getDirectionType();
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style[direction] = `calc(${percents[i] * 100}% + ${shift}px)`;
+      thumb.root.style[direction] = `${percents[i] * 100}%`;
     });
   }
 
