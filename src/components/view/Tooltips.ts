@@ -23,4 +23,9 @@ export default class Tooltips {
       `${this.state.max}`
     );
   }
+
+  public update(min: number, max: number): void {
+    this.min.root.innerHTML = min.toString();
+    this.max.root.innerHTML = max.toString();
+  }
 }

@@ -88,6 +88,18 @@ export default class View {
       settings.values
     );
     this.bar.update(this.formatPercents(settings.percents, 'bar'));
+    if (this.tooltips) {
+      this.tooltips.update(settings.min, settings.max);
+    }
+    if (this.scale) {
+      this.scale.renderMark({
+        orientation: settings.orientation,
+        markNumber: settings.scaleMark,
+        subMarkNumber: settings.subScaleMark,
+        min: settings.min,
+        max: settings.max,
+      });
+    }
 
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);

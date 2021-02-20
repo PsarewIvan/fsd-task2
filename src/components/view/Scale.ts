@@ -8,36 +8,37 @@ export default class Scale extends SliderElement {
     super(rootNode, ['free-slider__scale']);
     this.state = state;
     this.root.style[this.getSizeType()] = `${size}%`;
-    this.renderMark();
+    this.renderMark(state);
   }
 
-  private renderMark(): void {
+  public renderMark(state: ScaleState): void {
+    this.root.innerHTML = '';
     let stepValue: number =
-      (this.state.max - this.state.min) /
-      (this.state.markNumber * this.state.subMarkNumber);
-    for (
-      let i = 0;
-      i <= this.state.markNumber * this.state.subMarkNumber;
-      i += 1
-    ) {
+      (state.max - state.min) / (state.markNumber * state.subMarkNumber);
+    for (let i = 0; i <= state.markNumber * state.subMarkNumber; i += 1) {
       const markElement: HTMLElement = document.createElement('span');
       markElement.classList.add('free-slider__scale-mark');
-      this.setPosition(markElement, i);
-      if (i % this.state.subMarkNumber === 0) {
+      this.setPosition(state, markElement, i);
+      if (i % state.subMarkNumber === 0) {
         const markTextElement: HTMLElement = document.createElement('span');
         this.root.append(markTextElement);
         markTextElement.classList.add('free-slider__scale-text');
-        this.setPosition(markTextElement, i);
-        markTextElement.innerHTML = (stepValue * i + this.state.min).toString();
+        this.setPosition(state, markTextElement, i);
+        const markTextValue = this.round(stepValue * i + state.min, 5);
+        markTextElement.innerHTML = markTextValue.toString();
         markElement.classList.add('free-slider__scale-mark--big');
       }
       this.root.append(markElement);
     }
   }
 
-  private setPosition(element: HTMLElement, i: number): void {
+  private setPosition(
+    state: ScaleState,
+    element: HTMLElement,
+    i: number
+  ): void {
     element.style[this.getDirectionType()] = `${
-      (i * 100) / (this.state.markNumber * this.state.subMarkNumber)
+      (i * 100) / (state.markNumber * state.subMarkNumber)
     }%`;
   }
 
@@ -61,5 +62,14 @@ export default class Scale extends SliderElement {
   private getCoordType(): CoordType {
     const { orientation } = this.state;
     return orientation === 'horizontal' ? 'clientX' : 'clientY';
+  }
+
+  // Метод для округления неточных значений
+  private round(
+    number: number,
+    digits = 0,
+    base = Math.pow(10, digits)
+  ): number {
+    return Math.round(base * number) / base;
   }
 }
