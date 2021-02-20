@@ -74,11 +74,11 @@ export default class Slider {
     this.slider.freeSlider('changeMax', value);
   }
 
-  public getValues(): any {
+  private getValues(): any {
     return this.slider.freeSlider('getValue');
   }
 
-  public setValues(values: number[]): void {
+  private setValues(values: number[]): void {
     this.slider.freeSlider('setValue', values);
   }
 }
