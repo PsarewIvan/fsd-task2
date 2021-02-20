@@ -6,7 +6,7 @@ import Slider from './scripts/Slider/Slider';
 const Slider1 = new Slider($('#slider-1'), {
   min: -100,
   max: 50,
-  values: [-50],
+  values: [-25],
   step: 0.1,
   scale: true,
 });
