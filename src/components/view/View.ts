@@ -83,11 +83,11 @@ export default class View {
   // Обновляет положение движущихся элементов слайдера
   public update(settings: Settings): void {
     this.state = { type: settings.type, orientation: settings.orientation };
-    const percentsToView: Array<number> = this.formatPercentsToSubview(
-      settings.percents
+    this.thumbs.update(
+      this.formatPercents(settings.percents, 'thumb'),
+      settings.values
     );
-    this.thumbs.update(percentsToView, settings.values);
-    this.bar.update(percentsToView);
+    this.bar.update(this.formatPercents(settings.percents, 'bar'));
 
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
@@ -100,15 +100,26 @@ export default class View {
 
   // Форматирует текущее процентное значение в проценты необходимые
   // для отрисовки компонентов слайдера
-  private formatPercentsToSubview(percents: Array<number>): Array<number> {
+  private formatPercents(
+    percents: number[],
+    subViewType: 'thumb' | 'bar'
+  ): number[] {
     const trackSize: number = this.track.getTrackSize();
     const thumbsSize: number = this.thumbs.getThumbSize();
     const ratio: number = (trackSize - thumbsSize) / trackSize;
-    if (this.state.type === 'single') {
-      return [percents[0] * ratio];
-    } else if (this.state.type === 'range') {
-      return [percents[0] * ratio, percents[1] * ratio];
+    const formatPercents = [];
+    if (subViewType === 'thumb') {
+      percents.forEach((percent) => {
+        formatPercents.push(percent * ratio);
+      });
     }
+    if (subViewType === 'bar') {
+      const extraRatio: number = thumbsSize / trackSize / 2;
+      percents.forEach((percent) => {
+        formatPercents.push(percent * ratio + extraRatio);
+      });
+    }
+    return formatPercents;
   }
 
   // Создает слушателей за наблюдением состояния слайдера
