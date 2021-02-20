@@ -102,7 +102,6 @@ export default class SliderModel {
   ): void {
     this.settings = { ...oldSettings, ...newSettings };
     this.modelChangedSubject.notify('viewUpdate', this.getSettings());
-    // this.modelChangedSubject.notify('onChange', this.getSettings());
   }
 
   // Возвращает значения с дополнительными полями, требуемыми для
