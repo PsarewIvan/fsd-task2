@@ -28,6 +28,14 @@ import { Settings, Methods } from './types';
       return $(this).data().freeSlider.method().changeStep(step);
     },
 
+    changeMin(value: number): void {
+      return $(this).data().freeSlider.method().changeMin(value);
+    },
+
+    changeMax(value: number): void {
+      return $(this).data().freeSlider.method().changeMax(value);
+    },
+
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },
@@ -39,7 +47,7 @@ import { Settings, Methods } from './types';
 
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
-    args?: number[] | Function
+    args?: number[] | Function | number
   ) {
     if (typeof action === 'string' && methods[action]) {
       return methods[action].call(this, args);

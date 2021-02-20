@@ -47,6 +47,8 @@ export interface Methods {
   setValue: (values: number[]) => void;
   getState: () => Settings;
   changeStep: (step: number) => void;
+  changeMin: (value: number) => void;
+  changeMax: (value: number) => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }
