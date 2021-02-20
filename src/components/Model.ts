@@ -51,6 +51,8 @@ export default class SliderModel {
   public updateModel(newSettings: Partial<Settings>) {
     if (newSettings.values) this.updateValues(newSettings.values);
     if (newSettings.step) this.updateStep(newSettings.step);
+    if (newSettings.min) this.updateMin(newSettings.min);
+    if (newSettings.max) this.updateMax(newSettings.max);
   }
 
   // Проверяет и и вызывает метод записи новых значений слайдера
@@ -63,6 +65,7 @@ export default class SliderModel {
     });
     if (isValuesEqual && isValuesUpdate && isValuesInRange) {
       this.setSettings({ values: values });
+      this.modelChangedSubject.notify('onChange', this.getSettings());
     }
   }
 
@@ -75,6 +78,22 @@ export default class SliderModel {
     this.setSettings({ step: step });
   }
 
+  private updateMin(value: number): void {
+    if (typeof value !== 'number') return;
+    if (value >= this.settings.values[0]) {
+      value = this.settings.values[0];
+    }
+    this.setSettings({ min: value });
+  }
+
+  private updateMax(value: number): void {
+    if (typeof value !== 'number') return;
+    if (value <= this.settings.values[this.settings.values.length - 1]) {
+      value = this.settings.values[this.settings.values.length - 1];
+    }
+    this.setSettings({ max: value });
+  }
+
   // Записывает новые значения слайдера, объединяя новые значения
   // со старыми
   private setSettings(
@@ -83,7 +102,7 @@ export default class SliderModel {
   ): void {
     this.settings = { ...oldSettings, ...newSettings };
     this.modelChangedSubject.notify('viewUpdate', this.getSettings());
-    this.modelChangedSubject.notify('onChange', this.getSettings());
+    // this.modelChangedSubject.notify('onChange', this.getSettings());
   }
 
   // Возвращает значения с дополнительными полями, требуемыми для
