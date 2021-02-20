@@ -72,4 +72,12 @@ export default class SliderPresenter {
   public changeStep(step: number): void {
     this.model.updateModel({ step: step });
   }
+
+  public changeMin(value: number): void {
+    this.model.updateModel({ min: value });
+  }
+
+  public changeMax(value: number): void {
+    this.model.updateModel({ max: value });
+  }
 }
