@@ -50,9 +50,9 @@ export default class SliderModel {
   // Производит проверки перед обновлением модели
   public updateModel(newSettings: Partial<Settings>) {
     if (newSettings.values) this.updateValues(newSettings.values);
-    if (newSettings.step) this.updateStep(newSettings.step);
-    if (newSettings.min) this.updateMin(newSettings.min);
-    if (newSettings.max) this.updateMax(newSettings.max);
+    if (typeof newSettings.step === 'number') this.updateStep(newSettings.step);
+    if (typeof newSettings.min === 'number') this.updateMin(newSettings.min);
+    if (typeof newSettings.max === 'number') this.updateMax(newSettings.max);
   }
 
   // Проверяет и и вызывает метод записи новых значений слайдера
@@ -70,7 +70,6 @@ export default class SliderModel {
   }
 
   private updateStep(step: number): void {
-    if (typeof step !== 'number') return;
     if (step < 0) step = 0;
     if (step > this.settings.max - this.settings.min) {
       step = this.settings.max - this.settings.min;
@@ -79,7 +78,6 @@ export default class SliderModel {
   }
 
   private updateMin(value: number): void {
-    if (typeof value !== 'number') return;
     if (value >= this.settings.values[0]) {
       value = this.settings.values[0];
     }
@@ -87,7 +85,6 @@ export default class SliderModel {
   }
 
   private updateMax(value: number): void {
-    if (typeof value !== 'number') return;
     if (value <= this.settings.values[this.settings.values.length - 1]) {
       value = this.settings.values[this.settings.values.length - 1];
     }
