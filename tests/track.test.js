@@ -1,28 +1,41 @@
 import Track from '../src/components/view/Track';
-import { screen, getAllByText } from '@testing-library/dom';
 import '@testing-library/jest-dom/extend-expect';
+import userEvent from '@testing-library/user-event';
 
-const state = {
-  type: 'single',
+const stateHorizontal = {
   orientation: 'horizontal',
 };
 
 const stateVertical = {
-  type: 'single',
   orientation: 'vertical',
 };
 
 it('Render Track', () => {
-  const track = new Track(document.body, state);
+  const track = new Track(document.body, stateHorizontal);
   expect(track.root).toBeInTheDocument();
 });
 
 it('Accepts `className`', () => {
-  const track = new Track(document.body, state);
+  const track = new Track(document.body, stateHorizontal);
   expect(track.root).toHaveClass('free-slider__track');
 });
 
-// it('Return sizes for horizontal', () => {
-//   const track = new Track(document.body, state);
-//   expect(track.getTrackSize()).toBe(100);
-// });
+it('Return sizes for horizontal', () => {
+  const track = new Track(document.body, stateHorizontal);
+  Object.defineProperty(track.root, 'offsetWidth', { value: 720 });
+  expect(track.getTrackSize()).toBe(720);
+});
+
+it('Return sizes for vertical', () => {
+  const track = new Track(document.body, stateVertical);
+  Object.defineProperty(track.root, 'offsetHeight', { value: 720 });
+  expect(track.getTrackSize()).toBe(720);
+});
+
+it('Click to track listener', () => {
+  const track = new Track(document.body, stateHorizontal);
+  const handler = jest.fn();
+  track.clickEvent(handler);
+  userEvent.click(track.root);
+  expect(handler).toHaveReturned();
+});
