@@ -94,10 +94,10 @@ export default class ThumbView {
     handler: Function,
     onFinish: Function
   ): void {
-    let clickOffset: number;
     const coord = this.getCoordType();
     const direction = this.getDirectionType();
-    clickOffset = evt[coord] - currentThumb.getBoundingClientRect()[direction];
+    const clickOffset: number =
+      evt[coord] - currentThumb.getBoundingClientRect()[direction];
 
     const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
@@ -121,9 +121,8 @@ export default class ThumbView {
     clickOffset: number,
     handler: Function
   ): void {
-    let thumbShift: number;
-    let index: number = this.getCurrentThumbIndex(currentThumb);
-    thumbShift = evt[this.getCoordType()] - clickOffset;
+    const index: number = this.getCurrentThumbIndex(currentThumb);
+    const thumbShift: number = evt[this.getCoordType()] - clickOffset;
     handler(thumbShift, index);
   }
 
