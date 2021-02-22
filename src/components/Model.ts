@@ -44,6 +44,10 @@ export default class SliderModel {
     }
 
     // Тут нужны дополнительные проверки входных данных
+    options.values.forEach((value: number, i: number): void => {
+      if (value < options.min) options.values[i] = options.min;
+      if (value > options.max) options.values[i] = options.max;
+    });
     this.setSettings(options, defaultParam);
   }
 
