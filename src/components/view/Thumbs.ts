@@ -41,7 +41,6 @@ export default class ThumbView {
 
   // Обновляет местоположение ползунков на слайдере
   public updatePosition(percents: Array<number>): void {
-    const shift = this.getThumbSize() / 2;
     const direction = this.getDirectionType();
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
       thumb.root.style[direction] = `${percents[i] * 100}%`;
