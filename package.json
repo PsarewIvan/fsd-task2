@@ -10,7 +10,8 @@
     "start": "cross-env NODE_ENV=development webpack serve --host 0.0.0.0 --mode development",
     "stats": "webpack --json > stats.json && webpack-bundle-analyzer stats.json",
     "deploy": "gh-pages -d dist",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "browserslist": "> 0.25%, not dead",
   "author": "Ivan Psarev",
