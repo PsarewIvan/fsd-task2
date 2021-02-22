@@ -31,7 +31,6 @@ describe('Global testing', () => {
 
   it('Mouse listener must be set root.ondragstart to false', () => {
     const thumbs = new Thumbs(document.body, state);
-    const mock = jest.fn(() => false);
     thumbs.mouseListener(thumbs.thumbs[0].root);
     expect(thumbs.thumbs[0].root.ondragstart()).toBe(false);
   });
