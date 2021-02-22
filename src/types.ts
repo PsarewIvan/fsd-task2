@@ -25,7 +25,7 @@ export interface ExpandedState {
   orientation: SliderOrientation;
   min: number;
   max: number;
-  isHints: boolean;
+  hints: boolean;
 }
 
 export interface ScaleState {

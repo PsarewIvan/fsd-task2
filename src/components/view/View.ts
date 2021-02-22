@@ -57,7 +57,7 @@ export default class View {
       orientation: settings.orientation,
       min: settings.min,
       max: settings.max,
-      isHints: settings.hints,
+      hints: settings.hints,
     });
     if (settings.scale) {
       const percentSize: number =
