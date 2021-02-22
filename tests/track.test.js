@@ -32,6 +32,22 @@ it('Return sizes for vertical', () => {
   expect(track.getTrackSize()).toBe(720);
 });
 
+it('Return distance to screen for horizontal', () => {
+  const track = new Track(document.body, stateHorizontal);
+  track.root.getBoundingClientRect = jest.fn(() => ({
+    left: 200,
+  }));
+  expect(track.getDistanceToScreen()).toBe(200);
+});
+
+it('Return distance to screen for vertical', () => {
+  const track = new Track(document.body, stateVertical);
+  track.root.getBoundingClientRect = jest.fn(() => ({
+    top: 150,
+  }));
+  expect(track.getDistanceToScreen()).toBe(150);
+});
+
 it('Click to track listener', () => {
   const track = new Track(document.body, stateHorizontal);
   const handler = jest.fn();
