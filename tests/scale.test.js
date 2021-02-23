@@ -16,7 +16,7 @@ function pointerEvent(node, eventType) {
 const scaleWidth = 90;
 let scale;
 
-describe('Check horizontal', () => {
+describe('Check all orientation', () => {
   const state = {
     max: 500,
     min: 300,
@@ -54,49 +54,7 @@ describe('Check horizontal', () => {
     expect(markNumber).toBe(11);
   });
 
-  it('The first mark style left must be 0%', () => {
-    const styleLeft = document.querySelectorAll('.free-slider__scale-mark')[0]
-      .style.left;
-    expect(styleLeft).toBe('0%');
-  });
-
-  it('The last mark style left must be 100%', () => {
-    const marks = document.querySelectorAll('.free-slider__scale-mark');
-    const styleLeft = marks[0].style.left;
-    expect(styleLeft).toBe('0%');
-  });
-
-  it('The first mark style left must be 0%', () => {
-    const marks = document.querySelectorAll('.free-slider__scale-mark');
-    const styleLeft = marks[marks.length - 1].style.left;
-    expect(styleLeft).toBe('100%');
-  });
-
-  it('The second mark style left must be 2%', () => {
-    const marks = document.querySelectorAll('.free-slider__scale-mark');
-    const styleLeft = marks[1].style.left;
-    expect(styleLeft).toBe('2%');
-  });
-
-  it('The first big mark style left must be 0%', () => {
-    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
-    const styleLeft = bigMarks[0].style.left;
-    expect(styleLeft).toBe('0%');
-  });
-
-  it('The last big mark style left must be 100%', () => {
-    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
-    const styleLeft = bigMarks[bigMarks.length - 1].style.left;
-    expect(styleLeft).toBe('100%');
-  });
-
-  it('The second big mark style left must be 10%', () => {
-    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
-    const styleLeft = bigMarks[1].style.left;
-    expect(styleLeft).toBe('10%');
-  });
-
-  it('The number of text-mark should be be to the number of big-mark', () => {
+  it('The number of text-mark should be to the number of big-mark', () => {
     const textMarks = document.querySelectorAll('.free-slider__scale-text');
     const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
     expect(textMarks.length === bigMarks.length).toBeTruthy();
@@ -116,8 +74,62 @@ describe('Check horizontal', () => {
     const textMarks = document.querySelectorAll('.free-slider__scale-text');
     expect(textMarks[1].innerHTML).toBe('320');
   });
+});
 
-  it('Click on scale must be call handler with clientX values on horizontal', () => {
+describe('Check horizontal', () => {
+  const state = {
+    max: 250,
+    min: 100,
+    markNumber: 20,
+    subMarkNumber: 5,
+    orientation: 'horizontal',
+  };
+
+  beforeEach(() => {
+    scale = new Scale(document.body, scaleWidth, state);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('The first mark style left must be 0%', () => {
+    const styleLeft = document.querySelectorAll('.free-slider__scale-mark')[0]
+      .style.left;
+    expect(styleLeft).toBe('0%');
+  });
+
+  it('The last mark style left must be 100%', () => {
+    const marks = document.querySelectorAll('.free-slider__scale-mark');
+    const styleLeft = marks[marks.length - 1].style.left;
+    expect(styleLeft).toBe('100%');
+  });
+
+  it('The second mark style left must be 1%', () => {
+    const marks = document.querySelectorAll('.free-slider__scale-mark');
+    const styleLeft = marks[1].style.left;
+    expect(styleLeft).toBe('1%');
+  });
+
+  it('The first big mark style left must be 0%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleLeft = bigMarks[0].style.left;
+    expect(styleLeft).toBe('0%');
+  });
+
+  it('The last big mark style left must be 100%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleLeft = bigMarks[bigMarks.length - 1].style.left;
+    expect(styleLeft).toBe('100%');
+  });
+
+  it('The second big mark style left must be 5%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleLeft = bigMarks[1].style.left;
+    expect(styleLeft).toBe('5%');
+  });
+
+  it('Click on scale must be call handler with clientX values', () => {
     let values;
     const handler = jest.fn((clientX) => {
       values = clientX;
@@ -126,9 +138,62 @@ describe('Check horizontal', () => {
     pointerEvent(scale.root, 'pointerdown');
     expect(values).toBe(500);
   });
+});
 
-  it('Click on scale must be call handler with clientY values on vertical', () => {
-    scale.state.orientation = 'vertical';
+describe('Check vertical', () => {
+  const state = {
+    max: 1000,
+    min: 800,
+    markNumber: 5,
+    subMarkNumber: 4,
+    orientation: 'vertical',
+  };
+
+  beforeEach(() => {
+    scale = new Scale(document.body, scaleWidth, state);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
+
+  it('The first mark style top must be 0%', () => {
+    const styleTop = document.querySelectorAll('.free-slider__scale-mark')[0]
+      .style.top;
+    expect(styleTop).toBe('0%');
+  });
+
+  it('The last mark style top must be 100%', () => {
+    const marks = document.querySelectorAll('.free-slider__scale-mark');
+    const styleTop = marks[marks.length - 1].style.top;
+    expect(styleTop).toBe('100%');
+  });
+
+  it('The second mark style top must be 5%', () => {
+    const marks = document.querySelectorAll('.free-slider__scale-mark');
+    const styleTop = marks[1].style.top;
+    expect(styleTop).toBe('5%');
+  });
+
+  it('The first big mark style top must be 0%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleTop = bigMarks[0].style.top;
+    expect(styleTop).toBe('0%');
+  });
+
+  it('The last big mark style top must be 100%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleTop = bigMarks[bigMarks.length - 1].style.top;
+    expect(styleTop).toBe('100%');
+  });
+
+  it('The second big mark style top must be 20%', () => {
+    const bigMarks = document.querySelectorAll('.free-slider__scale-mark--big');
+    const styleTop = bigMarks[1].style.top;
+    expect(styleTop).toBe('20%');
+  });
+
+  it('Click on scale must be call handler with clientY values', () => {
     let values;
     const handler = jest.fn((clientY) => {
       values = clientY;
@@ -138,5 +203,3 @@ describe('Check horizontal', () => {
     expect(values).toBe(300);
   });
 });
-
-describe('Check vertical', () => {});
