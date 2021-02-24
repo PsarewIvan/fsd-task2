@@ -1,9 +1,8 @@
 import Scale from '../src/components/view/Scale';
 import '@testing-library/jest-dom/extend-expect';
-import userEvent from '@testing-library/user-event';
 
 function pointerEvent(node, eventType) {
-  // Почему-то PointerEvent не определяется
+  // Почему-то PointerEvent не определяется как конструктор
   const event = new MouseEvent(eventType, {
     view: window,
     bubbles: true,
