@@ -42,12 +42,15 @@ export default class View {
       type: settings.type,
       orientation: settings.orientation,
     });
-    this.rail = new Rail(this.slider);
+    this.rail = new Rail(this.slider, {
+      type: settings.type,
+      orientation: settings.orientation,
+    });
     this.bar = new Bar(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
     });
-    this.thumbs = new Thumbs(this.slider, {
+    this.thumbs = new Thumbs(this.rail.root, {
       type: settings.type,
       orientation: settings.orientation,
       min: settings.min,
@@ -55,7 +58,7 @@ export default class View {
       hints: settings.hints,
     });
     if (settings.scale) {
-      this.scale = new Scale(this.slider, this.calcScaleWidth(), {
+      this.scale = new Scale(this.rail.root, {
         orientation: settings.orientation,
         markNumber: settings.scaleMark,
         subMarkNumber: settings.subScaleMark,
@@ -83,11 +86,8 @@ export default class View {
 
   // Обновляет положение движущихся элементов слайдера
   public update(settings: Settings): void {
-    this.thumbs.update(
-      this.formatPercents(settings.percents, 'thumb'),
-      settings.values
-    );
-    this.bar.update(this.formatPercents(settings.percents, 'bar'));
+    this.thumbs.update(settings.percents, settings.values);
+    this.bar.update(this.formatPercents(settings.percents));
     if (this.tooltips) {
       this.tooltips.update(settings.min, settings.max);
     }
@@ -111,26 +111,16 @@ export default class View {
   }
 
   // Форматирует текущее процентное значение в проценты необходимые
-  // для отрисовки компонентов слайдера
-  private formatPercents(
-    percents: number[],
-    subViewType: 'thumb' | 'bar'
-  ): number[] {
+  // для отрисовки бара
+  private formatPercents(percents: number[]): number[] {
     const trackSize: number = this.track.getTrackSize();
     const thumbsSize: number = this.thumbs.getThumbSize();
     const ratio: number = (trackSize - thumbsSize) / trackSize;
+    const extraRatio: number = thumbsSize / trackSize / 2;
     const formatPercents = [];
-    if (subViewType === 'thumb') {
-      percents.forEach((percent) => {
-        formatPercents.push(percent * ratio);
-      });
-    }
-    if (subViewType === 'bar') {
-      const extraRatio: number = thumbsSize / trackSize / 2;
-      percents.forEach((percent) => {
-        formatPercents.push(percent * ratio + extraRatio);
-      });
-    }
+    percents.forEach((percent) => {
+      formatPercents.push(percent * ratio + extraRatio);
+    });
     return formatPercents;
   }
 
@@ -182,12 +172,9 @@ export default class View {
   // Возвращает значение смещения ползунка в процентах, относительно
   // ширины рабочей области слайдера
   private percentFromThumbShift(thumbShift: number): number {
-    const trackSize: number = this.track.getTrackSize();
-    const distanceFromTrackToScreen: number = this.track.getDistanceToScreen();
-    const thumbSize: number = this.thumbs.getThumbSize();
-    let percent: number =
-      (thumbShift - distanceFromTrackToScreen) / (trackSize - thumbSize);
-
+    const railSize: number = this.rail.getSize();
+    const distanceFromRailToScreen: number = this.rail.getDistanceToScreen();
+    let percent: number = (thumbShift - distanceFromRailToScreen) / railSize;
     if (percent <= 0) {
       percent = 0;
     }
@@ -195,13 +182,5 @@ export default class View {
       percent = 1;
     }
     return percent;
-  }
-
-  private calcScaleWidth(): number {
-    return (
-      ((this.track.getTrackSize() - this.thumbs.getThumbSize()) /
-        this.track.getTrackSize()) *
-      100
-    );
   }
 }

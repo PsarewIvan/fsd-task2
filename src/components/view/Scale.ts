@@ -4,10 +4,9 @@ import { ScaleState, DirectionType, CoordType, SizeTypeCss } from '../../types';
 export default class Scale extends SliderElement {
   private state: ScaleState;
 
-  constructor(rootNode: HTMLElement, size: number, state: ScaleState) {
+  constructor(rootNode: HTMLElement, state: ScaleState) {
     super(rootNode, ['free-slider__scale']);
     this.state = state;
-    this.root.style[this.getSizeType()] = `${size}%`;
     this.renderMark(state);
   }
 
