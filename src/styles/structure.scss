@@ -19,6 +19,7 @@
     position: absolute;
     display: block;
     box-sizing: border-box;
+    pointer-events: none;
   }
 
   &__min,
@@ -42,6 +43,7 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
+    pointer-events: all;
 
     cursor: pointer;
     touch-action: none;
@@ -59,6 +61,7 @@
 
   &__scale {
     position: absolute;
+    pointer-events: all;
 
     &::after {
       content: '';
