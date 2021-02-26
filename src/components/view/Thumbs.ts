@@ -1,6 +1,6 @@
 import SliderElement from './SliderElement';
 import {
-  ExpandedState,
+  Settings,
   RequiredThumb,
   DirectionType,
   SizeType,
@@ -8,10 +8,10 @@ import {
 } from '../../types';
 
 export default class ThumbView {
-  private state: ExpandedState;
+  readonly state: Settings;
   private thumbs: SliderElement[];
 
-  constructor(rootNode: HTMLElement, state: ExpandedState) {
+  constructor(rootNode: HTMLElement, state: Settings) {
     this.state = state;
     this.render(rootNode);
   }
@@ -143,8 +143,7 @@ export default class ThumbView {
     return reqThumdState;
   }
 
-  // Вспомогательный метод, возвращает значение от ползунка
-  // до края экрана
+  // Вспомогательные методы
   private getDistance(elem: HTMLElement): number {
     return elem.getBoundingClientRect()[this.getDirectionType()];
   }

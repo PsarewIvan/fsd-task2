@@ -1,12 +1,12 @@
 import SliderElement from './SliderElement';
-import { TooltipsState } from '../../types';
+import { Settings } from '../../types';
 
 export default class Tooltips {
-  private state: TooltipsState;
+  readonly state: Settings;
   private min: SliderElement;
   private max: SliderElement;
 
-  constructor(rootNode: HTMLElement, state: TooltipsState) {
+  constructor(rootNode: HTMLElement, state: Settings) {
     this.state = state;
     this.render(rootNode);
   }

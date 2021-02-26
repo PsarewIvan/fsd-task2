@@ -38,39 +38,15 @@ export default class View {
   // в созданном родительском компоненте, который помещается
   // в элемент на котором был создан слайдер
   private render(settings: Settings): void {
-    this.track = new Track(this.slider, {
-      type: settings.type,
-      orientation: settings.orientation,
-    });
-    this.rail = new Rail(this.slider, {
-      type: settings.type,
-      orientation: settings.orientation,
-    });
-    this.bar = new Bar(this.slider, {
-      type: settings.type,
-      orientation: settings.orientation,
-    });
-    this.thumbs = new Thumbs(this.rail.root, {
-      type: settings.type,
-      orientation: settings.orientation,
-      min: settings.min,
-      max: settings.max,
-      hints: settings.hints,
-    });
+    this.track = new Track(this.slider, settings);
+    this.rail = new Rail(this.slider, settings);
+    this.bar = new Bar(this.slider, settings);
+    this.thumbs = new Thumbs(this.rail.root, settings);
     if (settings.scale) {
-      this.scale = new Scale(this.rail.root, {
-        orientation: settings.orientation,
-        markNumber: settings.scaleMark,
-        subMarkNumber: settings.subScaleMark,
-        min: settings.min,
-        max: settings.max,
-      });
+      this.scale = new Scale(this.rail.root, settings);
     }
     if (settings.tooltips) {
-      this.tooltips = new Tooltips(this.slider, {
-        min: settings.min,
-        max: settings.max,
-      });
+      this.tooltips = new Tooltips(this.slider, settings);
     }
   }
 
@@ -92,13 +68,7 @@ export default class View {
       this.tooltips.update(settings.min, settings.max);
     }
     if (this.scale) {
-      this.scale.renderMark({
-        orientation: settings.orientation,
-        markNumber: settings.scaleMark,
-        subMarkNumber: settings.subScaleMark,
-        min: settings.min,
-        max: settings.max,
-      });
+      this.scale.renderMark(settings);
     }
 
     if (this.onUpdate && this.isFirstChange) {

@@ -1,24 +1,24 @@
 import SliderElement from './SliderElement';
-import { ScaleState, DirectionType, CoordType, SizeTypeCss } from '../../types';
+import { Settings, DirectionType, CoordType, SizeTypeCss } from '../../types';
 
 export default class Scale extends SliderElement {
-  private state: ScaleState;
+  readonly state: Settings;
 
-  constructor(rootNode: HTMLElement, state: ScaleState) {
+  constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__scale']);
     this.state = state;
     this.renderMark(state);
   }
 
-  public renderMark(state: ScaleState): void {
+  public renderMark(state: Settings): void {
     this.root.innerHTML = '';
     let stepValue: number =
-      (state.max - state.min) / (state.markNumber * state.subMarkNumber);
-    for (let i = 0; i <= state.markNumber * state.subMarkNumber; i += 1) {
+      (state.max - state.min) / (state.scaleMark * state.subScaleMark);
+    for (let i = 0; i <= state.scaleMark * state.subScaleMark; i += 1) {
       const markElement: HTMLElement = document.createElement('span');
       markElement.classList.add('free-slider__scale-mark');
       this.setPosition(state, markElement, i);
-      if (i % state.subMarkNumber === 0) {
+      if (i % state.subScaleMark === 0) {
         const markTextElement: HTMLElement = document.createElement('span');
         this.root.append(markTextElement);
         markTextElement.classList.add('free-slider__scale-text');
@@ -31,13 +31,9 @@ export default class Scale extends SliderElement {
     }
   }
 
-  private setPosition(
-    state: ScaleState,
-    element: HTMLElement,
-    i: number
-  ): void {
+  private setPosition(state: Settings, element: HTMLElement, i: number): void {
     element.style[this.getDirectionType()] = `${
-      (i * 100) / (state.markNumber * state.subMarkNumber)
+      (i * 100) / (state.scaleMark * state.subScaleMark)
     }%`;
   }
 

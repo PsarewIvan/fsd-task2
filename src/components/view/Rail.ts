@@ -1,10 +1,10 @@
 import SliderElement from './SliderElement';
-import { State, SizeType, DirectionType } from '../../types';
+import { Settings, SizeType, DirectionType } from '../../types';
 
 export default class Rail extends SliderElement {
-  private state: State;
+  readonly state: Settings;
 
-  constructor(rootNode: HTMLElement, state: State) {
+  constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__rail']);
     this.state = state;
   }

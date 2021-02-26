@@ -1,10 +1,10 @@
 import SliderElement from './SliderElement';
-import { State, DirectionType, SizeTypeCss } from '../../types';
+import { Settings, DirectionType, SizeTypeCss } from '../../types';
 
 export default class TrackView extends SliderElement {
-  private state: State;
+  readonly state: Settings;
 
-  constructor(rootNode: HTMLElement, state: State) {
+  constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__bar']);
     this.state = state;
     this.root.style.pointerEvents = 'none';
