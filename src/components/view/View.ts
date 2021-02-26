@@ -80,20 +80,6 @@ export default class View {
     }
   }
 
-  // Форматирует текущее процентное значение в проценты необходимые
-  // для отрисовки бара
-  private formatPercents(percents: number[]): number[] {
-    const trackSize: number = this.track.getTrackSize();
-    const thumbsSize: number = this.thumbs.getThumbSize();
-    const ratio: number = (trackSize - thumbsSize) / trackSize;
-    const extraRatio: number = thumbsSize / trackSize / 2;
-    const formatPercents = [];
-    percents.forEach((percent) => {
-      formatPercents.push(percent * ratio + extraRatio);
-    });
-    return formatPercents;
-  }
-
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
   public viewChanged(handler: Function, onFinish: Function) {
@@ -152,5 +138,19 @@ export default class View {
       percent = 1;
     }
     return percent;
+  }
+
+  // Форматирует текущее процентное значение в проценты необходимые
+  // для отрисовки бара
+  private formatPercents(percents: number[]): number[] {
+    const trackSize: number = this.track.getSize();
+    const thumbsSize: number = this.thumbs.getThumbSize();
+    const ratio: number = (trackSize - thumbsSize) / trackSize;
+    const extraRatio: number = thumbsSize / trackSize / 2;
+    const formatPercents = [];
+    percents.forEach((percent) => {
+      formatPercents.push(percent * ratio + extraRatio);
+    });
+    return formatPercents;
   }
 }
