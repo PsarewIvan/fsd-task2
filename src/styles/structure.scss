@@ -117,7 +117,7 @@
     }
 
     &__thumb {
-      top: 18px;
+      top: -7px;
       left: 50%;
 
       &::after {
@@ -128,7 +128,7 @@
     }
 
     &__scale {
-      top: 30px;
+      top: 4px;
       height: 20px;
       width: 100%;
       padding-top: 10px;
@@ -188,7 +188,7 @@
 
     &__thumb {
       top: 50%;
-      left: 23px;
+      left: -7px;
 
       &::after {
         top: auto;
@@ -206,7 +206,7 @@
 
     &__scale {
       top: 50%;
-      left: 35px;
+      left: 4px;
       width: 30px;
       padding-left: 10px;
       transform: translateY(-50%);
