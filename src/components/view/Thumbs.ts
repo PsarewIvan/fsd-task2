@@ -97,11 +97,15 @@ export default class ThumbView {
     const coord = this.getCoordType();
     const direction = this.getDirectionType();
     const clickOffset: number =
-      evt[coord] - currentThumb.getBoundingClientRect()[direction];
+      evt[coord] -
+      currentThumb.getBoundingClientRect()[direction] -
+      this.getThumbSize() / 2;
 
     const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
-      this.updateThumbsShift(evt, currentThumb, clickOffset, handler);
+      const index: number = this.getCurrentThumbIndex(currentThumb);
+      const thumbShift: number = evt[this.getCoordType()] - clickOffset;
+      handler(thumbShift, index);
     };
 
     const onMouseUp = (): void => {
@@ -112,18 +116,6 @@ export default class ThumbView {
 
     document.addEventListener('pointermove', onMouseMove);
     document.addEventListener('pointerup', onMouseUp);
-  }
-
-  // Вызывает переданный обработчик с параметрами движения ползунков
-  private updateThumbsShift(
-    evt: PointerEvent,
-    currentThumb: HTMLElement,
-    clickOffset: number,
-    handler: Function
-  ): void {
-    const index: number = this.getCurrentThumbIndex(currentThumb);
-    const thumbShift: number = evt[this.getCoordType()] - clickOffset;
-    handler(thumbShift, index);
   }
 
   private getCurrentThumbIndex(currentThumb: HTMLElement): number {
