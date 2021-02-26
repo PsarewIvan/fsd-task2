@@ -15,6 +15,12 @@
     }
   }
 
+  &__rail {
+    position: absolute;
+    display: block;
+    box-sizing: border-box;
+  }
+
   &__min,
   &__max {
     position: absolute;
@@ -89,6 +95,13 @@
       }
     }
 
+    &__rail {
+      top: 25px;
+      left: 10px;
+      width: calc(100% - 20px);
+      height: 7px;
+    }
+
     &__min {
       left: 0;
     }
@@ -153,6 +166,13 @@
         width: 5px;
         height: 100%;
       }
+    }
+
+    &__rail {
+      top: 10px;
+      left: 30px;
+      width: 7px;
+      height: calc(100% - 20px);
     }
 
     &__min,
