@@ -12,20 +12,19 @@ function pointerEvent(node, eventType) {
   });
   node.dispatchEvent(event);
 }
-const scaleWidth = 90;
 let scale;
 
 describe('Check all orientation', () => {
   const state = {
     max: 500,
     min: 300,
-    markNumber: 10,
-    subMarkNumber: 5,
+    scaleMark: 10,
+    subScaleMark: 5,
     orientation: 'horizontal',
   };
 
   beforeEach(() => {
-    scale = new Scale(document.body, scaleWidth, state);
+    scale = new Scale(document.body, state);
   });
 
   afterEach(() => {
@@ -41,7 +40,7 @@ describe('Check all orientation', () => {
   });
 
   it('The total number of mark must be 51', () => {
-    const markNumber = document.querySelectorAll('.free-slider__scale-mark')
+    const markNumber = scale.root.querySelectorAll('.free-slider__scale-mark')
       .length;
     expect(markNumber).toBe(51);
   });
@@ -79,13 +78,13 @@ describe('Check horizontal', () => {
   const state = {
     max: 250,
     min: 100,
-    markNumber: 20,
-    subMarkNumber: 5,
+    scaleMark: 20,
+    subScaleMark: 5,
     orientation: 'horizontal',
   };
 
   beforeEach(() => {
-    scale = new Scale(document.body, scaleWidth, state);
+    scale = new Scale(document.body, state);
   });
 
   afterEach(() => {
@@ -143,13 +142,13 @@ describe('Check vertical', () => {
   const state = {
     max: 1000,
     min: 800,
-    markNumber: 5,
-    subMarkNumber: 4,
+    scaleMark: 5,
+    subScaleMark: 4,
     orientation: 'vertical',
   };
 
   beforeEach(() => {
-    scale = new Scale(document.body, scaleWidth, state);
+    scale = new Scale(document.body, state);
   });
 
   afterEach(() => {

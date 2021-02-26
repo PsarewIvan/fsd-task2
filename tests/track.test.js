@@ -20,17 +20,17 @@ it('Accepts `className`', () => {
   expect(track.root).toHaveClass('free-slider__track');
 });
 
-it('Return sizes for horizontal', () => {
-  const track = new Track(document.body, stateHorizontal);
-  Object.defineProperty(track.root, 'offsetWidth', { value: 720 });
-  expect(track.getTrackSize()).toBe(720);
-});
+// it('Return sizes for horizontal', () => {
+//   const track = new Track(document.body, stateHorizontal);
+//   Object.defineProperty(track.root, 'offsetWidth', { value: 720 });
+//   expect(track.getTrackSize()).toBe(720);
+// });
 
-it('Return sizes for vertical', () => {
-  const track = new Track(document.body, stateVertical);
-  Object.defineProperty(track.root, 'offsetHeight', { value: 720 });
-  expect(track.getTrackSize()).toBe(720);
-});
+// it('Return sizes for vertical', () => {
+//   const track = new Track(document.body, stateVertical);
+//   Object.defineProperty(track.root, 'offsetHeight', { value: 720 });
+//   expect(track.getTrackSize()).toBe(720);
+// });
 
 it('Return distance to screen for horizontal', () => {
   const track = new Track(document.body, stateHorizontal);
