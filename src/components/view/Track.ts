@@ -1,16 +1,12 @@
 import SliderElement from './SliderElement';
-import { Settings, SizeType, DirectionType, CoordType } from '../../types';
+import { Settings } from '../../types';
 
 export default class TrackView extends SliderElement {
   readonly state: Settings;
 
   constructor(rootNode: HTMLElement, state: Settings) {
-    super(rootNode, ['free-slider__track']);
+    super(rootNode, ['free-slider__track'], state.orientation);
     this.state = state;
-  }
-
-  public getTrackSize(): number {
-    return this.root[this.getSizeType()];
   }
 
   // Возвращает расстояние от трека до края экрана
@@ -24,20 +20,5 @@ export default class TrackView extends SliderElement {
       evt.preventDefault();
       handler(evt[this.getCoordType()], evt);
     });
-  }
-
-  private getDirectionType(): DirectionType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'left' : 'top';
-  }
-
-  private getSizeType(): SizeType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
-  }
-
-  private getCoordType(): CoordType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }

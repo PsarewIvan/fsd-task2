@@ -1,11 +1,11 @@
 import SliderElement from './SliderElement';
-import { Settings, DirectionType, CoordType, SizeTypeCss } from '../../types';
+import { Settings } from '../../types';
 
 export default class Scale extends SliderElement {
   readonly state: Settings;
 
   constructor(rootNode: HTMLElement, state: Settings) {
-    super(rootNode, ['free-slider__scale']);
+    super(rootNode, ['free-slider__scale'], state.orientation);
     this.state = state;
     this.renderMark(state);
   }
@@ -42,21 +42,6 @@ export default class Scale extends SliderElement {
       evt.preventDefault();
       handler(evt[this.getCoordType()], evt);
     });
-  }
-
-  private getDirectionType(): DirectionType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'left' : 'top';
-  }
-
-  private getSizeType(): SizeTypeCss {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'width' : 'height';
-  }
-
-  private getCoordType(): CoordType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 
   // Метод для округления неточных значений

@@ -1,11 +1,11 @@
 import SliderElement from './SliderElement';
-import { Settings, DirectionType, SizeTypeCss } from '../../types';
+import { Settings } from '../../types';
 
-export default class TrackView extends SliderElement {
+export default class Bar extends SliderElement {
   readonly state: Settings;
 
   constructor(rootNode: HTMLElement, state: Settings) {
-    super(rootNode, ['free-slider__bar']);
+    super(rootNode, ['free-slider__bar'], state.orientation);
     this.state = state;
     this.root.style.pointerEvents = 'none';
   }
@@ -20,15 +20,5 @@ export default class TrackView extends SliderElement {
     } else {
       this.root.style[this.getSizeType()] = `${percents[0] * 100}%`;
     }
-  }
-
-  private getDirectionType(): DirectionType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'left' : 'top';
-  }
-
-  private getSizeType(): SizeTypeCss {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'width' : 'height';
   }
 }

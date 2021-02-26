@@ -1,11 +1,5 @@
 import SliderElement from './SliderElement';
-import {
-  Settings,
-  RequiredThumb,
-  DirectionType,
-  SizeType,
-  CoordType,
-} from '../../types';
+import { Settings, RequiredThumb } from '../../types';
 
 export default class ThumbView {
   readonly state: Settings;
@@ -20,14 +14,25 @@ export default class ThumbView {
   private render(rootNode: HTMLElement): void {
     if (this.state.type === 'range') {
       this.thumbs = [
-        new SliderElement(rootNode, ['free-slider__thumb']),
-        new SliderElement(rootNode, [
-          'free-slider__thumb',
-          'free-slider__thumb--second',
-        ]),
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb'],
+          this.state.orientation
+        ),
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb', 'free-slider__thumb--second'],
+          this.state.orientation
+        ),
       ];
     } else {
-      this.thumbs = [new SliderElement(rootNode, ['free-slider__thumb'])];
+      this.thumbs = [
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb'],
+          this.state.orientation
+        ),
+      ];
     }
   }
 
@@ -41,9 +46,8 @@ export default class ThumbView {
 
   // Обновляет местоположение ползунков на слайдере
   public updatePosition(percents: Array<number>): void {
-    const direction = this.getDirectionType();
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style[direction] = `${percents[i] * 100}%`;
+      thumb.root.style[thumb.getDirectionType()] = `${percents[i] * 100}%`;
     });
   }
 
@@ -55,56 +59,46 @@ export default class ThumbView {
     });
   }
 
-  // Возвращает ширину или высоту ползунков
-  // в зависимости от ориентации слайдера.
-  // В случае нескольких ползунков, возвращает ширину первого
-  public getThumbSize(): number {
-    return this.thumbs[0].root[this.getSizeType()];
-  }
-
   // Создает слушателей на ползунках для обработки событий
   // работы пользователя
   public addMouseListener(handler: Function, onFinish: Function): void {
     this.thumbs.forEach((thumb: SliderElement) => {
-      this.mouseListener(thumb.root, handler, onFinish);
+      this.mouseListener(thumb, handler, onFinish);
     });
   }
 
   // Слушатель для обработки пользовательских событий
   // при клике на ползунок и его движении
   private mouseListener(
-    currentThumb: HTMLElement,
+    currentThumb: SliderElement,
     handler: Function,
     onFinish: Function
   ): void {
-    currentThumb.addEventListener('pointerdown', (evt: PointerEvent) => {
+    currentThumb.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
       this.mouseMoveEvent(currentThumb, evt, handler, onFinish);
     });
 
-    currentThumb.ondragstart = function () {
+    currentThumb.root.ondragstart = function () {
       return false;
     };
   }
 
   // Метод считывает движения пользователя при движении ползунков
   public mouseMoveEvent(
-    currentThumb: HTMLElement,
+    currentThumb: SliderElement,
     evt: PointerEvent,
     handler: Function,
     onFinish: Function
   ): void {
-    const coord = this.getCoordType();
-    const direction = this.getDirectionType();
+    const coord = currentThumb.getCoordType();
     const clickOffset: number =
-      evt[coord] -
-      currentThumb.getBoundingClientRect()[direction] -
-      this.getThumbSize() / 2;
+      evt[coord] - currentThumb.getDistanceToScreen() - this.getThumbSize() / 2;
 
     const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
       const index: number = this.getCurrentThumbIndex(currentThumb);
-      const thumbShift: number = evt[this.getCoordType()] - clickOffset;
+      const thumbShift: number = evt[coord] - clickOffset;
       handler(thumbShift, index);
     };
 
@@ -118,8 +112,8 @@ export default class ThumbView {
     document.addEventListener('pointerup', onMouseUp);
   }
 
-  private getCurrentThumbIndex(currentThumb: HTMLElement): number {
-    return this.thumbs.findIndex((thumb) => thumb.root === currentThumb);
+  private getCurrentThumbIndex(currentThumb: SliderElement): number {
+    return this.thumbs.findIndex((thumb) => thumb.root === currentThumb.root);
   }
 
   // Возвращает объект с данными ползунка, который необходимо
@@ -127,39 +121,23 @@ export default class ThumbView {
   public requiredThumb(clickOffset: number): RequiredThumb {
     const reqThumdState: RequiredThumb = {
       index: 0,
-      root: this.thumbs[0].root,
+      root: this.thumbs[0],
     };
     if (this.state.type === 'single') {
       return reqThumdState;
     }
 
     const range: number =
-      this.getDistance(this.thumbs[1].root) -
-      this.getDistance(this.thumbs[0].root);
-    if (clickOffset > this.getDistance(this.thumbs[0].root) + range / 2) {
+      this.thumbs[1].getDistanceToScreen() -
+      this.thumbs[0].getDistanceToScreen();
+    if (clickOffset > this.thumbs[0].getDistanceToScreen() + range / 2) {
       reqThumdState.index = 1;
-      reqThumdState.root = this.thumbs[1].root;
+      reqThumdState.root = this.thumbs[1];
     }
     return reqThumdState;
   }
 
-  // Вспомогательные методы
-  private getDistance(elem: HTMLElement): number {
-    return elem.getBoundingClientRect()[this.getDirectionType()];
-  }
-
-  private getDirectionType(): DirectionType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'left' : 'top';
-  }
-
-  private getSizeType(): SizeType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
-  }
-
-  private getCoordType(): CoordType {
-    const { orientation } = this.state;
-    return orientation === 'horizontal' ? 'clientX' : 'clientY';
+  public getThumbSize(): number {
+    return this.thumbs[0].getSize();
   }
 }

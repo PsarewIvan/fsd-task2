@@ -15,11 +15,13 @@ export default class Tooltips {
     this.min = new SliderElement(
       rootNode,
       ['free-slider__min'],
+      this.state.orientation,
       `${this.state.min}`
     );
     this.max = new SliderElement(
       rootNode,
       ['free-slider__max'],
+      this.state.orientation,
       `${this.state.max}`
     );
   }
