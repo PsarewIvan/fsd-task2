@@ -2,7 +2,7 @@
 // связанную с отображением, а также реагирует на взаимодействие
 // пользователя с приложением
 
-import { Settings, State, RequiredThumb, ThumbType } from '../../types';
+import { Settings, RequiredThumb, SliderOrientation } from '../../types';
 import Track from './Track';
 import Thumbs from './Thumbs';
 import Bar from './Bar';
@@ -20,7 +20,6 @@ export default class View {
   private scale?: Scale;
   private thumbs: Thumbs;
   private tooltips?: Tooltips;
-  private state: State;
 
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
@@ -28,6 +27,7 @@ export default class View {
     this.onUpdate = settings.onUpdate;
     this.isFirstChange = true;
 
+    this.createWrapper(settings.orientation);
     this.render(settings);
     this.update(settings);
   }
@@ -36,18 +36,11 @@ export default class View {
   // в созданном родительском компоненте, который помещается
   // в элемент на котором был создан слайдер
   private render(settings: Settings): void {
-    this.slider = document.createElement('span');
-    if (settings.orientation === 'vertical') {
-      this.slider.classList.add('free-slider', 'free-slider--vertical');
-    } else if (settings.orientation === 'horizontal') {
-      this.slider.classList.add('free-slider', 'free-slider--horizontal');
-    }
-    this.root.append(this.slider);
-
     this.track = new Track(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
     });
+
     this.bar = new Bar(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
@@ -60,11 +53,7 @@ export default class View {
       hints: settings.hints,
     });
     if (settings.scale) {
-      const percentSize: number =
-        ((this.track.getTrackSize() - this.thumbs.getThumbSize()) /
-          this.track.getTrackSize()) *
-        100;
-      this.scale = new Scale(this.slider, percentSize, {
+      this.scale = new Scale(this.slider, this.calcScaleWidth(), {
         orientation: settings.orientation,
         markNumber: settings.scaleMark,
         subMarkNumber: settings.subScaleMark,
@@ -80,9 +69,18 @@ export default class View {
     }
   }
 
+  private createWrapper(orientation: SliderOrientation): void {
+    this.slider = document.createElement('span');
+    if (orientation === 'vertical') {
+      this.slider.classList.add('free-slider', 'free-slider--vertical');
+    } else if (orientation === 'horizontal') {
+      this.slider.classList.add('free-slider', 'free-slider--horizontal');
+    }
+    this.root.append(this.slider);
+  }
+
   // Обновляет положение движущихся элементов слайдера
   public update(settings: Settings): void {
-    this.state = { type: settings.type, orientation: settings.orientation };
     this.thumbs.update(
       this.formatPercents(settings.percents, 'thumb'),
       settings.values
@@ -103,11 +101,11 @@ export default class View {
 
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
+      this.isFirstChange = false;
     }
     if (this.onChange && !this.isFirstChange) {
       this.onChange(settings.values);
     }
-    this.isFirstChange = false;
   }
 
   // Форматирует текущее процентное значение в проценты необходимые
@@ -195,5 +193,13 @@ export default class View {
       percent = 1;
     }
     return percent;
+  }
+
+  private calcScaleWidth(): number {
+    return (
+      ((this.track.getTrackSize() - this.thumbs.getThumbSize()) /
+        this.track.getTrackSize()) *
+      100
+    );
   }
 }
