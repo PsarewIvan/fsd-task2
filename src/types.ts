@@ -16,31 +16,6 @@ export interface Settings {
   onUpdate?: (value: Array<number>) => void;
 }
 
-export interface State {
-  type: SliderType;
-  orientation: SliderOrientation;
-}
-export interface ExpandedState {
-  type: SliderType;
-  orientation: SliderOrientation;
-  min: number;
-  max: number;
-  hints: boolean;
-}
-
-export interface ScaleState {
-  orientation: SliderOrientation;
-  markNumber: number;
-  subMarkNumber: number;
-  min: number;
-  max: number;
-}
-
-export interface TooltipsState {
-  min: number;
-  max: number;
-}
-
 export interface Methods {
   init: (options?: Partial<Settings>) => JQuery;
   getValue: () => Array<number>;
