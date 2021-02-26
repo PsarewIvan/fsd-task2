@@ -4,6 +4,7 @@
 
 import { Settings, RequiredThumb, SliderOrientation } from '../../types';
 import Track from './Track';
+import Rail from './Rail';
 import Thumbs from './Thumbs';
 import Bar from './Bar';
 import Scale from './Scale';
@@ -16,6 +17,7 @@ export default class View {
   private onUpdate: Function | undefined;
   private isFirstChange: boolean;
   private track: Track;
+  private rail: Rail;
   private bar: Bar;
   private scale?: Scale;
   private thumbs: Thumbs;
@@ -40,7 +42,7 @@ export default class View {
       type: settings.type,
       orientation: settings.orientation,
     });
-
+    this.rail = new Rail(this.slider);
     this.bar = new Bar(this.slider, {
       type: settings.type,
       orientation: settings.orientation,
