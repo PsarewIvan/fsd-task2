@@ -68,7 +68,7 @@ export default class View {
       this.tooltips.update(settings.min, settings.max);
     }
     if (this.scale) {
-      this.scale.renderMark(settings);
+      this.scale.render(settings);
     }
 
     if (this.onUpdate && this.isFirstChange) {

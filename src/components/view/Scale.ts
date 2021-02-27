@@ -7,34 +7,45 @@ export default class Scale extends SliderElement {
   constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__scale'], state.orientation);
     this.state = state;
-    this.renderMark(state);
+    this.render(state);
   }
 
-  public renderMark(state: Settings): void {
+  public render(state: Settings): void {
     this.root.innerHTML = '';
-    let stepValue: number =
+    const markNumber = state.scaleMark * state.subScaleMark;
+    const stepValue: number =
       (state.max - state.min) / (state.scaleMark * state.subScaleMark);
-    for (let i = 0; i <= state.scaleMark * state.subScaleMark; i += 1) {
-      const markElement: HTMLElement = document.createElement('span');
-      markElement.classList.add('free-slider__scale-mark');
-      this.setPosition(state, markElement, i);
-      if (i % state.subScaleMark === 0) {
-        const markTextElement: HTMLElement = document.createElement('span');
-        this.root.append(markTextElement);
-        markTextElement.classList.add('free-slider__scale-text');
-        this.setPosition(state, markTextElement, i);
-        const markTextValue = this.round(stepValue * i + state.min, 5);
-        markTextElement.innerHTML = markTextValue.toString();
-        markElement.classList.add('free-slider__scale-mark--big');
-      }
-      this.root.append(markElement);
+    for (let i = 0; i <= markNumber; i += 1) {
+      this.renderMark(markNumber, i, state.subScaleMark);
+      this.renderTick(markNumber, state.subScaleMark, i, stepValue, state.min);
     }
   }
 
-  private setPosition(state: Settings, element: HTMLElement, i: number): void {
-    element.style[this.directionType] = `${
-      (i * 100) / (state.scaleMark * state.subScaleMark)
-    }%`;
+  private renderMark(markNumber: number, index: number, subMark: number): void {
+    const markElement: HTMLElement = document.createElement('span');
+    markElement.classList.add('free-slider__scale-mark');
+    markElement.style[this.directionType] = `${(index * 100) / markNumber}%`;
+    if (index % subMark === 0) {
+      markElement.classList.add('free-slider__scale-mark--big');
+    }
+    this.root.append(markElement);
+  }
+
+  private renderTick(
+    markNumber: number,
+    subMark: number,
+    index: number,
+    step: number,
+    min: number
+  ): void {
+    if (index % subMark === 0) {
+      const tick: HTMLElement = document.createElement('span');
+      tick.classList.add('free-slider__scale-text');
+      tick.style[this.directionType] = `${(index * 100) / markNumber}%`;
+      const ticlValue = this.round(step * index + min, 5);
+      tick.innerHTML = ticlValue.toString();
+      this.root.append(tick);
+    }
   }
 
   public clickEvent(handler: Function): void {
