@@ -47,7 +47,7 @@ export default class ThumbView {
   // Обновляет местоположение ползунков на слайдере
   public updatePosition(percents: Array<number>): void {
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style[thumb.getDirectionType()] = `${percents[i] * 100}%`;
+      thumb.root.style[thumb.directionType] = `${percents[i] * 100}%`;
     });
   }
 
@@ -91,14 +91,15 @@ export default class ThumbView {
     handler: Function,
     onFinish: Function
   ): void {
-    const coord = currentThumb.getCoordType();
     const clickOffset: number =
-      evt[coord] - currentThumb.getDistanceToScreen() - this.getThumbSize() / 2;
+      evt[currentThumb.coordType] -
+      currentThumb.distanceToScreen -
+      this.getThumbSize() / 2;
 
     const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
       const index: number = this.getCurrentThumbIndex(currentThumb);
-      const thumbShift: number = evt[coord] - clickOffset;
+      const thumbShift: number = evt[currentThumb.coordType] - clickOffset;
       handler(thumbShift, index);
     };
 
@@ -128,9 +129,8 @@ export default class ThumbView {
     }
 
     const range: number =
-      this.thumbs[1].getDistanceToScreen() -
-      this.thumbs[0].getDistanceToScreen();
-    if (clickOffset > this.thumbs[0].getDistanceToScreen() + range / 2) {
+      this.thumbs[1].distanceToScreen - this.thumbs[0].distanceToScreen;
+    if (clickOffset > this.thumbs[0].distanceToScreen + range / 2) {
       reqThumdState.index = 1;
       reqThumdState.root = this.thumbs[1];
     }
@@ -138,6 +138,6 @@ export default class ThumbView {
   }
 
   public getThumbSize(): number {
-    return this.thumbs[0].getSize();
+    return this.thumbs[0].size;
   }
 }

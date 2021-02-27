@@ -13,12 +13,10 @@ export default class Bar extends SliderElement {
   // Обновляет расположение бара
   public update(percents: Array<number>): void {
     if (this.state.type === 'range') {
-      this.root.style[this.getDirectionType()] = `${percents[0] * 100}%`;
-      this.root.style[this.getSizeType()] = `${
-        (percents[1] - percents[0]) * 100
-      }%`;
+      this.root.style[this.directionType] = `${percents[0] * 100}%`;
+      this.root.style[this.sizeType] = `${(percents[1] - percents[0]) * 100}%`;
     } else {
-      this.root.style[this.getSizeType()] = `${percents[0] * 100}%`;
+      this.root.style[this.sizeType] = `${percents[0] * 100}%`;
     }
   }
 }

@@ -32,7 +32,7 @@ export default class Scale extends SliderElement {
   }
 
   private setPosition(state: Settings, element: HTMLElement, i: number): void {
-    element.style[this.getDirectionType()] = `${
+    element.style[this.directionType] = `${
       (i * 100) / (state.scaleMark * state.subScaleMark)
     }%`;
   }
@@ -40,7 +40,7 @@ export default class Scale extends SliderElement {
   public clickEvent(handler: Function): void {
     this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
-      handler(evt[this.getCoordType()], evt);
+      handler(evt[this.coordType], evt);
     });
   }
 

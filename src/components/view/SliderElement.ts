@@ -31,27 +31,28 @@ export default class sliderElement {
   }
 
   // Вспомогательные методы
-  public getDistanceToScreen(): number {
-    return this.root.getBoundingClientRect()[this.getDirectionType()];
+  public get distanceToScreen(): number {
+    return this.root.getBoundingClientRect()[this.directionType];
   }
 
-  public getSize(): number {
-    return this.root[this.getOffsetSize()];
+  public get size(): number {
+    // return this.root[this.getOffsetSize()];
+    return this.root[this.offsetSize];
   }
 
-  public getDirectionType(): DirectionType {
+  public get directionType(): DirectionType {
     return this.orientation === 'horizontal' ? 'left' : 'top';
   }
 
-  public getSizeType(): SizeType {
+  public get sizeType(): SizeType {
     return this.orientation === 'horizontal' ? 'width' : 'height';
   }
 
-  public getOffsetSize(): OffsetSizeType {
+  public get offsetSize(): OffsetSizeType {
     return this.orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
   }
 
-  public getCoordType(): CoordType {
+  public get coordType(): CoordType {
     return this.orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }

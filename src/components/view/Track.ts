@@ -11,14 +11,14 @@ export default class TrackView extends SliderElement {
 
   // Возвращает расстояние от трека до края экрана
   public getDistanceToScreen(): number {
-    return this.root.getBoundingClientRect()[this.getDirectionType()];
+    return this.root.getBoundingClientRect()[this.directionType];
   }
 
   // Слушатель для обработки клика по треку
   public clickEvent(handler: Function): void {
     this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
-      handler(evt[this.getCoordType()], evt);
+      handler(evt[this.coordType], evt);
     });
   }
 }

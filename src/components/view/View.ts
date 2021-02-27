@@ -127,8 +127,8 @@ export default class View {
   // Возвращает значение смещения ползунка в процентах, относительно
   // ширины рабочей области слайдера
   private percentFromThumbShift(thumbShift: number): number {
-    const railSize: number = this.rail.getSize();
-    const distanceFromRailToScreen: number = this.rail.getDistanceToScreen();
+    const railSize: number = this.rail.size;
+    const distanceFromRailToScreen: number = this.rail.distanceToScreen;
     let percent: number = (thumbShift - distanceFromRailToScreen) / railSize;
     if (percent <= 0) {
       percent = 0;
@@ -142,7 +142,7 @@ export default class View {
   // Форматирует текущее процентное значение в проценты необходимые
   // для отрисовки бара
   private formatPercents(percents: number[]): number[] {
-    const trackSize: number = this.track.getSize();
+    const trackSize: number = this.track.size;
     const thumbsSize: number = this.thumbs.getThumbSize();
     const ratio: number = (trackSize - thumbsSize) / trackSize;
     const extraRatio: number = thumbsSize / trackSize / 2;
