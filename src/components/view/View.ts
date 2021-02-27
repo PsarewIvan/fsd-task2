@@ -109,9 +109,8 @@ export default class View {
     evt: PointerEvent,
     onFinish: Function
   ): void {
-    const clickOffset: number = clickCoord - this.thumbs.getThumbSize() / 2;
-    const percent = this.percentFromThumbShift(clickOffset);
-    const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickOffset);
+    const percent = this.percentFromThumbShift(clickCoord);
+    const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickCoord);
     handler(percent, requiredThumb.index);
 
     this.thumbs.mouseMoveEvent(
