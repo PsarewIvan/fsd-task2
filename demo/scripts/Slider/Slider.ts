@@ -2,7 +2,7 @@ import ValuesInputs from './components/ValuesInputs';
 import StepInput from './components/StepInput';
 import MinInput from './components/MinInput';
 import MaxInput from './components/MaxInput';
-// import ScaleCheck from './components/ScaleCheck';
+import ScaleCheck from './components/ScaleCheck';
 // import HintCheck from './components/HintCheck';
 // import OrientationCheck from './components/OrientationCheck';
 import { Settings } from './types';
@@ -13,12 +13,14 @@ export default class Slider {
   private stepInput: StepInput;
   private minInput: MinInput;
   private maxInput: MaxInput;
+  private scaleCheck: ScaleCheck;
   private state: Settings;
 
   constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
+    this.scaleCheck = new ScaleCheck(this.slider, this.state);
     this.maxInput = new MaxInput(this.slider, this.state);
     this.minInput = new MinInput(this.slider, this.state);
     this.stepInput = new StepInput(this.slider, this.state);
@@ -28,6 +30,7 @@ export default class Slider {
     this.updateStep();
     this.updateMin();
     this.updateMax();
+    this.updateScale();
   }
 
   private inputEvent(): void {
@@ -62,6 +65,10 @@ export default class Slider {
     this.maxInput.addEvent(this.changeMax.bind(this));
   }
 
+  private updateScale(): void {
+    this.scaleCheck.addEvent(this.changeScale.bind(this));
+  }
+
   private changeStep(step: number): void {
     this.slider.freeSlider('changeStep', step);
   }
@@ -72,6 +79,10 @@ export default class Slider {
 
   private changeMax(value: number): void {
     this.slider.freeSlider('changeMax', value);
+  }
+
+  private changeScale(): void {
+    this.slider.freeSlider('changeScale');
   }
 
   private getValues(): any {
