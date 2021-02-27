@@ -26,6 +26,7 @@ export interface Methods {
   changeStep: (step: number) => void;
   changeMin: (value: number) => void;
   changeMax: (value: number) => void;
+  changeScale: () => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }

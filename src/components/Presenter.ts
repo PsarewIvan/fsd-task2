@@ -29,7 +29,7 @@ export default class SliderPresenter {
     );
 
     // Слушатель изменения значений в модели. При изменении значений
-    // вызывает метод перемещения ползунков во View
+    // вызывает метод обновления View
     this.model.modelChangedSubject.subscribe(
       'viewUpdate',
       (settings: Settings) => {
@@ -79,5 +79,10 @@ export default class SliderPresenter {
 
   public changeMax(value: number): void {
     this.model.updateModel({ max: value });
+  }
+
+  public changeScale(): void {
+    const currentScale: boolean = this.model.getSettings().scale;
+    this.model.updateModel({ scale: !currentScale });
   }
 }

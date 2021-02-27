@@ -36,6 +36,10 @@ import { Settings, Methods } from './types';
       return $(this).data().freeSlider.method().changeMax(value);
     },
 
+    changeScale(): void {
+      return $(this).data().freeSlider.method().changeScale();
+    },
+
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },

@@ -7,11 +7,10 @@ export default class Scale extends SliderElement {
   constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__scale'], state.orientation);
     this.state = state;
-    this.render(state);
   }
 
   public render(state: Settings): void {
-    this.root.innerHTML = '';
+    this.clearRoot();
     const markNumber = state.scaleMark * state.subScaleMark;
     const stepValue: number =
       (state.max - state.min) / (state.scaleMark * state.subScaleMark);
@@ -46,6 +45,11 @@ export default class Scale extends SliderElement {
       tick.innerHTML = ticlValue.toString();
       this.root.append(tick);
     }
+  }
+
+  public clearRoot(isDisplayNone: boolean = false): void {
+    this.root.innerHTML = '';
+    this.root.style.display = isDisplayNone ? 'none' : 'block';
   }
 
   public clickEvent(handler: Function): void {

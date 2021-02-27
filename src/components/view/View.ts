@@ -42,9 +42,7 @@ export default class View {
     this.rail = new Rail(this.slider, settings);
     this.bar = new Bar(this.slider, settings);
     this.thumbs = new Thumbs(this.rail.root, settings);
-    if (settings.scale) {
-      this.scale = new Scale(this.rail.root, settings);
-    }
+    this.scale = new Scale(this.rail.root, settings);
     if (settings.tooltips) {
       this.tooltips = new Tooltips(this.slider, settings);
     }
@@ -60,23 +58,29 @@ export default class View {
     this.root.append(this.slider);
   }
 
-  // Обновляет положение движущихся элементов слайдера
+  // Обновляет элементы слайдера
   public update(settings: Settings): void {
     this.thumbs.update(settings.percents, settings.values);
     this.bar.update(this.formatPercents(settings.percents));
+    this.updateScale(settings);
     if (this.tooltips) {
       this.tooltips.update(settings.min, settings.max);
     }
-    if (this.scale) {
-      this.scale.render(settings);
-    }
-
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
       this.isFirstChange = false;
     }
     if (this.onChange && !this.isFirstChange) {
       this.onChange(settings.values);
+    }
+  }
+
+  private updateScale(state: Settings): void {
+    if (state.scale) {
+      this.scale.render(state);
+    }
+    if (!state.scale) {
+      this.scale.clearRoot(true);
     }
   }
 
