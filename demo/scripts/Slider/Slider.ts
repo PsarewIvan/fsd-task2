@@ -4,7 +4,7 @@ import MinInput from './components/MinInput';
 import MaxInput from './components/MaxInput';
 import ScaleCheck from './components/ScaleCheck';
 // import HintCheck from './components/HintCheck';
-// import OrientationCheck from './components/OrientationCheck';
+import OrientationCheck from './components/OrientationCheck';
 import { Settings } from './types';
 
 export default class Slider {
@@ -14,12 +14,14 @@ export default class Slider {
   private minInput: MinInput;
   private maxInput: MaxInput;
   private scaleCheck: ScaleCheck;
+  private orientationCheck: OrientationCheck;
   private state: Settings;
 
   constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
+    this.orientationCheck = new OrientationCheck(this.slider, this.state);
     this.scaleCheck = new ScaleCheck(this.slider, this.state);
     this.maxInput = new MaxInput(this.slider, this.state);
     this.minInput = new MinInput(this.slider, this.state);
@@ -83,10 +85,6 @@ export default class Slider {
 
   private changeScale(isScale: boolean): void {
     this.slider.freeSlider('changeScale', isScale);
-  }
-
-  private getValues(): any {
-    return this.slider.freeSlider('getValue');
   }
 
   private setValues(values: number[]): void {
