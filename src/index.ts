@@ -36,8 +36,8 @@ import { Settings, Methods } from './types';
       return $(this).data().freeSlider.method().changeMax(value);
     },
 
-    changeScale(): void {
-      return $(this).data().freeSlider.method().changeScale();
+    changeScale(isScale: boolean): void {
+      return $(this).data().freeSlider.method().changeScale(isScale);
     },
 
     onChange(handler: Function): void {

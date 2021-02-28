@@ -81,8 +81,7 @@ export default class SliderPresenter {
     this.model.updateModel({ max: value });
   }
 
-  public changeScale(): void {
-    const currentScale: boolean = this.model.getSettings().scale;
-    this.model.updateModel({ scale: !currentScale });
+  public changeScale(isScale: boolean): void {
+    this.model.updateModel({ scale: isScale });
   }
 }

@@ -17,7 +17,7 @@ export default class ScaleCheck {
 
   public addEvent(handler: Function): void {
     this.root.addEventListener('change', () => {
-      handler();
+      handler(this.root.checked);
     });
   }
 }

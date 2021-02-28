@@ -81,8 +81,8 @@ export default class Slider {
     this.slider.freeSlider('changeMax', value);
   }
 
-  private changeScale(): void {
-    this.slider.freeSlider('changeScale');
+  private changeScale(isScale: boolean): void {
+    this.slider.freeSlider('changeScale', isScale);
   }
 
   private getValues(): any {
