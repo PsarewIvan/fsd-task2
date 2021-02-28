@@ -61,5 +61,11 @@ export default class OrientationCheck {
     return label;
   }
 
-  public addEvent(handler: Function): void {}
+  public addEvent(handler: Function): void {
+    this.inputs.forEach((input: HTMLInputElement) => {
+      input.addEventListener('change', () => {
+        handler(input.value);
+      });
+    });
+  }
 }

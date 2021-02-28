@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import FreeSlider from './FreeSlider';
-import { Settings, Methods } from './types';
+import { Settings, Methods, SliderOrientation } from './types';
 
 (($) => {
   const methods: Methods = {
@@ -40,6 +40,10 @@ import { Settings, Methods } from './types';
       return $(this).data().freeSlider.method().changeScale(isScale);
     },
 
+    changeOrientation(orientation: SliderOrientation): void {
+      $(this).data().freeSlider.method().changeOrientation(orientation);
+    },
+
     onChange(handler: Function): void {
       $(this).data().freeSlider.method().onChange(handler);
     },
@@ -51,7 +55,7 @@ import { Settings, Methods } from './types';
 
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
-    args?: number[] | Function | number
+    args?: number[] | Function | number | boolean | SliderOrientation
   ) {
     if (typeof action === 'string' && methods[action]) {
       return methods[action].call(this, args);

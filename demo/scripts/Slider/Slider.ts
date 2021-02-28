@@ -21,6 +21,12 @@ export default class Slider {
     this.slider = element;
     this.slider.freeSlider(options);
     this.updateState();
+    if (this.state.orientation === 'horizontal') {
+      this.slider.addClass('slider--horizontal');
+    }
+    if (this.state.orientation === 'vertical') {
+      this.slider.addClass('slider--vertical');
+    }
     this.orientationCheck = new OrientationCheck(this.slider, this.state);
     this.scaleCheck = new ScaleCheck(this.slider, this.state);
     this.maxInput = new MaxInput(this.slider, this.state);
@@ -33,6 +39,7 @@ export default class Slider {
     this.updateMin();
     this.updateMax();
     this.updateScale();
+    this.updateOrientation();
   }
 
   private inputEvent(): void {
@@ -71,6 +78,10 @@ export default class Slider {
     this.scaleCheck.addEvent(this.changeScale.bind(this));
   }
 
+  private updateOrientation(): void {
+    this.orientationCheck.addEvent(this.changeOrientation.bind(this));
+  }
+
   private changeStep(step: number): void {
     this.slider.freeSlider('changeStep', step);
   }
@@ -85,6 +96,11 @@ export default class Slider {
 
   private changeScale(isScale: boolean): void {
     this.slider.freeSlider('changeScale', isScale);
+  }
+
+  private changeOrientation(orientation: 'vertical' | 'horizontal'): void {
+    this.slider.toggleClass('slider--horizontal slider--vertical');
+    this.slider.freeSlider('changeOrientation', orientation);
   }
 
   private setValues(values: number[]): void {

@@ -156,4 +156,9 @@ export default class View {
     });
     return formatPercents;
   }
+
+  public destroyAll(): void {
+    console.log('destroy');
+    this.root.innerHTML = '';
+  }
 }

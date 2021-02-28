@@ -1,6 +1,6 @@
 // Слой управления данными, который содержит бизнес-логику
 
-import { Settings } from '../types';
+import { Settings, SliderOrientation } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
 import _ from 'lodash';
 
@@ -65,6 +65,16 @@ export default class SliderModel {
       newSettings.orientation === 'vertical'
     ) {
       this.setSettings({ orientation: newSettings.orientation });
+    }
+  }
+
+  public changeOrientation(orientation: SliderOrientation): void {
+    if (
+      (orientation === 'horizontal' || orientation === 'vertical') &&
+      orientation !== this.settings.orientation
+    ) {
+      this.setSettings({ orientation: orientation });
+      this.modelChangedSubject.notify('changeOrientation');
     }
   }
 

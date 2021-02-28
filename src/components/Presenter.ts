@@ -14,9 +14,28 @@ export default class SliderPresenter {
     this.element = element;
     this.model = new SliderModel(options);
     this.view = new View(this.element, this.model.getSettings());
+    this.viewHandler(options);
 
-    // Подписываемся на изменения положения ползунков во View
-    // и передаем изменения в Model для записи новых значений
+    // Слушатель изменения значений в модели. При изменении значений
+    // вызывает метод обновления View
+    this.model.modelChangedSubject.subscribe(
+      'viewUpdate',
+      (settings: Settings) => {
+        this.view.update(settings);
+      }
+    );
+
+    this.model.modelChangedSubject.subscribe('changeOrientation', () => {
+      this.view.destroyAll();
+      const settings = this.model.getSettings();
+      this.view = new View(this.element, settings);
+      this.viewHandler(settings);
+    });
+  }
+
+  // Подписываемся на изменения положения ползунков во View
+  // и передаем изменения в Model для записи новых значений
+  private viewHandler(options: Partial<Settings>): void {
     this.view.viewChanged(
       (thumbPercentOffset: number, index: number) => {
         this.model.setNewValue(thumbPercentOffset, index);
@@ -25,15 +44,6 @@ export default class SliderPresenter {
         if (options.onFinish) {
           options.onFinish(this.model.getSettings().values);
         }
-      }
-    );
-
-    // Слушатель изменения значений в модели. При изменении значений
-    // вызывает метод обновления View
-    this.model.modelChangedSubject.subscribe(
-      'viewUpdate',
-      (settings: Settings) => {
-        this.view.update(settings);
       }
     );
   }
@@ -88,6 +98,6 @@ export default class SliderPresenter {
   }
 
   public changeOrientation(orientation: SliderOrientation): void {
-    this.model.updateModel({ orientation: orientation });
+    this.model.changeOrientation(orientation);
   }
 }
