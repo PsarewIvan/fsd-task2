@@ -57,8 +57,15 @@ export default class SliderModel {
     if (typeof newSettings.step === 'number') this.updateStep(newSettings.step);
     if (typeof newSettings.min === 'number') this.updateMin(newSettings.min);
     if (typeof newSettings.max === 'number') this.updateMax(newSettings.max);
-    if (typeof newSettings.scale === 'boolean')
+    if (typeof newSettings.scale === 'boolean') {
       this.setSettings({ scale: newSettings.scale });
+    }
+    if (
+      newSettings.orientation === 'horizontal' ||
+      newSettings.orientation === 'vertical'
+    ) {
+      this.setSettings({ orientation: newSettings.orientation });
+    }
   }
 
   // Проверяет и и вызывает метод записи новых значений слайдера

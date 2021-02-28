@@ -3,7 +3,7 @@
 // реагирует на сообщения об обновлении модели и обновляет отображение
 import SliderModel from './Model';
 import View from './view/View';
-import { Settings, ThumbType } from '../types';
+import { Settings, SliderOrientation } from '../types';
 
 export default class SliderPresenter {
   private model: SliderModel;
@@ -62,7 +62,9 @@ export default class SliderPresenter {
   }
 
   public onLoad(handler: Function) {
-    handler(this.model.getSettings());
+    if (handler) {
+      handler(this.model.getSettings());
+    }
   }
 
   public getState(): Settings {
@@ -83,5 +85,9 @@ export default class SliderPresenter {
 
   public changeScale(isScale: boolean): void {
     this.model.updateModel({ scale: isScale });
+  }
+
+  public changeOrientation(orientation: SliderOrientation): void {
+    this.model.updateModel({ orientation: orientation });
   }
 }

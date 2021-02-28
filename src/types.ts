@@ -27,6 +27,7 @@ export interface Methods {
   changeMin: (value: number) => void;
   changeMax: (value: number) => void;
   changeScale: (isScale: boolean) => void;
+  changeOrientation: (orientation: SliderOrientation) => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }
@@ -48,7 +49,7 @@ declare global {
   interface JQuery {
     freeSlider: (
       options?: Partial<Settings> | string,
-      arg?: Array<number> | Function | number | boolean
+      arg?: Array<number> | Function | number | boolean | SliderOrientation
     ) => JQuery | Array<number> | Settings | void;
   }
 }
