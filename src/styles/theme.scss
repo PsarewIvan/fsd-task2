@@ -2,31 +2,34 @@
 
 .free-slider {
   &__track {
-    background-image: linear-gradient(to bottom, lightgray -200%, white 100%);
-    border: 1px solid lightgrey;
+    background-color: #faf9f9;
+    border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 7px;
-  }
-
-  &__bar {
-    background-image: linear-gradient(
-      to bottom,
-      white 0%,
-      lightskyblue 20%,
-      #e7f9ff 100%
-    );
-    border: 1px solid rgb(185, 223, 247);
-    border-radius: 7px 0 0 7px;
   }
 
   &__thumb,
   &__thumb--from,
   &__thumb--to {
-    border: 1px solid grey;
-    background-color: lightgray;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: #faf9f9;
+    box-shadow: inset 0 0 1px #fff, inset 0 1px 7px #ebebeb, 0 3px 6px -3px #bbb,
+      0px 0px 0 1px #fff;
+
+    &::before {
+      border: 1px solid rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &__bar {
+    background-color: #89b0ae;
   }
 
   &__scale-mark {
-    background-color: mediumpurple;
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+
+  &__scale-text {
+    color: rgba(0, 0, 0, 0.84);
   }
 }
 
@@ -34,13 +37,14 @@
 
 .free-slider--horizontal {
   .free-slider {
+    &__thumb {
+      &::before {
+        border-top: none;
+        border-bottom: none;
+      }
+    }
+
     &__bar {
-      background-image: linear-gradient(
-        to bottom,
-        white 0%,
-        lightskyblue 20%,
-        #e7f9ff 100%
-      );
       border-radius: 7px 0 0 7px;
     }
 
@@ -60,13 +64,14 @@
 
 .free-slider--vertical {
   .free-slider {
+    &__thumb {
+      &::before {
+        border-left: none;
+        border-right: none;
+      }
+    }
+
     &__bar {
-      background-image: linear-gradient(
-        to right,
-        white 0%,
-        lightskyblue 20%,
-        #e7f9ff 100%
-      );
       border-radius: 7px 7px 0 0;
     }
 

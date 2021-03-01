@@ -40,9 +40,7 @@
     position: absolute;
     display: block;
     box-sizing: border-box;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
+    border-radius: 20%;
     pointer-events: all;
 
     cursor: pointer;
@@ -52,6 +50,13 @@
       content: var(--input-value-first);
       position: absolute;
       display: block;
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      display: block;
+      box-sizing: border-box;
     }
 
     &--second::after {
@@ -82,12 +87,12 @@
 
   .free-slider {
     &__track {
-      top: 25px;
+      top: 21px;
       width: 100%;
-      height: 7px;
+      height: 14px;
 
       &::after {
-        top: -5px;
+        top: -1px;
         width: 100%;
         height: 15px;
       }
@@ -109,20 +114,30 @@
     }
 
     &__bar {
-      top: 25px;
+      top: 21px;
       width: 50%;
-      height: 7px;
+      height: 15px;
     }
 
     &__thumb {
       top: -7px;
       left: 50%;
+      width: 35px;
+      height: 20px;
       transform: translateX(-50%);
 
       &::after {
-        top: -18px;
+        top: -19px;
         margin-left: 50%;
         transform: translateX(-50%);
+      }
+
+      &::before {
+        content: '';
+        top: 3px;
+        left: 13px;
+        width: 7px;
+        height: 12px;
       }
     }
 
@@ -150,12 +165,12 @@
 
   .free-slider {
     &__track {
-      left: 30px;
-      width: 7px;
+      left: 26px;
+      width: 14px;
       height: 100%;
 
       &::after {
-        left: -5px;
+        left: -1px;
         width: 15px;
         height: 100%;
       }
@@ -182,19 +197,28 @@
     &__thumb {
       top: 50%;
       left: -7px;
+      width: 20px;
+      height: 35px;
       transform: translateY(-50%);
 
       &::after {
-        top: auto;
+        top: 7px;
         right: 20px;
         transform: none;
+      }
+
+      &::before {
+        top: 13px;
+        left: 3px;
+        width: 12px;
+        height: 7px;
       }
     }
 
     &__bar {
       top: 0;
-      left: 30px;
-      width: 7px;
+      left: 26px;
+      width: 15px;
       height: 50%;
     }
 
