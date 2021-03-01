@@ -106,6 +106,6 @@ export default class SliderPresenter {
   }
 
   public showTooltips(isTooltips: boolean): void {
-    // console.log(isTooltips);
+    this.model.updateModel({ tooltips: isTooltips });
   }
 }

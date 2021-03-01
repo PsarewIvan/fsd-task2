@@ -43,9 +43,7 @@ export default class View {
     this.bar = new Bar(this.slider, settings);
     this.thumbs = new Thumbs(this.rail.root, settings);
     this.scale = new Scale(this.rail.root, settings);
-    if (settings.tooltips) {
-      this.tooltips = new Tooltips(this.slider, settings);
-    }
+    this.tooltips = new Tooltips(this.slider, settings);
   }
 
   private createWrapper(orientation: SliderOrientation): void {
@@ -63,9 +61,7 @@ export default class View {
     this.thumbs.update(settings.percents, settings.values, settings.hints);
     this.bar.update(this.formatPercents(settings.percents));
     this.scale.update(settings);
-    if (this.tooltips) {
-      this.tooltips.update(settings.min, settings.max);
-    }
+    this.tooltips.update(settings);
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
       this.isFirstChange = false;
