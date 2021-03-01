@@ -11,7 +11,7 @@ export default class ValuesInputs {
 
     state.values.forEach((_value, i: number) => {
       const label: HTMLLabelElement = this.createLabel(i);
-      this.elements.push(this.createInput(i));
+      this.elements.push(this.createInput());
       this.updateAttribute(state);
       label.append(this.elements[i]);
       this.root.append(label);
@@ -19,7 +19,7 @@ export default class ValuesInputs {
     slider.after(this.root);
   }
 
-  private createInput(i: number): HTMLInputElement {
+  private createInput(): HTMLInputElement {
     const elem: HTMLInputElement = document.createElement('input');
     elem.classList.add('slider__input');
     elem.type = 'number';
