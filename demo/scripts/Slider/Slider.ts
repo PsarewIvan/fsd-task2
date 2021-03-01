@@ -110,7 +110,7 @@ export default class Slider {
   }
 
   private changeScale(isScale: boolean): void {
-    this.slider.freeSlider('changeScale', isScale);
+    this.slider.freeSlider('showScale', isScale);
   }
 
   private changeOrientation(orientation: 'vertical' | 'horizontal'): void {
