@@ -101,7 +101,11 @@ export default class SliderPresenter {
     this.model.changeOrientation(orientation);
   }
 
-  public showHint(isHint: boolean): void {}
+  public showHint(isHint: boolean): void {
+    this.model.updateModel({ hints: isHint });
+  }
 
-  public showTooltips(isTooltips: boolean): void {}
+  public showTooltips(isTooltips: boolean): void {
+    // console.log(isTooltips);
+  }
 }

@@ -60,7 +60,7 @@ export default class View {
 
   // Обновляет элементы слайдера
   public update(settings: Settings): void {
-    this.thumbs.update(settings.percents, settings.values);
+    this.thumbs.update(settings.percents, settings.values, settings.hints);
     this.bar.update(this.formatPercents(settings.percents));
     this.updateScale(settings);
     if (this.tooltips) {

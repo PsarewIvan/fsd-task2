@@ -66,6 +66,12 @@ export default class SliderModel {
     ) {
       this.setSettings({ orientation: newSettings.orientation });
     }
+    if (
+      typeof newSettings.hints === 'boolean' &&
+      newSettings.hints !== this.settings.hints
+    ) {
+      this.setSettings({ hints: newSettings.hints });
+    }
   }
 
   public changeOrientation(orientation: SliderOrientation): void {

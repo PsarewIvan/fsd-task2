@@ -3,10 +3,12 @@ import { Settings, RequiredThumb } from '../../types';
 
 export default class ThumbView {
   readonly state: Settings;
+  private property: string[];
   private thumbs: SliderElement[];
 
   constructor(rootNode: HTMLElement, state: Settings) {
     this.state = state;
+    this.property = ['--input-value-first', '--input-value-second'];
     this.render(rootNode);
   }
 
@@ -37,25 +39,41 @@ export default class ThumbView {
   }
 
   // Обновляет состояние ползунков
-  public update(percents: Array<number>, values: Array<number>): void {
+  public update(
+    percents: Array<number>,
+    values: Array<number>,
+    hints: boolean
+  ): void {
     this.updatePosition(percents);
-    if (this.state.hints) {
+    if (hints) {
       this.updateHints(values);
+    } else {
+      this.clearHints();
     }
   }
 
   // Обновляет местоположение ползунков на слайдере
-  public updatePosition(percents: Array<number>): void {
+  private updatePosition(percents: Array<number>): void {
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style[thumb.directionType] = `${percents[i] * 100}%`;
+      const currentPercent: number = Number(
+        thumb.root.style[thumb.directionType].slice(0, -1)
+      );
+      if (percents[i] * 100 !== currentPercent) {
+        thumb.root.style[thumb.directionType] = `${percents[i] * 100}%`;
+      }
     });
   }
 
   // Обновляет числовое значение над ползунком
-  public updateHints(values: Array<number>): void {
-    const property = ['--input-value-first', '--input-value-second'];
+  private updateHints(values: Array<number>): void {
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style.setProperty(property[i], `"${values[i]}"`);
+      thumb.root.style.setProperty(this.property[i], `"${values[i]}"`);
+    });
+  }
+
+  private clearHints(): void {
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      thumb.root.style.setProperty(this.property[i], ``);
     });
   }
 
