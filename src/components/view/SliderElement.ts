@@ -36,7 +36,6 @@ export default class sliderElement {
   }
 
   public get size(): number {
-    // return this.root[this.getOffsetSize()];
     return this.root[this.offsetSize];
   }
 
