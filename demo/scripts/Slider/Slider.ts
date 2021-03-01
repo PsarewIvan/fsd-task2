@@ -19,14 +19,14 @@ export default class Slider {
 
   constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
-    this.slider.freeSlider(options);
-    this.updateState();
-    if (this.state.orientation === 'horizontal') {
+    if (options.orientation !== 'vertical') {
       this.slider.addClass('slider--horizontal');
     }
-    if (this.state.orientation === 'vertical') {
+    if (options.orientation === 'vertical') {
       this.slider.addClass('slider--vertical');
     }
+    this.slider.freeSlider(options);
+    this.updateState();
     this.orientationCheck = new OrientationCheck(this.slider, this.state);
     this.scaleCheck = new ScaleCheck(this.slider, this.state);
     this.maxInput = new MaxInput(this.slider, this.state);
