@@ -27,7 +27,11 @@ export default class Tooltips {
   }
 
   public update(min: number, max: number): void {
-    this.min.root.innerHTML = min.toString();
-    this.max.root.innerHTML = max.toString();
+    if (this.min.root.innerHTML !== min.toString()) {
+      this.min.root.innerHTML = min.toString();
+    }
+    if (this.max.root.innerHTML !== max.toString()) {
+      this.max.root.innerHTML = max.toString();
+    }
   }
 }
