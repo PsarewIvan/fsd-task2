@@ -45,6 +45,8 @@ export default class Slider {
     this.updateMax();
     this.updateScale();
     this.updateOrientation();
+    this.updateHint();
+    this.updateTooltips();
   }
 
   private inputEvent(): void {
@@ -87,6 +89,14 @@ export default class Slider {
     this.orientationChange.addEvent(this.changeOrientation.bind(this));
   }
 
+  private updateHint(): void {
+    this.hintToggle.addEvent(this.changeHint.bind(this));
+  }
+
+  private updateTooltips(): void {
+    this.tooltipsToggle.addEvent(this.changeTooltips.bind(this));
+  }
+
   private changeStep(step: number): void {
     this.slider.freeSlider('changeStep', step);
   }
@@ -106,6 +116,14 @@ export default class Slider {
   private changeOrientation(orientation: 'vertical' | 'horizontal'): void {
     this.slider.toggleClass('slider--horizontal slider--vertical');
     this.slider.freeSlider('changeOrientation', orientation);
+  }
+
+  private changeHint(isHint: boolean): void {
+    this.slider.freeSlider('showHint', isHint);
+  }
+
+  private changeTooltips(isTooltips: boolean): void {
+    this.slider.freeSlider('showTooltips', isTooltips);
   }
 
   private setValues(values: number[]): void {
