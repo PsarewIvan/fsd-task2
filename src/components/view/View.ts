@@ -158,7 +158,6 @@ export default class View {
   }
 
   public destroyAll(): void {
-    console.log('destroy');
     this.root.innerHTML = '';
   }
 }
