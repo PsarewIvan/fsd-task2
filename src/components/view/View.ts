@@ -62,7 +62,7 @@ export default class View {
   public update(settings: Settings): void {
     this.thumbs.update(settings.percents, settings.values, settings.hints);
     this.bar.update(this.formatPercents(settings.percents));
-    this.updateScale(settings);
+    this.scale.update(settings);
     if (this.tooltips) {
       this.tooltips.update(settings.min, settings.max);
     }
@@ -72,15 +72,6 @@ export default class View {
     }
     if (this.onChange && !this.isFirstChange) {
       this.onChange(settings.values);
-    }
-  }
-
-  private updateScale(state: Settings): void {
-    if (state.scale) {
-      this.scale.render(state);
-    }
-    if (!state.scale) {
-      this.scale.clearRoot(true);
     }
   }
 

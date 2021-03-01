@@ -9,6 +9,15 @@ export default class Scale extends SliderElement {
     this.state = state;
   }
 
+  public update(state: Settings): void {
+    if (state.scale) {
+      this.render(state);
+    }
+    if (!state.scale) {
+      this.clearRoot(true);
+    }
+  }
+
   public render(state: Settings): void {
     this.clearRoot();
     const markNumber = state.scaleMark * state.subScaleMark;
