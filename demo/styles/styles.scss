@@ -1,40 +1,65 @@
 body {
   margin: 0;
-  padding: 0 30px 40px;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+  background-color: #faf9f9;
 }
 
 .container {
   display: flex;
   justify-content: center;
+  padding: 20px 0;
   margin-bottom: 40px;
+  background-color: #555b6e;
 
   &__title {
     margin: 0;
-    color: #211515;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
   }
-}
-
-.slider__wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  max-width: 700px;
 }
 
 .slider {
-  &--horizontal {
-    width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 700px;
+  margin: 0 14px 35px;
+  border: 1px solid #bee3db;
+  border-radius: 8px;
+
+  &__wrapper {
+    margin: 14px 14px 24px;
+
+    &--horizontal {
+      width: 100%;
+    }
+
+    &--vertical {
+      min-height: 200px;
+    }
   }
 
-  &--vertical {
-    min-height: 200px;
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    padding: 14px;
+    border-radius: 0 0 8px 8px;
+    background-color: #bee3db;
+
+    & > *:not(:last-child) {
+      margin-bottom: 8px;
+    }
   }
 
   &__input {
-    width: 100px;
+    margin-left: 12px;
 
-    &:not(:last-child) {
-      margin-right: 10px;
+    &:not([type='radio']):not([type='checkbox']) {
+      width: 100px;
     }
   }
 }
