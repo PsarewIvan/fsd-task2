@@ -1,36 +1,29 @@
+import InputElement from './InputElement';
 import { Settings } from '../types';
 
 export default class ValuesInputs {
-  private root: HTMLElement;
+  private wrapper: HTMLDivElement;
   private elements: HTMLInputElement[];
 
-  constructor(slider: JQuery, state: Partial<Settings>) {
-    this.root = document.createElement('div');
-    this.root.classList.add('slider__input-wrapper');
+  constructor(panel: HTMLDivElement, state: Partial<Settings>) {
+    this.createWrapper();
     this.elements = [];
-
     state.values.forEach((_value, i: number) => {
-      const label: HTMLLabelElement = this.createLabel(i);
-      this.elements.push(this.createInput());
+      const element = new InputElement(
+        this.wrapper,
+        'number',
+        'input',
+        `Thumb ${i + 1}: `
+      );
+      this.elements.push(element.input);
       this.updateAttribute(state);
-      label.append(this.elements[i]);
-      this.root.append(label);
     });
-    slider.after(this.root);
+    panel.append(this.wrapper);
   }
 
-  private createInput(): HTMLInputElement {
-    const elem: HTMLInputElement = document.createElement('input');
-    elem.classList.add('slider__input');
-    elem.type = 'number';
-    return elem;
-  }
-
-  private createLabel(i: number): HTMLLabelElement {
-    const elem: HTMLLabelElement = document.createElement('label');
-    elem.classList.add('slider__label', 'slider__label--thumb');
-    elem.innerHTML = `Thumb ${i + 1}: `;
-    return elem;
+  private createWrapper() {
+    this.wrapper = document.createElement('div');
+    this.wrapper.classList.add('slider__input-wrapper');
   }
 
   public updateInput(state: Partial<Settings>): void {

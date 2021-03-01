@@ -10,6 +10,7 @@ import { Settings } from './types';
 
 export default class Slider {
   private slider: JQuery;
+  private panelStates: HTMLDivElement;
   private valuesInputs: ValuesInputs;
   private stepInput: StepInput;
   private minInput: MinInput;
@@ -22,6 +23,9 @@ export default class Slider {
 
   constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
+    this.panelStates = document.createElement('div');
+    this.panelStates.classList.add('slider__panel');
+    this.slider.after(this.panelStates);
     if (options.orientation !== 'vertical') {
       this.slider.addClass('slider--horizontal');
     }
@@ -30,14 +34,18 @@ export default class Slider {
     }
     this.slider.freeSlider(options);
     this.updateState();
-    this.tooltipsToggle = new TooltipsToggle(this.slider, this.state);
-    this.hintToggle = new HintToggle(this.slider, this.state);
-    this.orientationChange = new OrientationChange(this.slider, this.state);
-    this.scaleToggle = new ScaleToggle(this.slider, this.state);
-    this.maxInput = new MaxInput(this.slider, this.state);
-    this.minInput = new MinInput(this.slider, this.state);
-    this.stepInput = new StepInput(this.slider, this.state);
-    this.valuesInputs = new ValuesInputs(this.slider, this.state);
+    this.valuesInputs = new ValuesInputs(this.panelStates, this.state);
+    this.minInput = new MinInput(this.panelStates, this.state);
+    this.maxInput = new MaxInput(this.panelStates, this.state);
+    this.stepInput = new StepInput(this.panelStates, this.state);
+    this.hintToggle = new HintToggle(this.panelStates, this.state);
+    this.tooltipsToggle = new TooltipsToggle(this.panelStates, this.state);
+    this.scaleToggle = new ScaleToggle(this.panelStates, this.state);
+    this.orientationChange = new OrientationChange(
+      this.panelStates,
+      this.state,
+      this.slider
+    );
     this.inputEvent();
     this.updateInputs();
     this.updateStep();
