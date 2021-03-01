@@ -36,12 +36,20 @@ import { Settings, Methods, SliderOrientation } from './types';
       return $(this).data().freeSlider.method().changeMax(value);
     },
 
-    changeScale(isScale: boolean): void {
-      return $(this).data().freeSlider.method().changeScale(isScale);
+    showScale(isScale: boolean): void {
+      return $(this).data().freeSlider.method().showScale(isScale);
     },
 
     changeOrientation(orientation: SliderOrientation): void {
       $(this).data().freeSlider.method().changeOrientation(orientation);
+    },
+
+    showHint(isHint: boolean): void {
+      $(this).data().freeSlider.method().showHint(isHint);
+    },
+
+    showTooltips(isTooltips: boolean): void {
+      $(this).data().freeSlider.method().showTooltips(isTooltips);
     },
 
     onChange(handler: Function): void {

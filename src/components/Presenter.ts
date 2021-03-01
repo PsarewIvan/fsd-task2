@@ -93,11 +93,15 @@ export default class SliderPresenter {
     this.model.updateModel({ max: value });
   }
 
-  public changeScale(isScale: boolean): void {
+  public showScale(isScale: boolean): void {
     this.model.updateModel({ scale: isScale });
   }
 
   public changeOrientation(orientation: SliderOrientation): void {
     this.model.changeOrientation(orientation);
   }
+
+  public showHint(isHint: boolean): void {}
+
+  public showTooltips(isTooltips: boolean): void {}
 }

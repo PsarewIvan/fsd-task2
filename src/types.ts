@@ -26,8 +26,10 @@ export interface Methods {
   changeStep: (step: number) => void;
   changeMin: (value: number) => void;
   changeMax: (value: number) => void;
-  changeScale: (isScale: boolean) => void;
+  showScale: (isScale: boolean) => void;
   changeOrientation: (orientation: SliderOrientation) => void;
+  showHint: (isHint: boolean) => void;
+  showTooltips: (isTooltips: boolean) => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }
