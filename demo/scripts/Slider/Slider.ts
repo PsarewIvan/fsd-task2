@@ -27,10 +27,10 @@ export default class Slider {
     this.panelStates.classList.add('slider__panel');
     this.slider.after(this.panelStates);
     if (options.orientation !== 'vertical') {
-      this.slider.addClass('slider--horizontal');
+      this.slider.addClass('slider__wrapper--horizontal');
     }
     if (options.orientation === 'vertical') {
-      this.slider.addClass('slider--vertical');
+      this.slider.addClass('slider__wrapper--vertical');
     }
     this.slider.freeSlider(options);
     this.updateState();
@@ -122,7 +122,9 @@ export default class Slider {
   }
 
   private changeOrientation(orientation: 'vertical' | 'horizontal'): void {
-    this.slider.toggleClass('slider--horizontal slider--vertical');
+    this.slider.toggleClass(
+      'slider__wrapper--horizontal slider__wrapper--vertical'
+    );
     this.slider.freeSlider('changeOrientation', orientation);
   }
 

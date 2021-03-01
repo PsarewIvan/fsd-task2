@@ -12,7 +12,7 @@ export default class ValuesInputs {
       const element = new InputElement(
         this.wrapper,
         'number',
-        'input',
+        'value',
         `Thumb ${i + 1}: `
       );
       this.elements.push(element.input);
