@@ -2,9 +2,10 @@ import ValuesInputs from './components/ValuesInputs';
 import StepInput from './components/StepInput';
 import MinInput from './components/MinInput';
 import MaxInput from './components/MaxInput';
-import ScaleCheck from './components/ScaleCheck';
-// import HintCheck from './components/HintCheck';
-import OrientationCheck from './components/OrientationCheck';
+import ScaleToggle from './components/ScaleToggle';
+import OrientationChange from './components/OrientationChange';
+import HintToggle from './components/HintToggle';
+import TooltipsToggle from './components/TooltipsToggle';
 import { Settings } from './types';
 
 export default class Slider {
@@ -13,8 +14,10 @@ export default class Slider {
   private stepInput: StepInput;
   private minInput: MinInput;
   private maxInput: MaxInput;
-  private scaleCheck: ScaleCheck;
-  private orientationCheck: OrientationCheck;
+  private scaleToggle: ScaleToggle;
+  private orientationChange: OrientationChange;
+  private hintToggle: HintToggle;
+  private tooltipsToggle: TooltipsToggle;
   private state: Settings;
 
   constructor(element: JQuery, options: Partial<Settings>) {
@@ -27,8 +30,10 @@ export default class Slider {
     }
     this.slider.freeSlider(options);
     this.updateState();
-    this.orientationCheck = new OrientationCheck(this.slider, this.state);
-    this.scaleCheck = new ScaleCheck(this.slider, this.state);
+    this.tooltipsToggle = new TooltipsToggle(this.slider, this.state);
+    this.hintToggle = new HintToggle(this.slider, this.state);
+    this.orientationChange = new OrientationChange(this.slider, this.state);
+    this.scaleToggle = new ScaleToggle(this.slider, this.state);
     this.maxInput = new MaxInput(this.slider, this.state);
     this.minInput = new MinInput(this.slider, this.state);
     this.stepInput = new StepInput(this.slider, this.state);
@@ -75,11 +80,11 @@ export default class Slider {
   }
 
   private updateScale(): void {
-    this.scaleCheck.addEvent(this.changeScale.bind(this));
+    this.scaleToggle.addEvent(this.changeScale.bind(this));
   }
 
   private updateOrientation(): void {
-    this.orientationCheck.addEvent(this.changeOrientation.bind(this));
+    this.orientationChange.addEvent(this.changeOrientation.bind(this));
   }
 
   private changeStep(step: number): void {

@@ -1,8 +1,6 @@
 import { Settings } from '../types';
 
-export default class OrientationCheck {
-  private horizontalInput: HTMLInputElement;
-  private verticalInput: HTMLInputElement;
+export default class OrientationChange {
   private inputs: HTMLInputElement[];
   private labels: HTMLLabelElement[];
   private wrapper: HTMLDivElement;

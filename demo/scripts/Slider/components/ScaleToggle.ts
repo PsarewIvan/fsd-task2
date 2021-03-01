@@ -1,6 +1,6 @@
 import { Settings } from '../types';
 
-export default class ScaleCheck {
+export default class ScaleToggle {
   private root: HTMLInputElement;
 
   constructor(slider: JQuery, state: Settings) {
