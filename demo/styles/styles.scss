@@ -57,9 +57,19 @@ body {
 
   &__input {
     margin-left: 12px;
+    padding: 2px 8px;
+    background-color: #faf9f9;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
 
     &:not([type='radio']):not([type='checkbox']) {
-      width: 100px;
+      width: 60px;
     }
+  }
+
+  &__label {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
   }
 }
