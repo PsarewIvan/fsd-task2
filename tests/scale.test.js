@@ -18,6 +18,7 @@ describe('Check all orientation', () => {
   const state = {
     max: 500,
     min: 300,
+    scale: true,
     scaleMark: 10,
     subScaleMark: 5,
     orientation: 'horizontal',
@@ -25,6 +26,7 @@ describe('Check all orientation', () => {
 
   beforeEach(() => {
     scale = new Scale(document.body, state);
+    scale.update();
   });
 
   afterEach(() => {
@@ -78,6 +80,7 @@ describe('Check horizontal', () => {
   const state = {
     max: 250,
     min: 100,
+    scale: true,
     scaleMark: 20,
     subScaleMark: 5,
     orientation: 'horizontal',
@@ -85,6 +88,7 @@ describe('Check horizontal', () => {
 
   beforeEach(() => {
     scale = new Scale(document.body, state);
+    scale.update();
   });
 
   afterEach(() => {
@@ -142,6 +146,7 @@ describe('Check vertical', () => {
   const state = {
     max: 1000,
     min: 800,
+    scale: true,
     scaleMark: 5,
     subScaleMark: 4,
     orientation: 'vertical',
@@ -149,6 +154,7 @@ describe('Check vertical', () => {
 
   beforeEach(() => {
     scale = new Scale(document.body, state);
+    scale.update();
   });
 
   afterEach(() => {
