@@ -116,6 +116,9 @@ export default class ThumbView {
 
     const onMouseMove = (evt: PointerEvent): void => {
       evt.preventDefault();
+      window.ontouchmove = (evt: Event) => {
+        evt.preventDefault();
+      };
       const index: number = this.getCurrentThumbIndex(currentThumb);
       const thumbShift: number = evt[currentThumb.coordType] - clickOffset;
       handler(thumbShift, index);
@@ -123,6 +126,7 @@ export default class ThumbView {
 
     const onMouseUp = (): void => {
       onFinish();
+      window.ontouchmove = null;
       document.removeEventListener('pointermove', onMouseMove);
       document.removeEventListener('pointerup', onMouseUp);
     };
