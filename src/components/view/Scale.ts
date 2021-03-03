@@ -9,7 +9,7 @@ export default class Scale extends SliderElement {
     this.state = state;
   }
 
-  public update(state: Settings): void {
+  public update(state: Settings = this.state): void {
     if (state.scale) {
       this.render(state);
     }
