@@ -20,15 +20,6 @@ describe('Global testing', () => {
     expect(thumbs.updateHints).not.toHaveBeenCalled();
   });
 
-  it('Calls update with hints', () => {
-    const thumbs = new Thumbs(document.body, { hints: true });
-    thumbs.updatePosition = jest.fn();
-    thumbs.updateHints = jest.fn();
-    thumbs.update(0.2, 20);
-    expect(thumbs.updatePosition).toHaveBeenCalled();
-    expect(thumbs.updateHints).toHaveBeenCalled();
-  });
-
   it('Mouse listener must be set root.ondragstart to false', () => {
     const thumbs = new Thumbs(document.body, state);
     thumbs.mouseListener(thumbs.thumbs[0]);
@@ -44,19 +35,25 @@ describe('Testing single thumb', () => {
     max: 400,
     hints: true,
   };
+  let thumbs;
+
+  beforeEach(() => {
+    thumbs = new Thumbs(document.body, state);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
 
   it('Render thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     expect(thumbs.thumbs[0].root).toBeInTheDocument();
   });
 
   it('The number of thumbs must be one', () => {
-    const thumbs = new Thumbs(document.body, state);
     expect(thumbs.thumbs.length).toBe(1);
   });
 
   it('Updated position on horizontal thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     thumbs.updatePosition([0.1]);
     expect(thumbs.thumbs[0].root.style.left).toBe('10%');
   });
@@ -71,20 +68,17 @@ describe('Testing single thumb', () => {
   });
 
   it('Getting thumb width', () => {
-    const thumbs = new Thumbs(document.body, state);
     Object.defineProperty(thumbs.thumbs[0].root, 'offsetWidth', { value: 35 });
     expect(thumbs.getThumbSize()).toBe(35);
   });
 
   it('Adds listeners', () => {
-    const thumbs = new Thumbs(document.body, state);
     thumbs.mouseListener = jest.fn();
     thumbs.addMouseListener(jest.fn(), jest.fn());
     expect(thumbs.mouseListener).toHaveBeenCalledTimes(1);
   });
 
   it('Called pointerdown function', () => {
-    const thumbs = new Thumbs(document.body, state);
     thumbs.mouseMoveEvent = jest.fn();
     thumbs.thumbs.forEach((thumb) => {
       thumbs.mouseListener(thumb);
@@ -93,37 +87,7 @@ describe('Testing single thumb', () => {
     expect(thumbs.mouseMoveEvent).toHaveBeenCalledTimes(1);
   });
 
-  // it('Updated thumb shift', () => {
-  //   const thumbs = new Thumbs(document.body, state);
-  //   const evt = {
-  //     clientX: 500,
-  //   };
-  //   let returnValues;
-  //   const mockHandler = jest.fn((thumbShift, index) => {
-  //     returnValues = { thumbShift, index };
-  //   });
-  //   thumbs.updateThumbsShift(evt, thumbs.thumbs[0].root, 15, mockHandler);
-  //   expect(returnValues).toEqual({ thumbShift: 485, index: 0 });
-  // });
-
-  // it('Updatesd thumb shift on vertical', () => {
-  //   const thumbs = new Thumbs(document.body, {
-  //     ...state,
-  //     ...{ orientation: 'vertical' },
-  //   });
-  //   const evt = {
-  //     clientY: 120,
-  //   };
-  //   let returnValues;
-  //   const mockHandler = jest.fn((thumbShift, index) => {
-  //     returnValues = { thumbShift, index };
-  //   });
-  //   thumbs.updateThumbsShift(evt, thumbs.thumbs[0].root, 50, mockHandler);
-  //   expect(returnValues).toEqual({ thumbShift: 70, index: 0 });
-  // });
-
   it('Returns an object with the correct thumb data', () => {
-    const thumbs = new Thumbs(document.body, state);
     const returnedObject = thumbs.requiredThumb(100);
     expect(returnedObject).toEqual({
       index: 0,
@@ -140,6 +104,15 @@ describe('Testing range thumbs', () => {
     max: 1000,
     hints: true,
   };
+  let thumbs;
+
+  beforeEach(() => {
+    thumbs = new Thumbs(document.body, state);
+  });
+
+  afterEach(() => {
+    document.body.innerHTML = '';
+  });
 
   function mockDistance(thumbs) {
     thumbs[0].root.getBoundingClientRect = jest.fn(() => ({
@@ -153,22 +126,18 @@ describe('Testing range thumbs', () => {
   }
 
   it('Render first thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     expect(thumbs.thumbs[0].root).toBeInTheDocument();
   });
 
   it('Render second thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     expect(thumbs.thumbs[1].root).toBeInTheDocument();
   });
 
   it('Number of thumbs must be two', () => {
-    const thumbs = new Thumbs(document.body, state);
     expect(thumbs.thumbs.length).toBe(2);
   });
 
   it('Updated position on horizontal thumbs', () => {
-    const thumbs = new Thumbs(document.body, state);
     const positions = [];
     thumbs.updatePosition([0.2, 0.6]);
     thumbs.thumbs.forEach((thumb) => {
@@ -200,14 +169,12 @@ describe('Testing range thumbs', () => {
   });
 
   it('Adds listeners', () => {
-    const thumbs = new Thumbs(document.body, state);
     thumbs.mouseListener = jest.fn();
     thumbs.addMouseListener(jest.fn(), jest.fn());
     expect(thumbs.mouseListener).toHaveBeenCalledTimes(2);
   });
 
   it('Called pointerdown function', () => {
-    const thumbs = new Thumbs(document.body, state);
     thumbs.mouseMoveEvent = jest.fn();
     thumbs.thumbs.forEach((thumb) => {
       thumbs.mouseListener(thumb);
@@ -216,37 +183,7 @@ describe('Testing range thumbs', () => {
     expect(thumbs.mouseMoveEvent).toHaveBeenCalledTimes(2);
   });
 
-  // it('Updated first thumb shift', () => {
-  //   const thumbs = new Thumbs(document.body, state);
-  //   const evt = {
-  //     clientX: 200,
-  //   };
-  //   let returnValues;
-  //   const mockHandler = jest.fn((thumbShift, index) => {
-  //     returnValues = { thumbShift, index };
-  //   });
-  //   thumbs.updateThumbsShift(evt, thumbs.thumbs[0].root, 70, mockHandler);
-  //   expect(returnValues).toEqual({ thumbShift: 130, index: 0 });
-  // });
-
-  // it('Updated second thumb shift on vertical', () => {
-  //   const thumbs = new Thumbs(document.body, {
-  //     ...state,
-  //     ...{ orientation: 'vertical' },
-  //   });
-  //   const evt = {
-  //     clientY: 600,
-  //   };
-  //   let returnValues;
-  //   const mockHandler = jest.fn((thumbShift, index) => {
-  //     returnValues = { thumbShift, index };
-  //   });
-  //   thumbs.updateThumbsShift(evt, thumbs.thumbs[0].root, 25, mockHandler);
-  //   expect(returnValues).toEqual({ thumbShift: 575, index: 0 });
-  // });
-
   it('Returns a first thumb config, when click before first thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     mockDistance(thumbs.thumbs);
     const returnedObject = thumbs.requiredThumb(100);
     expect(returnedObject).toEqual({
@@ -256,7 +193,6 @@ describe('Testing range thumbs', () => {
   });
 
   it('Returns a first thumb config, when the click is before the second thumb but closer to the first', () => {
-    const thumbs = new Thumbs(document.body, state);
     mockDistance(thumbs.thumbs);
     const returnedObject = thumbs.requiredThumb(300);
     expect(returnedObject).toEqual({
@@ -266,7 +202,6 @@ describe('Testing range thumbs', () => {
   });
 
   it('Returns a second thumb config, when the click is before the second thumb and closer to the second', () => {
-    const thumbs = new Thumbs(document.body, state);
     mockDistance(thumbs.thumbs);
     const returnedObject = thumbs.requiredThumb(400);
     expect(returnedObject).toEqual({
@@ -276,7 +211,6 @@ describe('Testing range thumbs', () => {
   });
 
   it('Returns a second thumb config, when the click is after the second thumb', () => {
-    const thumbs = new Thumbs(document.body, state);
     mockDistance(thumbs.thumbs);
     const returnedObject = thumbs.requiredThumb(500);
     expect(returnedObject).toEqual({
