@@ -9,6 +9,7 @@ let tooltips;
 
 beforeEach(() => {
   tooltips = new Tooltips(document.body, state);
+  tooltips.render(state);
 });
 
 afterEach(() => {
@@ -24,11 +25,24 @@ it('Render max tooltips', () => {
 });
 
 it('Updated min tooltips to 20', () => {
-  tooltips.update(20, 30);
+  const state = { min: 20, max: 30, tooltips: true };
+  tooltips.update(state);
   expect(tooltips.min.root.innerHTML).toBe('20');
 });
 
 it('Updated max tooltips to 40', () => {
-  tooltips.update(20, 40);
+  const state = { min: 20, max: 40, tooltips: true };
+  tooltips.update(state);
   expect(tooltips.max.root.innerHTML).toBe('40');
+});
+
+it('When tooltips is false, root node must be empty', () => {
+  tooltips.update({ tooltips: false });
+  expect(tooltips.root.innerHTML).toBe('');
+});
+
+it('When tooltips is false, min and max must be destroy', () => {
+  tooltips.update({ tooltips: false });
+  expect(tooltips.max).toBeUndefined();
+  expect(tooltips.min).toBeUndefined();
 });
