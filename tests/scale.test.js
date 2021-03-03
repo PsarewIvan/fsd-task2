@@ -74,6 +74,11 @@ describe('Check all orientation', () => {
     const textMarks = document.querySelectorAll('.free-slider__scale-text');
     expect(textMarks[1].innerHTML).toBe('320');
   });
+
+  it('When scale is false, root must be clear', () => {
+    scale.update({ scale: false });
+    expect(scale.root.innerHTML).toBe('');
+  });
 });
 
 describe('Check horizontal', () => {
