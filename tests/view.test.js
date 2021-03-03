@@ -1,4 +1,5 @@
 import View from '../src/components/view/View';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
 
 let view;
@@ -55,29 +56,42 @@ describe('All orientation testing', () => {
     expect(view.scale.root).toBeInTheDocument();
   });
 
-  it('Scale must not be on the document, when "sclae: flase"', () => {
-    const localView = new View(document.body, {
-      ...state,
-      ...{ scale: false },
-    });
-    expect(localView.scale).toBeUndefined();
-  });
-
   it('Tooltips must be on the document', () => {
     expect(view.tooltips.min.root).toBeInTheDocument();
     expect(view.tooltips.max.root).toBeInTheDocument();
   });
 
-  it('Tooltips must not be on the document, when "tooltips: false"', () => {
-    const localView = new View(document.body, {
-      ...state,
-      ...{ tooltips: false },
-    });
-    expect(localView.tooltips).toBeUndefined();
+  // ----------------
+  it('When user click to track, handler should be evoke', () => {
+    const handler = jest.fn();
+    const onFinish = jest.fn();
+    view.viewChanged(handler, onFinish);
+    userEvent.click(view.track.root);
+    expect(handler).toHaveBeenCalled();
   });
 
   // ----------------
-  it('When view updated, thumbs should update with correct parameters', () => {});
+  it('When user click to scale, handler should be evoke', () => {
+    const handler = jest.fn();
+    const onFinish = jest.fn();
+    view.viewChanged(handler, onFinish);
+    userEvent.click(view.scale.root);
+    expect(handler).toHaveBeenCalled();
+  });
+
+  // ----------------
+  it('When user click to thumd, handler should be evoke', () => {
+    const handler = jest.fn();
+    const onFinish = jest.fn();
+    view.viewChanged(handler, onFinish);
+    userEvent.click(view.scale.root);
+    expect(handler).toHaveBeenCalled();
+  });
+
+  it('Slider must be hide on document, when user change orientation', () => {
+    view.destroyAll();
+    expect(view.root.innerHTML).toBe('');
+  });
 });
 
 describe('Testing horizontal slider', () => {
@@ -98,10 +112,10 @@ describe('Testing horizontal slider', () => {
 });
 
 describe('Testing vertical slider', () => {
-  const state = { ...state, ...{ orientation: 'vertical' } };
+  const stateVertical = { ...state, ...{ orientation: 'vertical' } };
 
   beforeEach(() => {
-    view = new View(document.body, state);
+    view = new View(document.body, stateVertical);
   });
 
   afterEach(() => {
@@ -117,10 +131,10 @@ describe('Testing vertical slider', () => {
 });
 
 describe('Testing range slider', () => {
-  const state = { ...state, ...{ type: 'range' } };
+  const stateRange = { ...state, ...{ type: 'range' } };
 
   beforeEach(() => {
-    view = new View(document.body, state);
+    view = new View(document.body, stateRange);
   });
 
   afterEach(() => {
