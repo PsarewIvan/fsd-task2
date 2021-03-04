@@ -18,14 +18,6 @@ export default class MakeObservableSubject {
     this.observers[name] = observer;
   }
 
-  unsubscribe(name: string): void {
-    if (!this.observers.hasOwnProperty(name)) {
-      throw new Error(`An accepted function "${name}" does not exist`);
-    } else {
-      delete this.observers.name;
-    }
-  }
-
   notify(name: string, value?: Object): void {
     if (this.observers[name]) {
       this.observers[name](value);
