@@ -1,169 +1,230 @@
-import SliderModel from '../src/components/Model';
-import Observer from '../src/components/makeObservableSubject';
+import Model from '../src/components/Model';
 
-describe('Slider Model', () => {
-  test('should create observer', () => {
-    const SomeObserver = new Observer();
-    const MockModel = new SliderModel();
-    expect(MockModel.modelChangedSubject).toEqual(SomeObserver);
+let model;
+
+describe('Common test', () => {
+  const state = {
+    min: 0,
+    max: 500,
+    step: 2,
+    values: [100],
+    type: 'single',
+    percents: [20],
+    orientation: 'horizontal',
+    scale: true,
+    scaleMark: 5,
+    subScaleMark: 4,
+    tooltips: true,
+    hints: true,
+    onChange: jest.fn((value) => value),
+    onFinish: jest.fn((value) => value),
+    onUpdate: jest.fn((value) => value),
+  };
+
+  beforeEach(() => {
+    model = new Model(state);
   });
 
-  test('should write default settings', () => {
-    const defaultSettings = {
+  it('Model should be accpet default state, when transmitted state is empty', () => {
+    const model = new Model();
+    expect(model.getSettings()).toEqual({
       min: 0,
       max: 100,
-      value: 50,
       step: 1,
-      type: 'single',
-    };
-    const MockModel = new SliderModel();
-    expect(MockModel.getSettings()).toEqual(defaultSettings);
-  });
-
-  test('should write singleSLider 1 settings', () => {
-    const settings = {
-      min: 20,
-    };
-    const MockModel = new SliderModel(settings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 20,
-      max: 100,
-      value: 50,
-      step: 1,
-      type: 'single',
-    });
-  });
-
-  test('should write default settings on rangeSlider', () => {
-    const settings = {
-      type: 'range',
-    };
-    const MockModel = new SliderModel(settings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 0,
-      max: 100,
-      from: 10,
-      to: 90,
-      step: 1,
-      type: 'range',
-    });
-  });
-
-  test('should write 1 new option on rangeSlider', () => {
-    const settings = {
-      type: 'range',
-      step: 0.5,
-    };
-    const MockModel = new SliderModel(settings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 0,
-      max: 100,
-      from: 10,
-      to: 90,
-      step: 0.5,
-      type: 'range',
-    });
-  });
-
-  test('should create Range slider with empty "type"', () => {
-    const settings = {
-      min: 0,
-      max: 200,
-      from: 10,
-      to: 100,
-    };
-    const MockModel = new SliderModel(settings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 0,
-      max: 200,
-      from: 10,
-      to: 100,
-      step: 1,
-      type: 'range',
-    });
-  });
-
-  test('should set new param on single slider', () => {
-    const newSettings = {
-      min: 0,
-      max: 200,
-      value: 100,
-    };
-    const MockModel = new SliderModel();
-    MockModel.setSettings(newSettings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 0,
-      max: 200,
-      value: 100,
-      step: 1,
+      orientation: 'horizontal',
+      tooltips: true,
+      scale: false,
+      hints: true,
+      scaleMark: 4,
+      subScaleMark: 5,
+      percents: [0.5],
+      values: [50],
       type: 'single',
     });
   });
 
-  test('should set new param on range slider', () => {
-    const newSettings = {
-      min: 30,
-      max: 1000,
-      from: 100,
-      to: 500,
-    };
-    const MockModel = new SliderModel({ type: 'range' });
-    MockModel.setSettings(newSettings);
-    expect(MockModel.getSettings()).toEqual({
-      min: 30,
-      max: 1000,
-      from: 100,
-      to: 500,
-      step: 1,
-      type: 'range',
-    });
+  it('Scale should be update', () => {
+    model.updateModel({ scale: false });
+    expect(model.getSettings().scale).toBe(false);
   });
 
-  test('should rounds a random float number to 5 decimal places', () => {
-    const MockModel = new SliderModel();
-    const randomNumbers = [
-      -12,
-      -3.2,
-      -1.123459,
-      -1.123451,
-      0,
-      1.8,
-      3.123459,
-      4.123451,
-      5,
-    ];
-    let resultArray = [];
-
-    randomNumbers.forEach((num) => {
-      resultArray.push(MockModel.round(num, 5));
-    });
-    expect(resultArray).toEqual([
-      -12,
-      -3.2,
-      -1.12346,
-      -1.12345,
-      0,
-      1.8,
-      3.12346,
-      4.12345,
-      5,
-    ]);
+  it('Orientation should be update to vertical', () => {
+    model.updateModel({ orientation: 'vertical' });
+    expect(model.getSettings().orientation).toBe('vertical');
   });
 
-  test('should calculate slider value of pin shift relatively slider width', () => {
-    const randomSettings = {
-      min: 0,
-      max: 100,
-      value: 50,
-      step: 1,
-    };
-    const MockModel = new SliderModel(randomSettings);
-    const randomShift = [0, 10, 30, 50, 70, 100];
-    let resultArray = [];
+  it('Orientation should be update to horizontal', () => {
+    const model = new Model({ orientation: 'vertical' });
+    model.updateModel({ orientation: 'horizontal' });
+    expect(model.getSettings().orientation).toBe('horizontal');
+  });
 
-    randomShift.forEach((num) => {
-      resultArray.push(MockModel.calcValue(num, 100));
-    });
-    expect(resultArray).toEqual(randomShift);
+  it('Hint should be update to false', () => {
+    model.updateModel({ hints: false });
+    expect(model.getSettings().hints).toBe(false);
+  });
+
+  it('Hint should be update to true', () => {
+    const model = new Model({ hints: false });
+    model.updateModel({ hints: true });
+    expect(model.getSettings().hints).toBe(true);
+  });
+
+  it('Tooltips should be update to false', () => {
+    model.updateModel({ tooltips: false });
+    expect(model.getSettings().tooltips).toBe(false);
+  });
+
+  it('Tooltips should be update to true', () => {
+    const model = new Model({ tooltips: false });
+    model.updateModel({ tooltips: true });
+    expect(model.getSettings().tooltips).toBe(true);
+  });
+});
+
+describe('Single slider', () => {
+  const state = {
+    min: 0,
+    max: 500,
+    step: 2,
+    values: [100],
+    type: 'single',
+    percents: [20],
+    orientation: 'horizontal',
+    scale: true,
+    scaleMark: 5,
+    subScaleMark: 4,
+    tooltips: true,
+    hints: true,
+    onChange: jest.fn((value) => value),
+    onFinish: jest.fn((value) => value),
+    onUpdate: jest.fn((value) => value),
+  };
+
+  beforeEach(() => {
+    model = new Model(state);
+  });
+
+  it('Values should be update, when input values is correct', () => {
+    model.updateModel({ values: [600] });
+    expect(model.getSettings().values).toEqual([100]);
+  });
+
+  it('Values should not be update, when input values is incorrect', () => {
+    model.updateModel({ values: [400] });
+    expect(model.getSettings().values).toEqual([400]);
+  });
+
+  it('Step should be update, when step value more then 0', () => {
+    model.updateModel({ step: 10 });
+    expect(model.getSettings().step).toBe(10);
+  });
+
+  it('Step should be update to 1, when step value less then 0', () => {
+    model.updateModel({ step: -4 });
+    expect(model.getSettings().step).toBe(1);
+  });
+
+  it('Min should be update, when value less than thumb value', () => {
+    model.updateModel({ min: 50 });
+    expect(model.getSettings().min).toBe(50);
+  });
+
+  it('Min should be update to thumb, when value more than thumb value', () => {
+    model.updateModel({ min: 300 });
+    expect(model.getSettings().min).toBe(100);
+  });
+
+  it('Max should be update, when value more than thumb value', () => {
+    model.updateModel({ max: 200 });
+    expect(model.getSettings().max).toBe(200);
+  });
+
+  it('Max should be update to thumb, when value less than thumb value', () => {
+    model.updateModel({ max: 0 });
+    expect(model.getSettings().max).toBe(100);
+  });
+
+  it('Value should be update on view method with percents', () => {
+    model.setNewValue(0.5, 0);
+    expect(model.getSettings().values).toEqual([250]);
+  });
+});
+
+describe('Range slider', () => {
+  const state = {
+    min: 100,
+    max: 300,
+    step: 1,
+    values: [150, 200],
+    type: 'range',
+    orientation: 'horizontal',
+    scale: true,
+    scaleMark: 10,
+    subScaleMark: 2,
+    tooltips: true,
+    hints: true,
+    onChange: jest.fn((value) => value),
+    onFinish: jest.fn((value) => value),
+    onUpdate: jest.fn((value) => value),
+  };
+
+  beforeEach(() => {
+    model = new Model(state);
+  });
+
+  it('First values should be update, when input values is correct', () => {
+    model.updateModel({ values: [160] });
+    expect(model.getSettings().values).toEqual([160]);
+  });
+
+  it('Second values should be update, when input values is correct', () => {
+    model.updateModel({ values: [, 250] });
+    expect(model.getSettings().values).toEqual([150, 200]);
+  });
+
+  it('Two values should be update, when input values is correct', () => {
+    model.updateModel({ values: [180, 220] });
+    expect(model.getSettings().values).toEqual([180, 220]);
+  });
+
+  it('Values should not be update, when input values is incorrect', () => {
+    model.updateModel({ values: [400] });
+    expect(model.getSettings().values).toEqual([150, 200]);
+  });
+
+  it('The step should not be greater than the range of values', () => {
+    model.updateModel({ step: 201 });
+    expect(model.getSettings().step).toBe(200);
+  });
+
+  it('Min should be update, when value less than first thumb value', () => {
+    model.updateModel({ min: 120 });
+    expect(model.getSettings().min).toBe(120);
+  });
+
+  it('Min should be update to first thumb, when value more than first thumb value', () => {
+    model.updateModel({ min: 400 });
+    expect(model.getSettings().min).toBe(150);
+  });
+
+  it('Max should be update, when value less than second thumb value', () => {
+    model.updateModel({ max: 0 });
+    expect(model.getSettings().max).toBe(200);
+  });
+
+  it('Max should be update to second thumb, when value more than second thumb value', () => {
+    model.updateModel({ max: 600 });
+    expect(model.getSettings().max).toBe(600);
+  });
+
+  it('First value should be update on view method with percents', () => {
+    model.setNewValue(0.1, 0);
+    expect(model.getSettings().values).toEqual([120, 200]);
+  });
+
+  it('Second value should be update on view method with percents', () => {
+    model.setNewValue(0.9, 1);
+    expect(model.getSettings().values).toEqual([150, 280]);
   });
 });
