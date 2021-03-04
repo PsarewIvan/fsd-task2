@@ -64,16 +64,16 @@ export default class View {
     this.tooltips.update(settings);
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
-      this.isFirstChange = false;
     }
     if (this.onChange && !this.isFirstChange) {
       this.onChange(settings.values);
     }
+    this.isFirstChange = false;
   }
 
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
-  public viewChanged(handler: Function, onFinish: Function) {
+  public viewChange(handler: Function, onFinish: Function) {
     // Слушатель на ползунки
     this.thumbs.addMouseListener((thumbShift: number, index: number) => {
       const percent = this.percentFromThumbShift(thumbShift);

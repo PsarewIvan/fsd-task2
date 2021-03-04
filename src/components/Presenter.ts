@@ -36,7 +36,7 @@ export default class SliderPresenter {
   // Подписываемся на изменения положения ползунков во View
   // и передаем изменения в Model для записи новых значений
   private viewHandler(options: Partial<Settings>): void {
-    this.view.viewChanged(
+    this.view.viewChange(
       (thumbPercentOffset: number, index: number) => {
         this.model.setNewValue(thumbPercentOffset, index);
       },
@@ -81,8 +81,8 @@ export default class SliderPresenter {
     return this.model.getSettings();
   }
 
-  public changeStep(step: number): void {
-    this.model.updateModel({ step: step });
+  public changeStep(newStep: number): void {
+    this.model.updateModel({ step: newStep });
   }
 
   public changeMin(value: number): void {
