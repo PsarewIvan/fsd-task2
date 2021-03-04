@@ -25,7 +25,7 @@ export default class SliderModel {
       percents: [],
     };
 
-    if (options.type === 'range') {
+    if (options && options.type === 'range') {
       defaultParam = {
         ...defaultParam,
         ...{
@@ -43,11 +43,20 @@ export default class SliderModel {
       };
     }
 
+    if (options) {
+      const newOptions = { ...defaultParam, ...options };
+      this.optionsCheck(newOptions);
+      this.setSettings(newOptions, defaultParam);
+    } else {
+      this.setSettings(defaultParam);
+    }
+  }
+
+  private optionsCheck(options: Partial<Settings>) {
     options.values.forEach((value: number, i: number): void => {
       if (value < options.min) options.values[i] = options.min;
       if (value > options.max) options.values[i] = options.max;
     });
-    this.setSettings(options, defaultParam);
   }
 
   // Производит проверки перед обновлением модели
@@ -92,8 +101,8 @@ export default class SliderModel {
   // Проверяет и и вызывает метод записи новых значений слайдера
   private updateValues(values: number[]): void {
     const sortValues = values.slice().sort((a, b) => a - b);
-    const isValuesEqual = this.isEqual(values, sortValues);
-    const isValuesUpdate = !this.isEqual(values, this.settings.values);
+    const isValuesEqual: boolean = this.isEqual(values, sortValues);
+    const isValuesUpdate: boolean = !this.isEqual(values, this.settings.values);
     const isValuesInRange: boolean = !values.some((value) => {
       return value < this.settings.min || value > this.settings.max;
     });
@@ -104,7 +113,7 @@ export default class SliderModel {
   }
 
   private updateStep(step: number): void {
-    if (step < 0) step = 0;
+    if (step < 0) step = 1;
     if (step > this.settings.max - this.settings.min) {
       step = this.settings.max - this.settings.min;
     }
