@@ -47,7 +47,7 @@ export default class Slider {
       this.slider
     );
     this.inputEvent();
-    this.updateInputs();
+    this.updateValues();
     this.updateStep();
     this.updateMin();
     this.updateMax();
@@ -73,7 +73,7 @@ export default class Slider {
     this.state = state ? state : this.slider.freeSlider('getState');
   }
 
-  private updateInputs(): void {
+  private updateValues(): void {
     this.valuesInputs.addEvent(this.setValues.bind(this));
   }
 
