@@ -65,7 +65,7 @@ describe('All orientation testing', () => {
   it('When user click to track, handler should be evoke', () => {
     const handler = jest.fn();
     const onFinish = jest.fn();
-    view.viewChanged(handler, onFinish);
+    view.viewChange(handler, onFinish);
     userEvent.click(view.track.root);
     expect(handler).toHaveBeenCalled();
   });
@@ -74,7 +74,7 @@ describe('All orientation testing', () => {
   it('When user click to scale, handler should be evoke', () => {
     const handler = jest.fn();
     const onFinish = jest.fn();
-    view.viewChanged(handler, onFinish);
+    view.viewChange(handler, onFinish);
     userEvent.click(view.scale.root);
     expect(handler).toHaveBeenCalled();
   });
@@ -83,7 +83,7 @@ describe('All orientation testing', () => {
   it('When user click to thumd, handler should be evoke', () => {
     const handler = jest.fn();
     const onFinish = jest.fn();
-    view.viewChanged(handler, onFinish);
+    view.viewChange(handler, onFinish);
     userEvent.click(view.scale.root);
     expect(handler).toHaveBeenCalled();
   });
@@ -109,6 +109,33 @@ describe('Testing horizontal slider', () => {
     );
     expect(isClassCorrect).toBeTruthy();
   });
+
+  it('Whent the thumb shift is 300px, the percent must be calculate to 0.2', () => {
+    Object.defineProperty(view.rail.root, 'offsetWidth', { value: 500 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      left: 200,
+    }));
+    const percent = view.percentFromThumbShift(300);
+    expect(percent).toBe(0.2);
+  });
+
+  it('When the thumb shift is less then the min value, the percent must be calculate to 0', () => {
+    Object.defineProperty(view.rail.root, 'offsetWidth', { value: 500 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      left: 200,
+    }));
+    const percent = view.percentFromThumbShift(140);
+    expect(percent).toBe(0);
+  });
+
+  it('When the thumb shift is more then the max value, the percent must be calculate to 1', () => {
+    Object.defineProperty(view.rail.root, 'offsetWidth', { value: 500 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      left: 200,
+    }));
+    const percent = view.percentFromThumbShift(820);
+    expect(percent).toBe(1);
+  });
 });
 
 describe('Testing vertical slider', () => {
@@ -127,6 +154,33 @@ describe('Testing vertical slider', () => {
       'free-slider--vertical'
     );
     expect(isClassCorrect).toBeTruthy();
+  });
+
+  it('Whent the thumb shift is 100px, the percent must be calculate to 0.25', () => {
+    Object.defineProperty(view.rail.root, 'offsetHeight', { value: 200 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      top: 50,
+    }));
+    const percent = view.percentFromThumbShift(100);
+    expect(percent).toBe(0.25);
+  });
+
+  it('When the thumb shift is less then the min value, the percent must be calculate to 0', () => {
+    Object.defineProperty(view.rail.root, 'offsetHeight', { value: 200 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      top: 50,
+    }));
+    const percent = view.percentFromThumbShift(40);
+    expect(percent).toBe(0);
+  });
+
+  it('When the thumb shift is more then the max value, the percent must be calculate to 1', () => {
+    Object.defineProperty(view.rail.root, 'offsetHeight', { value: 200 });
+    view.rail.root.getBoundingClientRect = jest.fn(() => ({
+      top: 50,
+    }));
+    const percent = view.percentFromThumbShift(260);
+    expect(percent).toBe(1);
   });
 });
 
