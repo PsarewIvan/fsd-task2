@@ -100,16 +100,35 @@ export default class SliderModel {
 
   // Проверяет и и вызывает метод записи новых значений слайдера
   private updateValues(values: number[]): void {
-    const sortValues = values.slice().sort((a, b) => a - b);
-    const isValuesEqual: boolean = this.isEqual(values, sortValues);
     const isValuesUpdate: boolean = !this.isEqual(values, this.settings.values);
-    const isValuesInRange: boolean = !values.some((value) => {
-      return value < this.settings.min || value > this.settings.max;
-    });
-    if (isValuesEqual && isValuesUpdate && isValuesInRange) {
-      this.setSettings({ values: values });
+    if (isValuesUpdate) {
+      this.setSettings({ values: this.updateInputValues(values) });
       this.modelChangedSubject.notify('onChange', this.getSettings());
     }
+  }
+
+  private updateInputValues(values: number[]): number[] {
+    const currentValues = this.getSettings().values;
+    currentValues.forEach((value, i) => {
+      if (typeof values[i] === 'number' && value !== values[i]) {
+        currentValues[i] = values[i];
+      }
+    });
+    currentValues.forEach((value, i) => {
+      if (value < this.settings.min) {
+        currentValues[i] = this.settings.min;
+      }
+      if (value > this.settings.max) {
+        currentValues[i] = this.settings.max;
+      }
+      if (currentValues[i + 1] && value > currentValues[i + 1]) {
+        currentValues[i] = currentValues[i + 1];
+      }
+      if (currentValues[i - 1] && value < currentValues[i - 1]) {
+        currentValues[i] = currentValues[i - 1];
+      }
+    });
+    return currentValues;
   }
 
   private updateStep(step: number): void {

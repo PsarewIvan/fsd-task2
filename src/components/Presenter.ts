@@ -54,13 +54,7 @@ export default class SliderPresenter {
   }
 
   public setValue(values: Array<number>): void {
-    const currentValues = this.model.getSettings().values;
-    currentValues.forEach((value, i) => {
-      if (typeof values[i] === 'number' && value !== values[i]) {
-        currentValues[i] = values[i];
-      }
-    });
-    this.model.updateModel({ values: currentValues });
+    this.model.updateModel({ values: values });
   }
 
   public onChange(handler: Function) {
