@@ -106,13 +106,13 @@ describe('Single slider', () => {
   });
 
   it('Values should be update, when input values is correct', () => {
-    model.updateModel({ values: [600] });
-    expect(model.getSettings().values).toEqual([100]);
+    model.updateModel({ values: [400] });
+    expect(model.getSettings().values).toEqual([400]);
   });
 
   it('Values should not be update, when input values is incorrect', () => {
-    model.updateModel({ values: [400] });
-    expect(model.getSettings().values).toEqual([400]);
+    model.updateModel({ values: [600] });
+    expect(model.getSettings().values).toEqual([500]);
   });
 
   it('Step should be update, when step value more then 0', () => {
@@ -175,12 +175,12 @@ describe('Range slider', () => {
 
   it('First values should be update, when input values is correct', () => {
     model.updateModel({ values: [160] });
-    expect(model.getSettings().values).toEqual([160]);
+    expect(model.getSettings().values).toEqual([160, 200]);
   });
 
   it('Second values should be update, when input values is correct', () => {
     model.updateModel({ values: [, 250] });
-    expect(model.getSettings().values).toEqual([150, 200]);
+    expect(model.getSettings().values).toEqual([150, 250]);
   });
 
   it('Two values should be update, when input values is correct', () => {
@@ -190,7 +190,7 @@ describe('Range slider', () => {
 
   it('Values should not be update, when input values is incorrect', () => {
     model.updateModel({ values: [400] });
-    expect(model.getSettings().values).toEqual([150, 200]);
+    expect(model.getSettings().values).toEqual([200, 200]);
   });
 
   it('The step should not be greater than the range of values', () => {
