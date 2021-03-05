@@ -30,28 +30,6 @@ export default class View {
     this.update(settings);
   }
 
-  // Создает необходимые компоненты слайдера и размещает их
-  // в созданном родительском компоненте, который помещается
-  // в элемент на котором был создан слайдер
-  private render(settings: Settings): void {
-    this.track = new Track(this.wrapper, settings);
-    this.rail = new Rail(this.wrapper, settings);
-    this.bar = new Bar(this.wrapper, settings);
-    this.thumbs = new Thumbs(this.rail.root, settings);
-    this.scale = new Scale(this.rail.root, settings);
-    this.tooltips = new Tooltips(this.wrapper, settings);
-  }
-
-  private createWrapper(orientation: SliderOrientation): void {
-    this.wrapper = document.createElement('span');
-    if (orientation === 'vertical') {
-      this.wrapper.classList.add('free-slider', 'free-slider--vertical');
-    } else if (orientation === 'horizontal') {
-      this.wrapper.classList.add('free-slider', 'free-slider--horizontal');
-    }
-    this.root.append(this.wrapper);
-  }
-
   // Обновляет элементы слайдера
   public update(settings: Settings): void {
     this.thumbs.update(settings.percents, settings.values, settings.hints);
@@ -84,6 +62,32 @@ export default class View {
         this.clickHandler(clickCoord, handler, evt, onFinish);
       });
     }
+  }
+
+  public destroyAll(): void {
+    this.root.innerHTML = '';
+  }
+
+  // Создает необходимые компоненты слайдера и размещает их
+  // в созданном родительском компоненте, который помещается
+  // в элемент на котором был создан слайдер
+  private render(settings: Settings): void {
+    this.track = new Track(this.wrapper, settings);
+    this.rail = new Rail(this.wrapper, settings);
+    this.bar = new Bar(this.wrapper, settings);
+    this.thumbs = new Thumbs(this.rail.root, settings);
+    this.scale = new Scale(this.rail.root, settings);
+    this.tooltips = new Tooltips(this.wrapper, settings);
+  }
+
+  private createWrapper(orientation: SliderOrientation): void {
+    this.wrapper = document.createElement('span');
+    if (orientation === 'vertical') {
+      this.wrapper.classList.add('free-slider', 'free-slider--vertical');
+    } else if (orientation === 'horizontal') {
+      this.wrapper.classList.add('free-slider', 'free-slider--horizontal');
+    }
+    this.root.append(this.wrapper);
   }
 
   // Функция обработчик, вызывающаяся для перемещения ползунков
@@ -135,9 +139,5 @@ export default class View {
       formatPercents.push(percent * ratio + extraRatio);
     });
     return formatPercents;
-  }
-
-  public destroyAll(): void {
-    this.root.innerHTML = '';
   }
 }
