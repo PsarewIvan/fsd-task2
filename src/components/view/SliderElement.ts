@@ -21,7 +21,11 @@ export default class sliderElement {
     rootNode.append(this.root);
   }
 
-  private create(tag: string, elementClass?: Array<string>, text?: string) {
+  private create(
+    tag: string,
+    elementClass?: string[],
+    text?: string
+  ): HTMLElement {
     const element = document.createElement(tag);
     element.classList.add(...elementClass);
     if (text) {
