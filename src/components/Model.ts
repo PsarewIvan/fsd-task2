@@ -183,6 +183,7 @@ export default class SliderModel {
     this.modelChangedSubject.notify('viewUpdate', this.getSettings());
   }
 
+  // Проверка новых значений и их перезапись в случае выхода из диапазона
   private optionsCheck(options: Partial<Settings>) {
     options.values.forEach((value: number, i: number): void => {
       if (value < options.min) options.values[i] = options.min;
@@ -224,12 +225,14 @@ export default class SliderModel {
     return Math.round(base * number) / base;
   }
 
+  // Проверка равенства объектов
   private isEqual(arr1: number[], arr2: number[]): boolean {
     if (arr1.length !== arr2.length || arr1.join() !== arr2.join())
       return false;
     return true;
   }
 
+  // Копирование объектов
   private arrCopy(arr: number[]): number[] {
     const newArr = [];
     arr.forEach((value: number, i: number) => {
