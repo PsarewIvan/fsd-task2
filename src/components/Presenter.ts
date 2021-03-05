@@ -15,22 +15,8 @@ export default class SliderPresenter {
     this.model = new SliderModel(options);
     this.view = new View(this.element, this.model.getSettings());
     this.viewHandler(options);
-
-    // Слушатель изменения значений в модели. При изменении значений
-    // вызывает метод обновления View
-    this.model.modelChangedSubject.subscribe(
-      'viewUpdate',
-      (settings: Settings) => {
-        this.view.update(settings);
-      }
-    );
-
-    this.model.modelChangedSubject.subscribe('changeOrientation', () => {
-      this.view.destroyAll();
-      const settings = this.model.getSettings();
-      this.view = new View(this.element, settings);
-      this.viewHandler(settings);
-    });
+    this.modelHandler();
+    this.modelHandlerOrientation();
   }
 
   // Подписываемся на изменения положения ползунков во View
@@ -46,6 +32,28 @@ export default class SliderPresenter {
         }
       }
     );
+  }
+
+  // Слушатель изменения значений в модели. При изменении значений
+  // вызывает метод обновления View
+  private modelHandler(): void {
+    this.model.modelChangedSubject.subscribe(
+      'viewUpdate',
+      (settings: Settings) => {
+        this.view.update(settings);
+      }
+    );
+  }
+
+  // Слушатель за изменением ориентации слайдера. При изменении
+  // переписывает и перерисовывает вид слайдера
+  private modelHandlerOrientation(): void {
+    this.model.modelChangedSubject.subscribe('changeOrientation', () => {
+      this.view.destroyAll();
+      const settings = this.model.getSettings();
+      this.view = new View(this.element, settings);
+      this.viewHandler(settings);
+    });
   }
 
   // Публичные методы взаимодействия со слайдером
