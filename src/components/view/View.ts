@@ -13,18 +13,16 @@ import Tooltips from './Tooltips';
 export default class View {
   private root: HTMLElement;
   private wrapper: HTMLElement;
-  private onUpdate: Function | undefined;
   private isFirstChange: boolean;
   private track: Track;
   private rail: Rail;
   private bar: Bar;
-  private scale?: Scale;
+  private scale: Scale;
   private thumbs: Thumbs;
-  private tooltips?: Tooltips;
+  private tooltips: Tooltips;
 
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
-    this.onUpdate = settings.onUpdate;
     this.isFirstChange = true;
 
     this.createWrapper(settings.orientation);
@@ -60,8 +58,8 @@ export default class View {
     this.bar.update(this.formatPercents(settings.percents));
     this.scale.update(settings);
     this.tooltips.update(settings);
-    if (this.onUpdate && this.isFirstChange) {
-      this.onUpdate(settings.values);
+    if (settings.onUpdate && this.isFirstChange) {
+      settings.onUpdate(settings.values);
     }
     this.isFirstChange = false;
   }
