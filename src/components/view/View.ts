@@ -44,7 +44,7 @@ export default class View {
 
   // Создает слушателей за наблюдением состояния слайдера
   // при взаимодействии пользователя
-  public viewChange(handler: Function, onFinish: Function) {
+  public viewChange(handler: Function, onFinish: Function): void {
     // Слушатель на ползунки
     this.thumbs.addMouseListener((thumbShift: number, index: number) => {
       const percent = this.percentFromThumbShift(thumbShift);
