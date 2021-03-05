@@ -57,11 +57,11 @@ export default class SliderPresenter {
   }
 
   // Публичные методы взаимодействия со слайдером
-  public getCurrentValue(): Array<number> {
+  public getCurrentValue(): number[] {
     return this.model.getSettings().values;
   }
 
-  public setValue(values: Array<number>): void {
+  public setValue(values: number[]): void {
     this.model.updateModel({ values: values });
   }
 
