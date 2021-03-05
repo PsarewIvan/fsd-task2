@@ -13,7 +13,6 @@ import Tooltips from './Tooltips';
 export default class View {
   private root: HTMLElement;
   private wrapper: HTMLElement;
-  private onChange: Function | undefined;
   private onUpdate: Function | undefined;
   private isFirstChange: boolean;
   private track: Track;
@@ -25,7 +24,6 @@ export default class View {
 
   constructor(rootNode: HTMLElement, settings: Settings) {
     this.root = rootNode;
-    this.onChange = settings.onChange;
     this.onUpdate = settings.onUpdate;
     this.isFirstChange = true;
 
@@ -64,9 +62,6 @@ export default class View {
     this.tooltips.update(settings);
     if (this.onUpdate && this.isFirstChange) {
       this.onUpdate(settings.values);
-    }
-    if (this.onChange && !this.isFirstChange) {
-      this.onChange(settings.values);
     }
     this.isFirstChange = false;
   }

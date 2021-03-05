@@ -122,6 +122,7 @@ export default class SliderModel {
     if (isValuesUpdate) {
       this.setSettings({ values: this.changeInputValues(values) });
       this.modelChangedSubject.notify('onChange', this.getSettings());
+      this.settings.onChange(_.cloneDeep(this.settings.values));
     }
   }
 
