@@ -31,11 +31,11 @@ describe('All orientation testing', () => {
   });
 
   it('Slider parent node must be in the document', () => {
-    expect(view.slider).toBeInTheDocument();
+    expect(view.wrapper).toBeInTheDocument();
   });
 
   it('Slider html-element class must be correct', () => {
-    const isClassCorrect = view.slider.classList.contains('free-slider');
+    const isClassCorrect = view.wrapper.classList.contains('free-slider');
     expect(isClassCorrect).toBeTruthy();
   });
 
@@ -104,7 +104,7 @@ describe('Testing horizontal slider', () => {
   });
 
   it('Slider class modificator must be correct', () => {
-    const isClassCorrect = view.slider.classList.contains(
+    const isClassCorrect = view.wrapper.classList.contains(
       'free-slider--horizontal'
     );
     expect(isClassCorrect).toBeTruthy();
@@ -150,7 +150,7 @@ describe('Testing vertical slider', () => {
   });
 
   it('Slider class modificator must be correct', () => {
-    const isClassCorrect = view.slider.classList.contains(
+    const isClassCorrect = view.wrapper.classList.contains(
       'free-slider--vertical'
     );
     expect(isClassCorrect).toBeTruthy();
