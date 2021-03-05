@@ -125,7 +125,7 @@ export default class ThumbView {
     };
 
     const onMouseUp = (): void => {
-      onFinish();
+      if (typeof onFinish === 'function') onFinish();
       window.ontouchmove = null;
       document.removeEventListener('pointermove', onMouseMove);
       document.removeEventListener('pointerup', onMouseUp);
