@@ -52,13 +52,6 @@ export default class SliderModel {
     }
   }
 
-  private optionsCheck(options: Partial<Settings>) {
-    options.values.forEach((value: number, i: number): void => {
-      if (value < options.min) options.values[i] = options.min;
-      if (value > options.max) options.values[i] = options.max;
-    });
-  }
-
   // Производит проверки перед обновлением модели
   public updateModel(newSettings: Partial<Settings>): void {
     if (newSettings.values) this.updateValues(newSettings.values);
@@ -95,6 +88,31 @@ export default class SliderModel {
     ) {
       this.setSettings({ orientation: orientation });
       this.modelChangedSubject.notify('changeOrientation');
+    }
+  }
+
+  // Возвращает значения с дополнительными полями, требуемыми для
+  // корректной работы View:
+  // settings.percents - массив значений в процентах
+  public getSettings(): Settings {
+    const upgradeSettings: Settings = _.cloneDeep(this.settings);
+    const range: number = this.settings.max - this.settings.min;
+    this.settings.values.forEach((value: number, i: number) => {
+      upgradeSettings.percents[i] = (value - this.settings.min) / range;
+    });
+    return upgradeSettings;
+  }
+
+  // Устанавливает новые значения слайдера в зависимости от
+  // смещения конкртеного ползунка в процентах
+  public setNewValue(thumbPercentOffset: number, index: number): void {
+    const calcValue = this.calcValue(thumbPercentOffset);
+    if (this.settings.type === 'single') {
+      this.updateModel({ values: [calcValue] });
+    } else {
+      const newValues = this.arrCopy(this.settings.values);
+      newValues[index] = calcValue;
+      this.updateModel({ values: newValues });
     }
   }
 
@@ -165,29 +183,11 @@ export default class SliderModel {
     this.modelChangedSubject.notify('viewUpdate', this.getSettings());
   }
 
-  // Возвращает значения с дополнительными полями, требуемыми для
-  // корректной работы View:
-  // settings.percents - массив значений в процентах
-  public getSettings(): Settings {
-    const upgradeSettings: Settings = _.cloneDeep(this.settings);
-    const range: number = this.settings.max - this.settings.min;
-    this.settings.values.forEach((value: number, i: number) => {
-      upgradeSettings.percents[i] = (value - this.settings.min) / range;
+  private optionsCheck(options: Partial<Settings>) {
+    options.values.forEach((value: number, i: number): void => {
+      if (value < options.min) options.values[i] = options.min;
+      if (value > options.max) options.values[i] = options.max;
     });
-    return upgradeSettings;
-  }
-
-  // Устанавливает новые значения слайдера в зависимости от
-  // смещения конкртеного ползунка в процентах
-  public setNewValue(thumbPercentOffset: number, index: number): void {
-    const calcValue = this.calcValue(thumbPercentOffset);
-    if (this.settings.type === 'single') {
-      this.updateModel({ values: [calcValue] });
-    } else {
-      const newValues = this.arrCopy(this.settings.values);
-      newValues[index] = calcValue;
-      this.updateModel({ values: newValues });
-    }
   }
 
   // Возвращает новое корректное значения в зависимости от
