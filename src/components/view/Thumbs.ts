@@ -114,7 +114,7 @@ export default class ThumbView {
   }
 
   // Обновляет местоположение ползунков на слайдере
-  private updatePosition(percents: Array<number>): void {
+  private updatePosition(percents: number[]): void {
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
       const currentPercent: number = Number(
         thumb.root.style[thumb.directionType].slice(0, -1)
@@ -126,7 +126,7 @@ export default class ThumbView {
   }
 
   // Обновляет числовое значение над ползунком
-  private updateHints(values: Array<number>): void {
+  private updateHints(values: number[]): void {
     this.thumbs.forEach((thumb: SliderElement, i: number) => {
       thumb.root.style.setProperty(this.property[i], `"${values[i]}"`);
     });
