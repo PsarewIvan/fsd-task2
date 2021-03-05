@@ -12,32 +12,6 @@ export default class ThumbView {
     this.render(rootNode);
   }
 
-  // Отрисовывает необходимые ползунки в родительском элементе
-  private render(rootNode: HTMLElement): void {
-    if (this.state.type === 'range') {
-      this.thumbs = [
-        new SliderElement(
-          rootNode,
-          ['free-slider__thumb'],
-          this.state.orientation
-        ),
-        new SliderElement(
-          rootNode,
-          ['free-slider__thumb', 'free-slider__thumb--second'],
-          this.state.orientation
-        ),
-      ];
-    } else {
-      this.thumbs = [
-        new SliderElement(
-          rootNode,
-          ['free-slider__thumb'],
-          this.state.orientation
-        ),
-      ];
-    }
-  }
-
   // Обновляет состояние ползунков
   public update(
     percents: Array<number>,
@@ -52,54 +26,12 @@ export default class ThumbView {
     }
   }
 
-  // Обновляет местоположение ползунков на слайдере
-  private updatePosition(percents: Array<number>): void {
-    this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      const currentPercent: number = Number(
-        thumb.root.style[thumb.directionType].slice(0, -1)
-      );
-      if (percents[i] * 100 !== currentPercent) {
-        thumb.root.style[thumb.directionType] = `${percents[i] * 100}%`;
-      }
-    });
-  }
-
-  // Обновляет числовое значение над ползунком
-  private updateHints(values: Array<number>): void {
-    this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style.setProperty(this.property[i], `"${values[i]}"`);
-    });
-  }
-
-  private clearHints(): void {
-    this.thumbs.forEach((thumb: SliderElement, i: number) => {
-      thumb.root.style.setProperty(this.property[i], ``);
-    });
-  }
-
   // Создает слушателей на ползунках для обработки событий
   // работы пользователя
   public addMouseListener(handler: Function, onFinish: Function): void {
     this.thumbs.forEach((thumb: SliderElement) => {
       this.mouseListener(thumb, handler, onFinish);
     });
-  }
-
-  // Слушатель для обработки пользовательских событий
-  // при клике на ползунок и его движении
-  private mouseListener(
-    currentThumb: SliderElement,
-    handler: Function,
-    onFinish: Function
-  ): void {
-    currentThumb.root.addEventListener('pointerdown', (evt: PointerEvent) => {
-      evt.preventDefault();
-      this.mouseMoveEvent(currentThumb, evt, handler, onFinish);
-    });
-
-    currentThumb.root.ondragstart = function () {
-      return false;
-    };
   }
 
   // Метод считывает движения пользователя при движении ползунков
@@ -135,10 +67,6 @@ export default class ThumbView {
     document.addEventListener('pointerup', onMouseUp);
   }
 
-  private getCurrentThumbIndex(currentThumb: SliderElement): number {
-    return this.thumbs.findIndex((thumb) => thumb.root === currentThumb.root);
-  }
-
   // Возвращает объект с данными ползунка, который необходимо
   // подвинуть при клике на Track
   public requiredThumb(clickOffset: number): RequiredThumb {
@@ -161,5 +89,77 @@ export default class ThumbView {
 
   public getThumbSize(): number {
     return this.thumbs[0].size;
+  }
+
+  // Отрисовывает необходимые ползунки в родительском элементе
+  private render(rootNode: HTMLElement): void {
+    if (this.state.type === 'range') {
+      this.thumbs = [
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb'],
+          this.state.orientation
+        ),
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb', 'free-slider__thumb--second'],
+          this.state.orientation
+        ),
+      ];
+    } else {
+      this.thumbs = [
+        new SliderElement(
+          rootNode,
+          ['free-slider__thumb'],
+          this.state.orientation
+        ),
+      ];
+    }
+  }
+
+  // Обновляет местоположение ползунков на слайдере
+  private updatePosition(percents: Array<number>): void {
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      const currentPercent: number = Number(
+        thumb.root.style[thumb.directionType].slice(0, -1)
+      );
+      if (percents[i] * 100 !== currentPercent) {
+        thumb.root.style[thumb.directionType] = `${percents[i] * 100}%`;
+      }
+    });
+  }
+
+  // Обновляет числовое значение над ползунком
+  private updateHints(values: Array<number>): void {
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      thumb.root.style.setProperty(this.property[i], `"${values[i]}"`);
+    });
+  }
+
+  private clearHints(): void {
+    this.thumbs.forEach((thumb: SliderElement, i: number) => {
+      thumb.root.style.setProperty(this.property[i], ``);
+    });
+  }
+
+  // Слушатель для обработки пользовательских событий
+  // при клике на ползунок и его движении
+  private mouseListener(
+    currentThumb: SliderElement,
+    handler: Function,
+    onFinish: Function
+  ): void {
+    currentThumb.root.addEventListener('pointerdown', (evt: PointerEvent) => {
+      evt.preventDefault();
+      this.mouseMoveEvent(currentThumb, evt, handler, onFinish);
+    });
+
+    currentThumb.root.ondragstart = function () {
+      return false;
+    };
+  }
+
+  private getCurrentThumbIndex(currentThumb: SliderElement): number {
+    return this.thumbs.findIndex((thumb) => thumb.root === currentThumb.root);
   }
 }
