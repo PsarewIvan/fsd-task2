@@ -13,11 +13,7 @@ export default class ThumbView {
   }
 
   // Обновляет состояние ползунков
-  public update(
-    percents: Array<number>,
-    values: Array<number>,
-    hints: boolean
-  ): void {
+  public update(percents: number[], values: number[], hints: boolean): void {
     this.updatePosition(percents);
     if (hints) {
       this.updateHints(values);
