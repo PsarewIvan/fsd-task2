@@ -98,16 +98,18 @@ export default class SliderModel {
     }
   }
 
-  // Проверяет и и вызывает метод записи новых значений слайдера
+  // Проверяет и вызывает метод записи новых значений слайдера
   private updateValues(values: number[]): void {
     const isValuesUpdate: boolean = !this.isEqual(values, this.settings.values);
     if (isValuesUpdate) {
-      this.setSettings({ values: this.updateInputValues(values) });
+      this.setSettings({ values: this.changeInputValues(values) });
       this.modelChangedSubject.notify('onChange', this.getSettings());
     }
   }
 
-  private updateInputValues(values: number[]): number[] {
+  // Изменяет новые значения, если они выходят из диапазона допустимых
+  // значений
+  private changeInputValues(values: number[]): number[] {
     const currentValues = this.getSettings().values;
     currentValues.forEach((value, i) => {
       if (typeof values[i] === 'number' && value !== values[i]) {
