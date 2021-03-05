@@ -12,7 +12,7 @@ import Tooltips from './Tooltips';
 
 export default class View {
   private root: HTMLElement;
-  private slider: HTMLElement;
+  private wrapper: HTMLElement;
   private onChange: Function | undefined;
   private onUpdate: Function | undefined;
   private isFirstChange: boolean;
@@ -38,22 +38,22 @@ export default class View {
   // в созданном родительском компоненте, который помещается
   // в элемент на котором был создан слайдер
   private render(settings: Settings): void {
-    this.track = new Track(this.slider, settings);
-    this.rail = new Rail(this.slider, settings);
-    this.bar = new Bar(this.slider, settings);
+    this.track = new Track(this.wrapper, settings);
+    this.rail = new Rail(this.wrapper, settings);
+    this.bar = new Bar(this.wrapper, settings);
     this.thumbs = new Thumbs(this.rail.root, settings);
     this.scale = new Scale(this.rail.root, settings);
-    this.tooltips = new Tooltips(this.slider, settings);
+    this.tooltips = new Tooltips(this.wrapper, settings);
   }
 
   private createWrapper(orientation: SliderOrientation): void {
-    this.slider = document.createElement('span');
+    this.wrapper = document.createElement('span');
     if (orientation === 'vertical') {
-      this.slider.classList.add('free-slider', 'free-slider--vertical');
+      this.wrapper.classList.add('free-slider', 'free-slider--vertical');
     } else if (orientation === 'horizontal') {
-      this.slider.classList.add('free-slider', 'free-slider--horizontal');
+      this.wrapper.classList.add('free-slider', 'free-slider--horizontal');
     }
-    this.root.append(this.slider);
+    this.root.append(this.wrapper);
   }
 
   // Обновляет элементы слайдера
