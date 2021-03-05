@@ -60,7 +60,7 @@ export default class SliderModel {
   }
 
   // Производит проверки перед обновлением модели
-  public updateModel(newSettings: Partial<Settings>) {
+  public updateModel(newSettings: Partial<Settings>): void {
     if (newSettings.values) this.updateValues(newSettings.values);
     if (typeof newSettings.step === 'number') this.updateStep(newSettings.step);
     if (typeof newSettings.min === 'number') this.updateMin(newSettings.min);
