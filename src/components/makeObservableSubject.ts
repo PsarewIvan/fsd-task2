@@ -5,7 +5,7 @@ export default class MakeObservableSubject {
     this.observers = {};
   }
 
-  subscribe(name: string, observer: Function): void {
+  public subscribe(name: string, observer: Function): void {
     if (typeof observer !== 'function') {
       throw new Error('observer must be a function');
     }
@@ -18,7 +18,7 @@ export default class MakeObservableSubject {
     this.observers[name] = observer;
   }
 
-  notify(name: string, value?: Object): void {
+  public notify(name: string, value?: Object): void {
     if (this.observers[name]) {
       this.observers[name](value);
     }
