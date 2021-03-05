@@ -122,7 +122,7 @@ export default class SliderModel {
     if (isValuesUpdate) {
       this.setSettings({ values: this.changeInputValues(values) });
       this.modelChangedSubject.notify('onChange', this.getSettings());
-      this.settings.onChange(_.cloneDeep(this.settings.values));
+      this.onChangeCallback();
     }
   }
 
@@ -240,5 +240,11 @@ export default class SliderModel {
       newArr[i] = value;
     });
     return newArr;
+  }
+
+  private onChangeCallback(): void {
+    if (typeof this.settings.onChange === 'function') {
+      this.settings.onChange(_.cloneDeep(this.settings.values));
+    }
   }
 }
