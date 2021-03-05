@@ -77,7 +77,7 @@ export default class View {
     this.bar = new Bar(this.wrapper, settings);
     this.thumbs = new Thumbs(this.rail.root, settings);
     this.scale = new Scale(this.rail.root, settings);
-    this.tooltips = new Tooltips(this.wrapper, settings);
+    this.tooltips = new Tooltips(this.wrapper);
   }
 
   private createWrapper(orientation: SliderOrientation): void {

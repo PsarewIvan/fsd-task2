@@ -2,14 +2,25 @@ import SliderElement from './SliderElement';
 import { Settings } from '../../types';
 
 export default class Tooltips {
-  private rootState: boolean;
   private root: HTMLElement;
   private min: SliderElement;
   private max: SliderElement;
 
-  constructor(rootNode: HTMLElement, state: Settings) {
-    this.rootState = state.tooltips;
+  constructor(rootNode: HTMLElement) {
     this.root = rootNode;
+  }
+
+  public update(state: Settings): void {
+    if (state.tooltips === true && !this.min && !this.max) {
+      this.render(state);
+    }
+    if (state.tooltips) {
+      this.updateMin(state.min);
+      this.updateMax(state.max);
+    }
+    if (!state.tooltips && this.min && this.max) {
+      this.destroyAll();
+    }
   }
 
   private render(state: Settings): void {
@@ -25,20 +36,6 @@ export default class Tooltips {
       state.orientation,
       `${state.max}`
     );
-  }
-
-  public update(state: Settings): void {
-    if (state.tooltips === true && !this.min && !this.max) {
-      this.render(state);
-    }
-    if (state.tooltips) {
-      this.updateMin(state.min);
-      this.updateMax(state.max);
-    }
-    if (!state.tooltips && this.min && this.max) {
-      this.destroyAll();
-    }
-    this.rootState = state.tooltips;
   }
 
   private updateMin(min: number): void {
