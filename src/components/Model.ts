@@ -23,6 +23,9 @@ export default class SliderModel {
       scaleMark: 4,
       subScaleMark: 5,
       percents: [],
+      onChange: null,
+      onFinish: null,
+      onUpdate: null,
     };
 
     if (options && options.type === 'range') {

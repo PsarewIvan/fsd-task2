@@ -40,6 +40,9 @@ describe('Common test', () => {
       percents: [0.5],
       values: [50],
       type: 'single',
+      onChange: null,
+      onFinish: null,
+      onUpdate: null,
     });
   });
 
