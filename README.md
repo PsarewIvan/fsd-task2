@@ -1,4 +1,4 @@
-# FreeSlider <img src="https://github.com/PsarewIvan/fsd-task-4/blob/master/demo/assets/favicon/android-chrome-192x192.png">
+# [](demo/assets/favicon/favicon-32x32.png) FreeSlider
 
 ---
 
