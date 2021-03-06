@@ -65,12 +65,6 @@ export default class SliderModel {
       this.setSettings({ scale: newSettings.scale });
     }
     if (
-      newSettings.orientation === 'horizontal' ||
-      newSettings.orientation === 'vertical'
-    ) {
-      this.setSettings({ orientation: newSettings.orientation });
-    }
-    if (
       typeof newSettings.hints === 'boolean' &&
       newSettings.hints !== this.settings.hints
     ) {
@@ -82,9 +76,10 @@ export default class SliderModel {
     ) {
       this.setSettings({ tooltips: newSettings.tooltips });
     }
+    this.changeOrientation(newSettings.orientation);
   }
 
-  public changeOrientation(orientation: SliderOrientation): void {
+  private changeOrientation(orientation: SliderOrientation): void {
     if (
       (orientation === 'horizontal' || orientation === 'vertical') &&
       orientation !== this.settings.orientation
