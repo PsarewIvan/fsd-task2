@@ -4,10 +4,16 @@ import { Settings } from '../types';
 export default class OrientationChange {
   private inputs: HTMLInputElement[];
   private wrapper: HTMLDivElement;
+  static id: number;
 
-  constructor(panel: HTMLDivElement, state: Settings, slider: JQuery) {
+  constructor(panel: HTMLDivElement, state: Settings) {
+    OrientationChange.id += 1;
     this.createWrapper();
-    this.createInputs(this.wrapper, slider[0].id, state.orientation);
+    this.createInputs(
+      this.wrapper,
+      OrientationChange.id.toString(),
+      state.orientation
+    );
     panel.append(this.wrapper);
   }
 
@@ -52,8 +58,10 @@ export default class OrientationChange {
   public addEvent(handler: Function): void {
     this.inputs.forEach((input: HTMLInputElement) => {
       input.addEventListener('change', () => {
-        handler(input.value);
+        handler({orientation: input.value});
       });
     });
   }
 }
+
+OrientationChange.id = 0;
