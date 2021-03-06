@@ -9,7 +9,7 @@ export default class HintToogle extends InputElement {
 
   public addEvent(handler: Function): void {
     this.input.addEventListener('change', () => {
-      handler(this.input.checked);
+      handler({hints: this.input.checked});
     });
   }
 }

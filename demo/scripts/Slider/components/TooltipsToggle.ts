@@ -9,7 +9,7 @@ export default class TooltipsToggle extends InputElement {
 
   public addEvent(handler: Function): void {
     this.input.addEventListener('change', () => {
-      handler(this.input.checked);
+      handler({tooltips: this.input.checked});
     });
   }
 }

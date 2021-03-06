@@ -11,7 +11,7 @@ export default class StepInput extends InputElement {
 
   public addEvent(handler: Function): void {
     this.input.addEventListener('change', () => {
-      handler(Number(this.input.value));
+      handler({ step: Number(this.input.value) });
     });
   }
 }

@@ -55,7 +55,7 @@ export default class ValuesInputs {
       input.addEventListener('change', () => {
         const values = [];
         values[i] = Number(input.value);
-        handler(values);
+        handler({ values: values });
       });
     });
   }

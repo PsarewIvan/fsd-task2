@@ -13,7 +13,7 @@ export default class MinInput extends InputElement {
       if (Number(this.input.value) > Number(this.input.max)) {
         this.input.value = this.input.max;
       }
-      handler(Number(this.input.value));
+      handler({ min: Number(this.input.value) });
     });
   }
 
