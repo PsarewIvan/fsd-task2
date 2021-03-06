@@ -2,7 +2,7 @@
 
 ---
 
-- <a href="https://psarewivan.github.io/fsd-task2/">Демо-страница проекта</a>
+- <a href="https://psarewivan.github.io/fsd-task-4/">Демо-страница проекта</a>
 
 ## Опиание
 
