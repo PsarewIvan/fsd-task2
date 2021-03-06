@@ -4,11 +4,13 @@ import '../src';
 import Slider from './scripts/Slider/Slider';
 
 const Slider1 = new Slider($('#slider-1'), {
-  min: -100,
-  max: 50,
-  values: [-25],
+  min: 300,
+  max: 500,
+  values: [400],
   step: 0.1,
   scale: true,
+  scaleMark: 10,
+  subScaleMark: 5,
 });
 
 const Slider2 = new Slider($('#slider-2'), {
@@ -28,6 +30,7 @@ const SLider3 = new Slider($('#slider-3'), {
   step: 1,
   scale: true,
   hints: false,
+  tooltips: false,
 });
 
 const Slider4 = new Slider($('#slider-4'), {
