@@ -9,15 +9,6 @@ export default class Scale extends SliderElement {
     this.state = state;
   }
 
-  public update(state: Settings = this.state): void {
-    if (state.scale) {
-      this.render(state);
-    }
-    if (!state.scale) {
-      this.clearRoot(true);
-    }
-  }
-
   public render(state: Settings): void {
     this.clearRoot();
     const markNumber = state.scaleMark * state.subScaleMark;
@@ -27,6 +18,27 @@ export default class Scale extends SliderElement {
       this.renderMark(markNumber, i, state.subScaleMark);
       this.renderTick(markNumber, state.subScaleMark, i, stepValue, state.min);
     }
+  }
+
+  public update(state: Settings = this.state): void {
+    if (state.scale) {
+      this.render(state);
+    }
+    if (!state.scale) {
+      this.clearRoot(true);
+    }
+  }
+
+  public clearRoot(isDisplayNone: boolean = false): void {
+    this.root.innerHTML = '';
+    this.root.style.display = isDisplayNone ? 'none' : 'block';
+  }
+
+  public clickEvent(handler: Function): void {
+    this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
+      evt.preventDefault();
+      handler(evt[this.coordType], evt);
+    });
   }
 
   private renderMark(markNumber: number, index: number, subMark: number): void {
@@ -54,18 +66,6 @@ export default class Scale extends SliderElement {
       tick.innerHTML = ticlValue.toString();
       this.root.append(tick);
     }
-  }
-
-  public clearRoot(isDisplayNone: boolean = false): void {
-    this.root.innerHTML = '';
-    this.root.style.display = isDisplayNone ? 'none' : 'block';
-  }
-
-  public clickEvent(handler: Function): void {
-    this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
-      evt.preventDefault();
-      handler(evt[this.coordType], evt);
-    });
   }
 
   // Метод для округления неточных значений
