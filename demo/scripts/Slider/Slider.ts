@@ -6,55 +6,52 @@ import ScaleToggle from './components/ScaleToggle';
 import OrientationChange from './components/OrientationChange';
 import HintToggle from './components/HintToggle';
 import TooltipsToggle from './components/TooltipsToggle';
-import { Settings } from './types';
+import { Settings, ElementsType } from './types';
 
 export default class Slider {
   private slider: JQuery;
-  private panelStates: HTMLDivElement;
-  private valuesInputs: ValuesInputs;
-  private stepInput: StepInput;
-  private minInput: MinInput;
-  private maxInput: MaxInput;
-  private scaleToggle: ScaleToggle;
-  private orientationChange: OrientationChange;
-  private hintToggle: HintToggle;
-  private tooltipsToggle: TooltipsToggle;
+  private elements: ElementsType;
+  private inputsPanel: HTMLDivElement;
   private state: Settings;
 
   constructor(element: JQuery, options: Partial<Settings>) {
     this.slider = element;
-    this.panelStates = document.createElement('div');
-    this.panelStates.classList.add('slider__panel');
-    this.slider.after(this.panelStates);
-    if (options.orientation !== 'vertical') {
-      this.slider.addClass('slider__wrapper--horizontal');
-    }
-    if (options.orientation === 'vertical') {
-      this.slider.addClass('slider__wrapper--vertical');
-    }
+    this.createPanel();
+    this.addClass(options.orientation);
     this.slider.freeSlider(options);
     this.updateState();
-    this.valuesInputs = new ValuesInputs(this.panelStates, this.state);
-    this.minInput = new MinInput(this.panelStates, this.state);
-    this.maxInput = new MaxInput(this.panelStates, this.state);
-    this.stepInput = new StepInput(this.panelStates, this.state);
-    this.hintToggle = new HintToggle(this.panelStates, this.state);
-    this.tooltipsToggle = new TooltipsToggle(this.panelStates, this.state);
-    this.scaleToggle = new ScaleToggle(this.panelStates, this.state);
-    this.orientationChange = new OrientationChange(
-      this.panelStates,
-      this.state,
-      this.slider
-    );
+    this.createElements();
     this.inputEvent();
-    this.updateValues();
-    this.updateStep();
-    this.updateMin();
-    this.updateMax();
-    this.updateScale();
-    this.updateOrientation();
-    this.updateHint();
-    this.updateTooltips();
+    this.updateCaller();
+  }
+
+  private createPanel(): void {
+    this.inputsPanel = document.createElement('div');
+    this.inputsPanel.classList.add('slider__panel');
+    this.slider.after(this.inputsPanel);
+  }
+
+  private addClass(orientation: string): void {
+    const modificator: string =
+      orientation === 'vertical' ? 'vertical' : 'horizontal';
+    this.slider.addClass(`slider__wrapper--${modificator}`);
+  }
+
+  private updateState(state?: Partial<Settings>): void {
+    this.state = state ? state : this.slider.freeSlider('getState');
+  }
+
+  private createElements(): void {
+    this.elements = [
+      new ValuesInputs(this.inputsPanel, this.state),
+      new MinInput(this.inputsPanel, this.state),
+      new MaxInput(this.inputsPanel, this.state),
+      new StepInput(this.inputsPanel, this.state),
+      new HintToggle(this.inputsPanel, this.state),
+      new TooltipsToggle(this.inputsPanel, this.state),
+      new ScaleToggle(this.inputsPanel, this.state),
+      new OrientationChange(this.inputsPanel, this.state),
+    ];
   }
 
   private inputEvent(): void {
@@ -62,81 +59,29 @@ export default class Slider {
     this.slider.freeSlider('onChange', this.updateElements.bind(this));
   }
 
+  private updateCaller(): void {
+    this.elements.forEach((element) => {
+      element.addEvent(this.update.bind(this));
+    });
+  }
+
   private updateElements(state: Partial<Settings>): void {
     this.updateState(state);
-    this.minInput.updateAttribute(this.state.values);
-    this.maxInput.updateAttribute(this.state.values);
-    this.valuesInputs.updateInput(this.state);
+    this.elements[0].updateInput(this.state);
+    this.elements[1].updateAttribute(this.state.values);
+    this.elements[2].updateAttribute(this.state.values);
   }
 
-  private updateState(state?: Partial<Settings>): void {
-    this.state = state ? state : this.slider.freeSlider('getState');
+  private update(state: Partial<Settings>): void {
+    this.changeClass(state.orientation);
+    this.slider.freeSlider('update', state);
   }
 
-  private updateValues(): void {
-    this.valuesInputs.addEvent(this.setValues.bind(this));
-  }
-
-  private updateStep(): void {
-    this.stepInput.addEvent(this.changeStep.bind(this));
-  }
-
-  private updateMin(): void {
-    this.minInput.addEvent(this.changeMin.bind(this));
-  }
-
-  private updateMax(): void {
-    this.maxInput.addEvent(this.changeMax.bind(this));
-  }
-
-  private updateScale(): void {
-    this.scaleToggle.addEvent(this.changeScale.bind(this));
-  }
-
-  private updateOrientation(): void {
-    this.orientationChange.addEvent(this.changeOrientation.bind(this));
-  }
-
-  private updateHint(): void {
-    this.hintToggle.addEvent(this.changeHint.bind(this));
-  }
-
-  private updateTooltips(): void {
-    this.tooltipsToggle.addEvent(this.changeTooltips.bind(this));
-  }
-
-  private changeStep(step: number): void {
-    this.slider.freeSlider('changeStep', step);
-  }
-
-  private changeMin(value: number): void {
-    this.slider.freeSlider('changeMin', value);
-  }
-
-  private changeMax(value: number): void {
-    this.slider.freeSlider('changeMax', value);
-  }
-
-  private changeScale(isScale: boolean): void {
-    this.slider.freeSlider('showScale', isScale);
-  }
-
-  private changeOrientation(orientation: 'vertical' | 'horizontal'): void {
-    this.slider.toggleClass(
-      'slider__wrapper--horizontal slider__wrapper--vertical'
-    );
-    this.slider.freeSlider('changeOrientation', orientation);
-  }
-
-  private changeHint(isHint: boolean): void {
-    this.slider.freeSlider('showHint', isHint);
-  }
-
-  private changeTooltips(isTooltips: boolean): void {
-    this.slider.freeSlider('showTooltips', isTooltips);
-  }
-
-  private setValues(values: number[]): void {
-    this.slider.freeSlider('setValue', values);
+  private changeClass(orientation: string): void {
+    if (orientation) {
+      this.slider.toggleClass(
+        'slider__wrapper--horizontal slider__wrapper--vertical'
+      );
+    }
   }
 }
