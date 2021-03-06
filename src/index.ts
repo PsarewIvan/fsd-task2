@@ -12,44 +12,12 @@ import { Settings, Methods, SliderOrientation } from './types';
       });
     },
 
-    getValue(): number[] {
-      return $(this).data().freeSlider.method().getCurrentValue();
-    },
-
-    setValue(values: number[]): void {
-      $(this).data().freeSlider.method().setValue(values);
-    },
-
     getState(): Settings {
       return $(this).data().freeSlider.method().getState();
     },
 
-    changeStep(step: number): void {
-      return $(this).data().freeSlider.method().changeStep(step);
-    },
-
-    changeMin(value: number): void {
-      return $(this).data().freeSlider.method().changeMin(value);
-    },
-
-    changeMax(value: number): void {
-      return $(this).data().freeSlider.method().changeMax(value);
-    },
-
-    showScale(isScale: boolean): void {
-      return $(this).data().freeSlider.method().showScale(isScale);
-    },
-
-    changeOrientation(orientation: SliderOrientation): void {
-      $(this).data().freeSlider.method().changeOrientation(orientation);
-    },
-
-    showHint(isHint: boolean): void {
-      $(this).data().freeSlider.method().showHint(isHint);
-    },
-
-    showTooltips(isTooltips: boolean): void {
-      $(this).data().freeSlider.method().showTooltips(isTooltips);
+    update(state: Partial<Settings>) {
+      return $(this).data().freeSlider.method().update(state);
     },
 
     onChange(handler: Function): void {
@@ -63,7 +31,7 @@ import { Settings, Methods, SliderOrientation } from './types';
 
   $.fn.freeSlider = function (
     action?: Partial<Settings> | string,
-    args?: number[] | Function | number | boolean | SliderOrientation
+    args?: Partial<Settings> | Function
   ) {
     if (typeof action === 'string' && methods[action]) {
       return methods[action].call(this, args);

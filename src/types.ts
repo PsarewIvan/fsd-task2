@@ -20,16 +20,8 @@ export interface Settings {
 
 export interface Methods {
   init: (options?: Partial<Settings>) => JQuery;
-  getValue: () => Array<number>;
-  setValue: (values: number[]) => void;
+  update: (state: Partial<Settings>) => void;
   getState: () => Settings;
-  changeStep: (step: number) => void;
-  changeMin: (value: number) => void;
-  changeMax: (value: number) => void;
-  showScale: (isScale: boolean) => void;
-  changeOrientation: (orientation: SliderOrientation) => void;
-  showHint: (isHint: boolean) => void;
-  showTooltips: (isTooltips: boolean) => void;
   onChange: (handler: Function) => void;
   onLoad: (handler: Function) => void;
 }
@@ -51,7 +43,7 @@ declare global {
   interface JQuery {
     freeSlider: (
       options?: Partial<Settings> | string,
-      arg?: Array<number> | Function | number | boolean | SliderOrientation
+      arg?: Partial<Settings> | Function
     ) => JQuery | Array<number> | Settings | void;
   }
 }

@@ -3,7 +3,7 @@
 // реагирует на сообщения об обновлении модели и обновляет отображение
 import SliderModel from './Model';
 import View from './view/View';
-import { Settings, SliderOrientation } from '../types';
+import { Settings } from '../types';
 
 export default class SliderPresenter {
   private model: SliderModel;
@@ -57,14 +57,6 @@ export default class SliderPresenter {
   }
 
   // Публичные методы взаимодействия со слайдером
-  public getCurrentValue(): number[] {
-    return this.model.getSettings().values;
-  }
-
-  public setValue(values: number[]): void {
-    this.model.updateModel({ values: values });
-  }
-
   public onChange(handler: Function) {
     this.model.modelChangedSubject.subscribe('onChange', (state: Settings) => {
       if (handler) {
@@ -83,31 +75,7 @@ export default class SliderPresenter {
     return this.model.getSettings();
   }
 
-  public changeStep(newStep: number): void {
-    this.model.updateModel({ step: newStep });
-  }
-
-  public changeMin(value: number): void {
-    this.model.updateModel({ min: value });
-  }
-
-  public changeMax(value: number): void {
-    this.model.updateModel({ max: value });
-  }
-
-  public showScale(isScale: boolean): void {
-    this.model.updateModel({ scale: isScale });
-  }
-
-  public changeOrientation(orientation: SliderOrientation): void {
-    this.model.changeOrientation(orientation);
-  }
-
-  public showHint(isHint: boolean): void {
-    this.model.updateModel({ hints: isHint });
-  }
-
-  public showTooltips(isTooltips: boolean): void {
-    this.model.updateModel({ tooltips: isTooltips });
+  public update(state: Partial<Settings>): void {
+    this.model.updateModel(state);
   }
 }
