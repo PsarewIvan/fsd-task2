@@ -25,7 +25,7 @@ it('Return distance to screen for horizontal', () => {
   track.root.getBoundingClientRect = jest.fn(() => ({
     left: 200,
   }));
-  expect(track.getDistanceToScreen()).toBe(200);
+  expect(track.distanceToScreen).toBe(200);
 });
 
 it('Return distance to screen for vertical', () => {
@@ -33,7 +33,7 @@ it('Return distance to screen for vertical', () => {
   track.root.getBoundingClientRect = jest.fn(() => ({
     top: 150,
   }));
-  expect(track.getDistanceToScreen()).toBe(150);
+  expect(track.distanceToScreen).toBe(150);
 });
 
 it('Click to track listener', () => {
