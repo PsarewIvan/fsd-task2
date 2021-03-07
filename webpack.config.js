@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const { dirname } = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const TerserWebpackPlugin = require('terser-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin;
@@ -21,10 +21,7 @@ const optimization = () => {
   };
 
   if (isProd) {
-    config.minimizer = [
-      new OptimizeCssAssetsPlugin(),
-      new TerserWebpackPlugin(),
-    ];
+    config.minimizer = [new CssMinimizerPlugin(), new TerserWebpackPlugin()];
   }
 
   return config;
