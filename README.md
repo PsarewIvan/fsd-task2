@@ -1,5 +1,7 @@
 # [](demo/assets/favicon/favicon-32x32.png) FreeSlider
 
+<img src="slider.png" width="100%">
+
 ---
 
 - <a href="https://psarewivan.github.io/fsd-task-4/">Демо-страница проекта</a>
