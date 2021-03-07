@@ -49,35 +49,35 @@ it('ViewHandler should be return settings when orientation changed', () => {
   expect(mock).toEqual(state);
 });
 
-it('Should be returned current value on public API', () => {
-  const values = presenter.getCurrentValue();
-  expect(values).toEqual([100]);
+it('Should be returned slider state on public API', () => {
+  const returnedState = presenter.getState();
+  expect(returnedState).toEqual(state);
 });
 
 it('Should be set new value on public API', () => {
-  presenter.setValue([20]);
-  const values = presenter.getCurrentValue();
+  presenter.update({ values: [20] });
+  const values = presenter.getState().values;
   expect(values).toEqual([20]);
 });
 
 it('Should be set new range values on public API', () => {
   const presenter = new Presenter(document.body, { type: 'range' });
-  presenter.setValue([10, 20]);
-  const values = presenter.getCurrentValue();
+  presenter.update({ values: [10, 20] });
+  const values = presenter.getState().values;
   expect(values).toEqual([10, 20]);
 });
 
 it('Should be set new second values on public API', () => {
   const presenter = new Presenter(document.body, { type: 'range' });
-  presenter.setValue([, 20]);
-  const values = presenter.getCurrentValue();
+  presenter.update({ values: [, 20] });
+  const values = presenter.getState().values;
   expect(values).toEqual([10, 20]);
 });
 
 it('Should be set new first values on public API', () => {
   const presenter = new Presenter(document.body, { type: 'range' });
-  presenter.setValue([3]);
-  const values = presenter.getCurrentValue();
+  presenter.update({ values: [3] });
+  const values = presenter.getState().values;
   expect(values).toEqual([3, 90]);
 });
 
@@ -100,50 +100,36 @@ it('Should return state when evoke API getState', () => {
 });
 
 it('Should be update model when step updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (step) => (mock = step);
-  presenter.changeStep(13);
-  expect(mock).toEqual({ step: 13 });
+  presenter.update({ step: 13 });
+  expect(presenter.getState().step).toBe(13);
 });
 
 it('Should be update model when Min updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (min) => (mock = min);
-  presenter.changeMin(15);
-  expect(mock).toEqual({ min: 15 });
+  presenter.update({ min: 15 });
+  expect(presenter.getState().min).toBe(15);
 });
 
 it('Should be update model when Max updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (max) => (mock = max);
-  presenter.changeMax(450);
-  expect(mock).toEqual({ max: 450 });
+  presenter.update({ max: 450 });
+  expect(presenter.getState().max).toEqual(450);
 });
 
 it('Should be update model when scale updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (scale) => (mock = scale);
-  presenter.showScale(false);
-  expect(mock).toEqual({ scale: false });
+  presenter.update({ scale: false });
+  expect(presenter.getState().scale).toBe(false);
 });
 
 it('Should be update model when hints updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (hints) => (mock = hints);
-  presenter.showHint(false);
-  expect(mock).toEqual({ hints: false });
+  presenter.update({ hints: false });
+  expect(presenter.getState().hints).toEqual(false);
 });
 
 it('Should be update model when tooltips updated', () => {
-  let mock = 'empty';
-  presenter.model.updateModel = (tooltips) => (mock = tooltips);
-  presenter.showTooltips(false);
-  expect(mock).toEqual({ tooltips: false });
+  presenter.update({ tooltips: false });
+  expect(presenter.getState().tooltips).toBe(false);
 });
 
 it('Should be update model when orientation updated', () => {
-  let mock = 'empty';
-  presenter.model.changeOrientation = (orientation) => (mock = orientation);
-  presenter.changeOrientation('vertical');
-  expect(mock).toBe('vertical');
+  presenter.update({ orientation: 'vertical' });
+  expect(presenter.getState().orientation).toBe('vertical');
 });
