@@ -1,6 +1,6 @@
 # [](demo/assets/favicon/favicon-32x32.png) FreeSlider
 
-<img src="slider.png" width="100%">
+<img src="slider.png" width="50%">
 
 ---
 
