@@ -29,6 +29,7 @@ body {
 
   &__wrapper {
     margin: 14px 14px 24px;
+    width: 100%;
 
     &--horizontal {
       width: 100%;
@@ -47,7 +48,7 @@ body {
     align-items: flex-start;
     width: 100%;
     padding: 14px;
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 7px 7px;
     background-color: #bee3db;
 
     & > *:not(:last-child) {
@@ -71,5 +72,30 @@ body {
     display: flex;
     justify-content: space-between;
     width: 200px;
+  }
+}
+
+@media (min-width: 590px) {
+  .slider {
+    flex-wrap: nowrap;
+
+    &__panel {
+      width: 235px;
+      border-radius: 0 7px 7px 0;
+    }
+
+    &__wrapper {
+      &--vertical {
+        display: flex;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+@media (min-width: 730px) {
+  .slider {
+    margin-left: auto;
+    margin-right: auto;
   }
 }
