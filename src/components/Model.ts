@@ -79,16 +79,6 @@ export default class SliderModel {
     this.changeOrientation(newSettings.orientation);
   }
 
-  private changeOrientation(orientation: SliderOrientation): void {
-    if (
-      (orientation === 'horizontal' || orientation === 'vertical') &&
-      orientation !== this.settings.orientation
-    ) {
-      this.setSettings({ orientation: orientation });
-      this.modelChangedSubject.notify('changeOrientation');
-    }
-  }
-
   // Возвращает значения с дополнительными полями, требуемыми для
   // корректной работы View:
   // settings.percents - массив значений в процентах
@@ -170,6 +160,16 @@ export default class SliderModel {
       value = this.settings.values[this.settings.values.length - 1];
     }
     this.setSettings({ max: value });
+  }
+
+  private changeOrientation(orientation: SliderOrientation): void {
+    if (
+      (orientation === 'horizontal' || orientation === 'vertical') &&
+      orientation !== this.settings.orientation
+    ) {
+      this.setSettings({ orientation: orientation });
+      this.modelChangedSubject.notify('changeOrientation');
+    }
   }
 
   // Записывает новые значения слайдера, объединяя новые значения
