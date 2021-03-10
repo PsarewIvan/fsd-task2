@@ -8,6 +8,7 @@
     position: relative;
     display: block;
     box-sizing: border-box;
+    cursor: pointer;
 
     &::after {
       content: '';
@@ -67,6 +68,7 @@
   &__scale {
     position: absolute;
     pointer-events: all;
+    cursor: pointer;
   }
 
   &__scale-mark {
@@ -76,7 +78,6 @@
   &__scale-text {
     position: absolute;
     font-size: 0.7em;
-    cursor: default;
   }
 }
 
