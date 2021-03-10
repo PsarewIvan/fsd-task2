@@ -83,12 +83,12 @@ export default class SliderModel {
   // корректной работы View:
   // settings.percents - массив значений в процентах
   public getSettings(): Settings {
-    const upgradeSettings: Settings = _.cloneDeep(this.settings);
-    const range: number = this.settings.max - this.settings.min;
-    this.settings.values.forEach((value: number, i: number) => {
-      upgradeSettings.percents[i] = (value - this.settings.min) / range;
+    const settingsClone: Settings = _.cloneDeep(this.settings);
+    const range: number = settingsClone.max - settingsClone.min;
+    settingsClone.values.forEach((value: number, i: number) => {
+      settingsClone.percents[i] = (value - settingsClone.min) / range;
     });
-    return upgradeSettings;
+    return settingsClone;
   }
 
   // Устанавливает новые значения слайдера в зависимости от
@@ -231,7 +231,7 @@ export default class SliderModel {
     return true;
   }
 
-  // Копирование объектов
+  // Неглубокое копирование массивов
   private arrCopy(arr: number[]): number[] {
     const newArr = [];
     arr.forEach((value: number, i: number) => {
