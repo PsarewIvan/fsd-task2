@@ -57,11 +57,9 @@ export default class View {
     });
 
     // Слушатель на шкалу значений
-    if (this.scale) {
-      this.scale.clickEvent((clickCoord: number, evt: PointerEvent) => {
-        this.clickHandler(clickCoord, handler, evt, onFinish);
-      });
-    }
+    this.scale.clickEvent((clickCoord: number, evt: PointerEvent) => {
+      this.clickHandler(clickCoord, handler, evt, onFinish);
+    });
   }
 
   public destroyAll(): void {
