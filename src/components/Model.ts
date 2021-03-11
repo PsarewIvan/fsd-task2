@@ -147,10 +147,9 @@ export default class SliderModel {
   }
 
   private updateStep(step: number): void {
+    const range = this.settings.max - this.settings.min;
     if (step < 0) step = 1;
-    if (step > this.settings.max - this.settings.min) {
-      step = this.settings.max - this.settings.min;
-    }
+    if (step > range) step = range;
     this.setSettings({ step: step });
   }
 
@@ -169,10 +168,10 @@ export default class SliderModel {
   }
 
   private changeOrientation(orientation: SliderOrientation): void {
-    if (
-      (orientation === 'horizontal' || orientation === 'vertical') &&
-      orientation !== this.settings.orientation
-    ) {
+    const isInputValid =
+      orientation === 'horizontal' || orientation === 'vertical';
+    const isInputChange = orientation !== this.settings.orientation;
+    if (isInputValid && isInputChange) {
       this.setSettings({ orientation: orientation });
       this.modelChangedSubject.notify('changeOrientation');
     }
@@ -203,20 +202,12 @@ export default class SliderModel {
     let value =
       this.settings.min +
       (this.settings.max - this.settings.min) * thumbPercentOffset;
-
-    if (
-      value % step > step / 2 &&
-      value !== this.settings.max &&
-      value !== this.settings.min
-    )
-      value = value + step - (value % step);
-    if (
-      value % step < step / 2 &&
-      value !== this.settings.max &&
-      value !== this.settings.min
-    )
-      value = value - (value % step);
-
+    const isValueInRange =
+      value < this.settings.max && value > this.settings.min;
+    const isAddStep = value % step > step / 2;
+    const isDeductStep = value % step < step / 2;
+    if (isAddStep && isValueInRange) value = value + step - (value % step);
+    if (isDeductStep && isValueInRange) value = value - (value % step);
     value = this.round(value, 5);
     return value;
   }
@@ -230,10 +221,11 @@ export default class SliderModel {
     return Math.round(base * number) / base;
   }
 
-  // Проверка равенства объектов
+  // Проверка равенства простых массивов
   private isEqual(arr1: number[], arr2: number[]): boolean {
-    if (arr1.length !== arr2.length || arr1.join() !== arr2.join())
-      return false;
+    const isEqualLength = arr1.length !== arr2.length;
+    const isSameInside = arr1.join() !== arr2.join();
+    if (isEqualLength || isSameInside) return false;
     return true;
   }
 
