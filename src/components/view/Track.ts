@@ -1,7 +1,7 @@
 import SliderElement from './SliderElement';
 import { Settings } from '../../types';
 
-export default class TrackView extends SliderElement {
+class TrackView extends SliderElement {
   constructor(rootNode: HTMLElement, state: Settings) {
     super(rootNode, ['free-slider__track'], state.orientation);
   }
@@ -13,3 +13,5 @@ export default class TrackView extends SliderElement {
     });
   }
 }
+
+export default TrackView;

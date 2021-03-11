@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import FreeSlider from './FreeSlider';
-import { Settings, Methods, SliderOrientation } from './types';
+import { Settings, Methods } from './types';
 
 (($) => {
   const methods: Methods = {

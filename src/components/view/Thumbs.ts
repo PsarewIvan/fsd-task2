@@ -1,7 +1,7 @@
 import SliderElement from './SliderElement';
 import { Settings, RequiredThumb } from '../../types';
 
-export default class ThumbView {
+class Thumbs {
   readonly state: Settings;
   private property: string[];
   private thumbs: SliderElement[];
@@ -159,3 +159,5 @@ export default class ThumbView {
     return this.thumbs.findIndex((thumb) => thumb.root === currentThumb.root);
   }
 }
+
+export default Thumbs;

@@ -6,7 +6,7 @@ import {
   CoordType,
 } from '../../types';
 
-export default class sliderElement {
+class sliderElement {
   public root: HTMLElement;
   readonly orientation: SliderOrientation;
 
@@ -59,3 +59,5 @@ export default class sliderElement {
     return this.orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }
+
+export default sliderElement;

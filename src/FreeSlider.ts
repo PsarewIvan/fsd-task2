@@ -1,9 +1,9 @@
-import './styles/structure.scss';
-import './styles/theme.scss';
 import SliderPresenter from './components/Presenter';
 import { Settings } from './types';
+import './styles/structure.scss';
+import './styles/theme.scss';
 
-export default class FreeSlider {
+class FreeSlider {
   private freeSlider: SliderPresenter;
 
   constructor(node: HTMLElement, options: Partial<Settings>) {
@@ -14,3 +14,5 @@ export default class FreeSlider {
     return this.freeSlider;
   }
 }
+
+export default FreeSlider;

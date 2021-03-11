@@ -10,7 +10,7 @@ import Bar from './Bar';
 import Scale from './Scale';
 import Tooltips from './Tooltips';
 
-export default class View {
+class View {
   private root: HTMLElement;
   private wrapper: HTMLElement;
   private isFirstChange: boolean;
@@ -139,3 +139,5 @@ export default class View {
     return formatPercents;
   }
 }
+
+export default View;

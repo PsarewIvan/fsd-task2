@@ -1,6 +1,6 @@
 import SliderElement from './components/view/SliderElement';
 
-export interface Settings {
+interface Settings {
   min: number;
   max: number;
   step: number;
@@ -18,7 +18,7 @@ export interface Settings {
   onUpdate?: (value: Array<number>) => void;
 }
 
-export interface Methods {
+interface Methods {
   init: (options?: Partial<Settings>) => JQuery;
   update: (state: Partial<Settings>) => void;
   getState: () => Settings;
@@ -26,25 +26,25 @@ export interface Methods {
   onLoad: (handler: Function) => void;
 }
 
-export interface RequiredThumb {
+interface RequiredThumb {
   index: number;
   root: SliderElement;
 }
 
-export interface ModelConstants {
+interface ModelConstants {
   SINGLE: SliderType;
   RANGE: SliderType;
   VERTICAL: SliderOrientation;
   HORIZONTAL: SliderOrientation;
 }
 
-export type ThumbType = 'single' | 'from' | 'to';
-export type SliderType = 'single' | 'range';
-export type SliderOrientation = 'vertical' | 'horizontal';
-export type DirectionType = 'left' | 'top';
-export type OffsetSizeType = 'offsetWidth' | 'offsetHeight';
-export type SizeType = 'width' | 'height';
-export type CoordType = 'clientX' | 'clientY';
+type ThumbType = 'single' | 'from' | 'to';
+type SliderType = 'single' | 'range';
+type SliderOrientation = 'vertical' | 'horizontal';
+type DirectionType = 'left' | 'top';
+type OffsetSizeType = 'offsetWidth' | 'offsetHeight';
+type SizeType = 'width' | 'height';
+type CoordType = 'clientX' | 'clientY';
 
 declare global {
   interface JQuery {
@@ -54,3 +54,17 @@ declare global {
     ) => JQuery | Array<number> | Settings | void;
   }
 }
+
+export {
+  Settings,
+  Methods,
+  RequiredThumb,
+  ModelConstants,
+  ThumbType,
+  SliderType,
+  SliderOrientation,
+  DirectionType,
+  OffsetSizeType,
+  SizeType,
+  CoordType,
+};

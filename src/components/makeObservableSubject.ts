@@ -1,4 +1,4 @@
-export default class MakeObservableSubject {
+class MakeObservableSubject {
   private observers: Object;
 
   constructor() {
@@ -24,3 +24,5 @@ export default class MakeObservableSubject {
     }
   }
 }
+
+export default MakeObservableSubject;

@@ -1,10 +1,9 @@
 // Слой управления данными, который содержит бизнес-логику
-
-import { Settings, SliderOrientation, ModelConstants } from '../types';
-import MakeObservableSubject from './makeObservableSubject';
 import _ from 'lodash';
+import MakeObservableSubject from './makeObservableSubject';
+import { Settings, SliderOrientation, ModelConstants } from '../types';
 
-export default class SliderModel {
+class Model {
   private settings: Settings;
   readonly constants: ModelConstants;
   public modelChangedSubject: MakeObservableSubject;
@@ -254,3 +253,5 @@ export default class SliderModel {
     }
   }
 }
+
+export default Model;

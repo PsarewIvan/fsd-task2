@@ -1,7 +1,7 @@
 import SliderElement from './SliderElement';
 import { Settings } from '../../types';
 
-export default class Scale extends SliderElement {
+class Scale extends SliderElement {
   readonly state: Settings;
 
   constructor(rootNode: HTMLElement, state: Settings) {
@@ -77,3 +77,5 @@ export default class Scale extends SliderElement {
     return Math.round(base * number) / base;
   }
 }
+
+export default Scale;

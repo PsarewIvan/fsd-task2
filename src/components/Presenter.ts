@@ -1,18 +1,18 @@
 // Слой для обновления модели и отображения, который
 // реагирует на сообщения о действиях пользователей и обновляет модель,
 // реагирует на сообщения об обновлении модели и обновляет отображение
-import SliderModel from './Model';
+import Model from './Model';
 import View from './view/View';
 import { Settings } from '../types';
 
-export default class SliderPresenter {
-  private model: SliderModel;
+class SliderPresenter {
+  private model: Model;
   private view: View;
   private element: HTMLElement;
 
   constructor(element: HTMLElement, options: Partial<Settings>) {
     this.element = element;
-    this.model = new SliderModel(options);
+    this.model = new Model(options);
     this.view = new View(this.element, this.model.getSettings());
     this.viewHandler(options);
     this.modelHandler();
@@ -79,3 +79,5 @@ export default class SliderPresenter {
     this.model.updateModel(state);
   }
 }
+
+export default SliderPresenter;

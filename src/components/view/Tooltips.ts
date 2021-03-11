@@ -1,7 +1,7 @@
 import SliderElement from './SliderElement';
 import { Settings } from '../../types';
 
-export default class Tooltips {
+class Tooltips {
   private root: HTMLElement;
   private min: SliderElement;
   private max: SliderElement;
@@ -58,3 +58,5 @@ export default class Tooltips {
     delete this.min;
   }
 }
+
+export default Tooltips;
