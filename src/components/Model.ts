@@ -1,16 +1,21 @@
 // Слой управления данными, который содержит бизнес-логику
 
-import { Settings, SliderOrientation } from '../types';
+import { Settings, SliderOrientation, ModelConstants } from '../types';
 import MakeObservableSubject from './makeObservableSubject';
 import _ from 'lodash';
 
 export default class SliderModel {
-  readonly defaultParamSingle: Settings;
-  readonly defaultParamRange: Settings;
   private settings: Settings;
+  readonly constants: ModelConstants;
   public modelChangedSubject: MakeObservableSubject;
 
   constructor(options: Partial<Settings>) {
+    this.constants = {
+      SINGLE: 'single',
+      RANGE: 'range',
+      HORIZONTAL: 'horizontal',
+      VERTICAL: 'vertical',
+    };
     this.modelChangedSubject = new MakeObservableSubject();
     const defaultParameter = this.getDefaultParameter(options);
     if (options) {
@@ -62,7 +67,7 @@ export default class SliderModel {
   // смещения конкртеного ползунка в процентах
   public setNewValue(thumbPercentOffset: number, index: number): void {
     const calcValue = this.calcValue(thumbPercentOffset);
-    if (this.settings.type === 'single') {
+    if (this.settings.type === this.constants.SINGLE) {
       this.updateModel({ values: [calcValue] });
     } else {
       const newValues = this.arrCopy(this.settings.values);
@@ -76,7 +81,7 @@ export default class SliderModel {
       min: 0,
       max: 100,
       step: 1,
-      orientation: 'horizontal',
+      orientation: this.constants.HORIZONTAL,
       tooltips: true,
       scale: false,
       hints: true,
@@ -88,12 +93,12 @@ export default class SliderModel {
       onUpdate: null,
     };
 
-    if (options && options.type === 'range') {
+    if (options && options.type === this.constants.RANGE) {
       defaultParam = {
         ...defaultParam,
         ...{
           values: [10, 90],
-          type: 'range',
+          type: this.constants.RANGE,
         },
       };
     } else {
@@ -101,7 +106,7 @@ export default class SliderModel {
         ...defaultParam,
         ...{
           values: [50],
-          type: 'single',
+          type: this.constants.SINGLE,
         },
       };
     }
@@ -173,7 +178,8 @@ export default class SliderModel {
 
   private changeOrientation(orientation: SliderOrientation): void {
     const isInputValid =
-      orientation === 'horizontal' || orientation === 'vertical';
+      orientation === this.constants.HORIZONTAL ||
+      orientation === this.constants.VERTICAL;
     const isInputChange = orientation !== this.settings.orientation;
     if (isInputValid && isInputChange) {
       this.setSettings({ orientation: orientation });

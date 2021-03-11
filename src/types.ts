@@ -31,6 +31,13 @@ export interface RequiredThumb {
   root: SliderElement;
 }
 
+export interface ModelConstants {
+  SINGLE: SliderType;
+  RANGE: SliderType;
+  VERTICAL: SliderOrientation;
+  HORIZONTAL: SliderOrientation;
+}
+
 export type ThumbType = 'single' | 'from' | 'to';
 export type SliderType = 'single' | 'range';
 export type SliderOrientation = 'vertical' | 'horizontal';
