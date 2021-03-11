@@ -3,7 +3,7 @@ import {
   DirectionType,
   SizeType,
   OffsetSizeType,
-  CoordType,
+  CoordsType,
 } from '../../types';
 
 class sliderElement {
@@ -55,7 +55,7 @@ class sliderElement {
     return this.orientation === 'horizontal' ? 'offsetWidth' : 'offsetHeight';
   }
 
-  public get coordType(): CoordType {
+  public get coordsType(): CoordsType {
     return this.orientation === 'horizontal' ? 'clientX' : 'clientY';
   }
 }

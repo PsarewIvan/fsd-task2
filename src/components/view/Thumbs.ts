@@ -38,7 +38,7 @@ class Thumbs {
     onFinish: Function
   ): void {
     const clickOffset: number =
-      evt[currentThumb.coordType] -
+      evt[currentThumb.coordsType] -
       currentThumb.distanceToScreen -
       this.getThumbSize() / 2;
 
@@ -48,7 +48,7 @@ class Thumbs {
         evt.preventDefault();
       };
       const index: number = this.getCurrentThumbIndex(currentThumb);
-      const thumbShift: number = evt[currentThumb.coordType] - clickOffset;
+      const thumbShift: number = evt[currentThumb.coordsType] - clickOffset;
       handler(thumbShift, index);
     };
 
@@ -66,28 +66,28 @@ class Thumbs {
   // Возвращает объект с данными ползунка, который необходимо
   // подвинуть при клике на Track
   public requiredThumb(clickOffset: number): RequiredThumb {
-    const reqThumdState: RequiredThumb = {
+    const reqThumbState: RequiredThumb = {
       index: 0,
       root: this.thumbs[0],
     };
     if (this.state.type === 'single') {
-      return reqThumdState;
+      return reqThumbState;
     }
 
     const range: number =
       this.thumbs[1].distanceToScreen - this.thumbs[0].distanceToScreen;
     if (clickOffset > this.thumbs[0].distanceToScreen + range / 2) {
-      reqThumdState.index = 1;
-      reqThumdState.root = this.thumbs[1];
+      reqThumbState.index = 1;
+      reqThumbState.root = this.thumbs[1];
     }
-    return reqThumdState;
+    return reqThumbState;
   }
 
   public getThumbSize(): number {
     return this.thumbs[0].size;
   }
 
-  // Отрисовывает необходимые ползунки в родительском элементе
+  // Отрисует необходимые ползунки в родительском элементе
   private render(rootNode: HTMLElement): void {
     if (this.state.type === 'range') {
       this.thumbs = [

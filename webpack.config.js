@@ -32,7 +32,7 @@ const filename = (ext) =>
   isDev ? `[name].${ext}` : `[name].[contenthash].${ext}`;
 
 // конфигурация babel
-const babelOtions = (preset) => {
+const babelOptions = (preset) => {
   const opts = {
     loader: 'babel-loader',
     options: {
@@ -102,7 +102,7 @@ module.exports = {
     // файл получаемый на выходе
     filename: filename('js'),
 
-    // папка, куда все будет скалыдваться
+    // папка, куда все будет складываться
     path: path.resolve(__dirname, 'dist'),
   },
   resolve: {
@@ -147,12 +147,12 @@ module.exports = {
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
-        use: babelOtions(),
+        use: babelOptions(),
       },
       {
         test: /\.ts$/,
         exclude: /node_modules/,
-        use: babelOtions('@babel/preset-typescript'),
+        use: babelOptions('@babel/preset-typescript'),
       },
     ],
   },

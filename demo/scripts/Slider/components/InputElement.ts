@@ -1,4 +1,4 @@
-class HintToogle {
+class InputElement {
   readonly input: HTMLInputElement;
   readonly label: HTMLLabelElement;
 
@@ -27,4 +27,4 @@ class HintToogle {
   }
 }
 
-export default HintToogle;
+export default InputElement;

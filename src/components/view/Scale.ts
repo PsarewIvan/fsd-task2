@@ -37,7 +37,7 @@ class Scale extends SliderElement {
   public clickEvent(handler: Function): void {
     this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
-      handler(evt[this.coordType], evt);
+      handler(evt[this.coordsType], evt);
     });
   }
 
@@ -62,8 +62,8 @@ class Scale extends SliderElement {
       const tick: HTMLElement = document.createElement('span');
       tick.classList.add('free-slider__scale-text');
       tick.style[this.directionType] = `${(index * 100) / markNumber}%`;
-      const ticlValue = this.round(step * index + min, 5);
-      tick.innerHTML = ticlValue.toString();
+      const tickValue = this.round(step * index + min, 5);
+      tick.innerHTML = tickValue.toString();
       this.root.append(tick);
     }
   }

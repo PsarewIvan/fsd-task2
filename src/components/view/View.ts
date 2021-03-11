@@ -52,13 +52,13 @@ class View {
     }, onFinish);
 
     // Слушатель на клики по треку
-    this.track.clickEvent((clickCoord: number, evt: PointerEvent) => {
-      this.clickHandler(clickCoord, handler, evt, onFinish);
+    this.track.clickEvent((clickCoords: number, evt: PointerEvent) => {
+      this.clickHandler(clickCoords, handler, evt, onFinish);
     });
 
     // Слушатель на шкалу значений
-    this.scale.clickEvent((clickCoord: number, evt: PointerEvent) => {
-      this.clickHandler(clickCoord, handler, evt, onFinish);
+    this.scale.clickEvent((clickCoords: number, evt: PointerEvent) => {
+      this.clickHandler(clickCoords, handler, evt, onFinish);
     });
   }
 
@@ -90,13 +90,13 @@ class View {
 
   // Функция обработчик, вызывающаяся для перемещения ползунков
   private clickHandler(
-    clickCoord: number,
+    clickCoords: number,
     handler: Function,
     evt: PointerEvent,
     onFinish: Function
   ): void {
-    const percent = this.percentFromThumbShift(clickCoord);
-    const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickCoord);
+    const percent = this.percentFromThumbShift(clickCoords);
+    const requiredThumb: RequiredThumb = this.thumbs.requiredThumb(clickCoords);
     handler(percent, requiredThumb.index);
 
     this.thumbs.mouseMoveEvent(

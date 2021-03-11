@@ -32,9 +32,9 @@ class Slider {
   }
 
   private addClass(orientation: string): void {
-    const modificator: string =
+    const modifier: string =
       orientation === 'vertical' ? 'vertical' : 'horizontal';
-    this.slider.addClass(`slider__wrapper--${modificator}`);
+    this.slider.addClass(`slider__wrapper--${modifier}`);
   }
 
   private updateState(state?: Partial<Settings>): void {

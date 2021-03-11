@@ -37,7 +37,7 @@ it('Single horizontal bar width should be 20% when it updated by 0.2', () => {
   expect(bar.root.style.width).toBe('20%');
 });
 
-it('Single vertical bar heigth should be 45% when it updated by 0.45', () => {
+it('Single vertical bar height should be 45% when it updated by 0.45', () => {
   const bar = new Bar(document.body, stateDefaultVertical);
   bar.update([0.45]);
   expect(bar.root.style.height).toBe('45%');

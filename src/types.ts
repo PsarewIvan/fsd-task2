@@ -44,7 +44,7 @@ type SliderOrientation = 'vertical' | 'horizontal';
 type DirectionType = 'left' | 'top';
 type OffsetSizeType = 'offsetWidth' | 'offsetHeight';
 type SizeType = 'width' | 'height';
-type CoordType = 'clientX' | 'clientY';
+type CoordsType = 'clientX' | 'clientY';
 
 declare global {
   interface JQuery {
@@ -66,5 +66,5 @@ export {
   DirectionType,
   OffsetSizeType,
   SizeType,
-  CoordType,
+  CoordsType,
 };

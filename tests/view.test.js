@@ -80,7 +80,7 @@ describe('All orientation testing', () => {
   });
 
   // ----------------
-  it('When user click to thumd, handler should be evoke', () => {
+  it('When user click to thumb, handler should be evoke', () => {
     const handler = jest.fn();
     const onFinish = jest.fn();
     view.viewChange(handler, onFinish);
@@ -103,14 +103,14 @@ describe('Testing horizontal slider', () => {
     document.body.innerHTML = '';
   });
 
-  it('Slider class modificator must be correct', () => {
+  it('Slider class modifier must be correct', () => {
     const isClassCorrect = view.wrapper.classList.contains(
       'free-slider--horizontal'
     );
     expect(isClassCorrect).toBeTruthy();
   });
 
-  it('Whent the thumb shift is 300px, the percent must be calculate to 0.2', () => {
+  it('When the thumb shift is 300px, the percent must be calculate to 0.2', () => {
     Object.defineProperty(view.rail.root, 'offsetWidth', { value: 500 });
     view.rail.root.getBoundingClientRect = jest.fn(() => ({
       left: 200,
@@ -149,14 +149,14 @@ describe('Testing vertical slider', () => {
     document.body.innerHTML = '';
   });
 
-  it('Slider class modificator must be correct', () => {
+  it('Slider class modifier must be correct', () => {
     const isClassCorrect = view.wrapper.classList.contains(
       'free-slider--vertical'
     );
     expect(isClassCorrect).toBeTruthy();
   });
 
-  it('Whent the thumb shift is 100px, the percent must be calculate to 0.25', () => {
+  it('When the thumb shift is 100px, the percent must be calculate to 0.25', () => {
     Object.defineProperty(view.rail.root, 'offsetHeight', { value: 200 });
     view.rail.root.getBoundingClientRect = jest.fn(() => ({
       top: 50,

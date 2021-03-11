@@ -63,7 +63,7 @@ class Model {
   }
 
   // Устанавливает новые значения слайдера в зависимости от
-  // смещения конкртеного ползунка в процентах
+  // смещения конкретного ползунка в процентах
   public setNewValue(thumbPercentOffset: number, index: number): void {
     const calcValue = this.calcValue(thumbPercentOffset);
     if (this.settings.type === this.constants.SINGLE) {

@@ -25,7 +25,7 @@ describe('Common test', () => {
     model = new Model(state);
   });
 
-  it('Model should be accpet default state, when transmitted state is empty', () => {
+  it('Model should be accept default state, when transmitted state is empty', () => {
     const model = new Model();
     expect(model.getSettings()).toEqual({
       min: 0,

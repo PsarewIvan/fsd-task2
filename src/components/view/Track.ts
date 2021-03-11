@@ -9,7 +9,7 @@ class TrackView extends SliderElement {
   public clickEvent(handler: Function): void {
     this.root.addEventListener('pointerdown', (evt: PointerEvent) => {
       evt.preventDefault();
-      handler(evt[this.coordType], evt);
+      handler(evt[this.coordsType], evt);
     });
   }
 }
