@@ -22,22 +22,22 @@ class OrientationChange {
     id: string,
     orientation: string
   ): void {
-    const horizontal = new InputElement(
-      wrapper,
-      'radio',
-      'orientation',
-      'Horizontal',
-      `orientation-${id}`,
-      'horizontal'
-    );
-    const vertical = new InputElement(
-      wrapper,
-      'radio',
-      'orientation',
-      'Vertical',
-      `orientation-${id}`,
-      'vertical'
-    );
+    const horizontal = new InputElement({
+      wrapper: wrapper,
+      type: 'radio',
+      classMod: 'orientation',
+      labelText: 'Horizontal',
+      name: `orientation-${id}`,
+      value: 'horizontal',
+    });
+    const vertical = new InputElement({
+      wrapper: wrapper,
+      type: 'radio',
+      classMod: 'orientation',
+      labelText: 'Vertical',
+      name: `orientation-${id}`,
+      value: 'vertical',
+    });
     if (orientation === 'horizontal') {
       horizontal.input.checked = true;
     }
@@ -58,7 +58,7 @@ class OrientationChange {
   public addEvent(handler: Function): void {
     this.inputs.forEach((input: HTMLInputElement) => {
       input.addEventListener('change', () => {
-        handler({orientation: input.value});
+        handler({ orientation: input.value });
       });
     });
   }

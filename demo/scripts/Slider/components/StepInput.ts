@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class StepInput extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'number', 'step', 'Step: ');
+    super({
+      wrapper: wrapper,
+      type: 'number',
+      classMod: 'step',
+      labelText: 'Step: ',
+    });
     this.input.min = `0`;
     this.input.max = (state.max - state.min).toString();
     this.input.value = state.step.toString();

@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class MaxInput extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'number', 'max', 'Max value:');
+    super({
+      wrapper: wrapper,
+      type: 'number',
+      classMod: 'max',
+      labelText: 'Max value:',
+    });
     this.input.value = state.max.toString();
     this.updateAttribute(state.values);
   }
@@ -13,7 +18,7 @@ class MaxInput extends InputElement {
       if (Number(this.input.value) < Number(this.input.min)) {
         this.input.value = this.input.min;
       }
-      handler({max: Number(this.input.value)});
+      handler({ max: Number(this.input.value) });
     });
   }
 

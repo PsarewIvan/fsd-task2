@@ -9,12 +9,12 @@ class ValuesInputs {
     this.createWrapper();
     this.elements = [];
     state.values.forEach((_value, i: number) => {
-      const element = new InputElement(
-        this.wrapper,
-        'number',
-        'value',
-        `Thumb ${i + 1}: `
-      );
+      const element = new InputElement({
+        wrapper: this.wrapper,
+        type: 'number',
+        classMod: 'value',
+        labelText: `Thumb ${i + 1}: `,
+      });
       this.elements.push(element.input);
       this.updateAttribute(state);
     });

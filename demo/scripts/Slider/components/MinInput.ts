@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class MinInput extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'number', 'min', 'Min value:');
+    super({
+      wrapper: wrapper,
+      type: 'number',
+      classMod: 'min',
+      labelText: 'Min value:',
+    });
     this.input.value = state.min.toString();
     this.updateAttribute(state.values);
   }

@@ -1,29 +1,30 @@
+import { InputElementState } from '../types';
+
 class InputElement {
   readonly input: HTMLInputElement;
   readonly label: HTMLLabelElement;
 
-  constructor(
-    wrapper: HTMLDivElement,
-    type: string,
-    classMod: string,
-    labelText: string = '',
-    name?: string,
-    value?: string
-  ) {
+  constructor(state: InputElementState) {
     this.input = document.createElement('input');
-    this.input.classList.add(`slider__input`, `slider__input--${classMod}`);
-    this.input.type = type;
-    if (name) {
-      this.input.name = name;
+    this.input.classList.add(
+      `slider__input`,
+      `slider__input--${state.classMod}`
+    );
+    this.input.type = state.type;
+    if (state.name) {
+      this.input.name = state.name;
     }
-    if (value) {
-      this.input.value = value;
+    if (state.value) {
+      this.input.value = state.value;
     }
     this.label = document.createElement('label');
-    this.label.classList.add(`slider__label`, `slider__label--${classMod}`);
-    this.label.innerHTML = labelText;
+    this.label.classList.add(
+      `slider__label`,
+      `slider__label--${state.classMod}`
+    );
+    this.label.innerHTML = state.labelText ? state.labelText : '';
     this.label.append(this.input);
-    wrapper.append(this.label);
+    state.wrapper.append(this.label);
   }
 }
 

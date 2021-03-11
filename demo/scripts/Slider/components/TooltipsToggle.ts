@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class TooltipsToggle extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'checkbox', 'tooltips', 'Tooltips: ');
+    super({
+      wrapper: wrapper,
+      type: 'checkbox',
+      classMod: 'tooltips',
+      labelText: 'Tooltips: ',
+    });
     this.input.checked = state.hints;
   }
 

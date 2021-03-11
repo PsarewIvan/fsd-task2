@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class ScaleToggle extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'checkbox', 'scale', 'Scale: ');
+    super({
+      wrapper: wrapper,
+      type: 'checkbox',
+      classMod: 'scale',
+      labelText: 'Scale: ',
+    });
     this.input.checked = state.scale;
   }
 

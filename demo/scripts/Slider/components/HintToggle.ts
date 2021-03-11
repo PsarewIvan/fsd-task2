@@ -3,7 +3,12 @@ import { Settings } from '../types';
 
 class HintToggle extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
-    super(wrapper, 'checkbox', 'hint', 'Hints: ');
+    super({
+      wrapper: wrapper,
+      type: 'checkbox',
+      classMod: 'hint',
+      labelText: 'Hints: ',
+    });
     this.input.checked = state.hints;
   }
 

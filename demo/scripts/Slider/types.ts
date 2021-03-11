@@ -25,6 +25,15 @@ interface Settings {
   onUpdate: (value: Array<number>) => void;
 }
 
+interface InputElementState {
+  wrapper: HTMLDivElement;
+  type: string;
+  classMod: string;
+  labelText: string;
+  name?: string;
+  value?: string;
+}
+
 type ElementsType = [
   ValuesInputs,
   MinInput,
@@ -36,4 +45,4 @@ type ElementsType = [
   OrientationChange
 ];
 
-export { Settings, ElementsType };
+export { Settings, ElementsType, InputElementState };
