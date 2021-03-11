@@ -12,46 +12,13 @@ export default class SliderModel {
 
   constructor(options: Partial<Settings>) {
     this.modelChangedSubject = new MakeObservableSubject();
-    let defaultParam: Settings = {
-      min: 0,
-      max: 100,
-      step: 1,
-      orientation: 'horizontal',
-      tooltips: true,
-      scale: false,
-      hints: true,
-      scaleMark: 4,
-      subScaleMark: 5,
-      percents: [],
-      onChange: null,
-      onFinish: null,
-      onUpdate: null,
-    };
-
-    if (options && options.type === 'range') {
-      defaultParam = {
-        ...defaultParam,
-        ...{
-          values: [10, 90],
-          type: 'range',
-        },
-      };
-    } else {
-      defaultParam = {
-        ...defaultParam,
-        ...{
-          values: [50],
-          type: 'single',
-        },
-      };
-    }
-
+    const defaultParameter = this.getDefaultParameter(options);
     if (options) {
-      const newOptions = { ...defaultParam, ...options };
+      const newOptions = { ...defaultParameter, ...options };
       this.optionsCheck(newOptions);
-      this.setSettings(newOptions, defaultParam);
+      this.setSettings(newOptions, defaultParameter);
     } else {
-      this.setSettings(defaultParam);
+      this.setSettings(defaultParameter);
     }
   }
 
@@ -102,6 +69,43 @@ export default class SliderModel {
       newValues[index] = calcValue;
       this.updateModel({ values: newValues });
     }
+  }
+
+  private getDefaultParameter(options: Partial<Settings>): Settings {
+    let defaultParam: Settings = {
+      min: 0,
+      max: 100,
+      step: 1,
+      orientation: 'horizontal',
+      tooltips: true,
+      scale: false,
+      hints: true,
+      scaleMark: 4,
+      subScaleMark: 5,
+      percents: [],
+      onChange: null,
+      onFinish: null,
+      onUpdate: null,
+    };
+
+    if (options && options.type === 'range') {
+      defaultParam = {
+        ...defaultParam,
+        ...{
+          values: [10, 90],
+          type: 'range',
+        },
+      };
+    } else {
+      defaultParam = {
+        ...defaultParam,
+        ...{
+          values: [50],
+          type: 'single',
+        },
+      };
+    }
+    return defaultParam;
   }
 
   // Проверяет изменились ли значения и вызывает метод записи
