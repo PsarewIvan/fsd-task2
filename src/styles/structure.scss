@@ -108,11 +108,11 @@
     }
 
     &__min {
-      left: 0;
+      left: -2px;
     }
 
     &__max {
-      right: 0;
+      right: -2px;
     }
 
     &__bar {
@@ -193,7 +193,7 @@
 
     &__max {
       top: auto;
-      bottom: 0;
+      bottom: 3px;
     }
 
     &__thumb {
