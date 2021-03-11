@@ -38,6 +38,14 @@ interface ModelConstants {
   HORIZONTAL: SliderOrientation;
 }
 
+interface TickState {
+  markNumber: number,
+  subMark: number,
+  index: number,
+  step: number,
+  min: number
+}
+
 type ThumbType = 'single' | 'from' | 'to';
 type SliderType = 'single' | 'range';
 type SliderOrientation = 'vertical' | 'horizontal';
@@ -67,4 +75,5 @@ export {
   OffsetSizeType,
   SizeType,
   CoordsType,
+  TickState,
 };

@@ -1,5 +1,5 @@
 import SliderElement from './SliderElement';
-import { Settings } from '../../types';
+import { Settings, TickState } from '../../types';
 
 class Scale extends SliderElement {
   readonly state: Settings;
@@ -12,11 +12,17 @@ class Scale extends SliderElement {
   public render(state: Settings): void {
     this.clearRoot();
     const markNumber = state.scaleMark * state.subScaleMark;
-    const stepValue: number =
+    const step: number =
       (state.max - state.min) / (state.scaleMark * state.subScaleMark);
     for (let i = 0; i <= markNumber; i += 1) {
       this.renderMark(markNumber, i, state.subScaleMark);
-      this.renderTick(markNumber, state.subScaleMark, i, stepValue, state.min);
+      this.renderTick({
+        markNumber,
+        subMark: state.subScaleMark,
+        index: i,
+        step,
+        min: state.min,
+      });
     }
   }
 
@@ -51,18 +57,12 @@ class Scale extends SliderElement {
     this.root.append(markElement);
   }
 
-  private renderTick(
-    markNumber: number,
-    subMark: number,
-    index: number,
-    step: number,
-    min: number
-  ): void {
-    if (index % subMark === 0) {
+  private renderTick(state: TickState): void {
+    if (state.index % state.subMark === 0) {
       const tick: HTMLElement = document.createElement('span');
       tick.classList.add('free-slider__scale-text');
-      tick.style[this.directionType] = `${(index * 100) / markNumber}%`;
-      const tickValue = this.round(step * index + min, 5);
+      tick.style[this.directionType] = `${(state.index * 100) / state.markNumber}%`;
+      const tickValue = this.round(state.step * state.index + state.min, 5);
       tick.innerHTML = tickValue.toString();
       this.root.append(tick);
     }
