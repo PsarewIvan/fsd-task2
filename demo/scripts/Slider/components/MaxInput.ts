@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class MaxInput extends InputElement {
+class MaxInput extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
     super(wrapper, 'number', 'max', 'Max value:');
     this.input.value = state.max.toString();
@@ -21,3 +21,5 @@ export default class MaxInput extends InputElement {
     this.input.min = values[values.length - 1].toString();
   }
 }
+
+export default MaxInput;

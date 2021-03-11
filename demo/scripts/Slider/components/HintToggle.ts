@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class HintToogle extends InputElement {
+class HintToogle extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
     super(wrapper, 'checkbox', 'hint', 'Hints: ');
     this.input.checked = state.hints;
@@ -13,3 +13,5 @@ export default class HintToogle extends InputElement {
     });
   }
 }
+
+export default HintToogle;

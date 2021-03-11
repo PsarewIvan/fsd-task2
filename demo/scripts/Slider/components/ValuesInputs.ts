@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class ValuesInputs {
+class ValuesInputs {
   private wrapper: HTMLDivElement;
   private elements: HTMLInputElement[];
 
@@ -60,3 +60,5 @@ export default class ValuesInputs {
     });
   }
 }
+
+export default ValuesInputs;

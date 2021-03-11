@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class StepInput extends InputElement {
+class StepInput extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
     super(wrapper, 'number', 'step', 'Step: ');
     this.input.min = `0`;
@@ -15,3 +15,5 @@ export default class StepInput extends InputElement {
     });
   }
 }
+
+export default StepInput;

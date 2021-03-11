@@ -7,7 +7,7 @@ import OrientationChange from './components/OrientationChange';
 import HintToggle from './components/HintToggle';
 import TooltipsToggle from './components/TooltipsToggle';
 
-export interface Settings {
+interface Settings {
   min: number;
   max: number;
   step: number;
@@ -25,7 +25,7 @@ export interface Settings {
   onUpdate: (value: Array<number>) => void;
 }
 
-export type ElementsType = [
+type ElementsType = [
   ValuesInputs,
   MinInput,
   MaxInput,
@@ -35,3 +35,5 @@ export type ElementsType = [
   ScaleToggle,
   OrientationChange
 ];
+
+export { Settings, ElementsType };

@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class ScaleToggle extends InputElement {
+class ScaleToggle extends InputElement {
   constructor(wrapper: HTMLDivElement, state: Settings) {
     super(wrapper, 'checkbox', 'scale', 'Scale: ');
     this.input.checked = state.scale;
@@ -13,3 +13,5 @@ export default class ScaleToggle extends InputElement {
     });
   }
 }
+
+export default ScaleToggle;

@@ -8,7 +8,7 @@ import HintToggle from './components/HintToggle';
 import TooltipsToggle from './components/TooltipsToggle';
 import { Settings, ElementsType } from './types';
 
-export default class Slider {
+class Slider {
   private slider: JQuery;
   private elements: ElementsType;
   private inputsPanel: HTMLDivElement;
@@ -85,3 +85,5 @@ export default class Slider {
     }
   }
 }
+
+export default Slider;

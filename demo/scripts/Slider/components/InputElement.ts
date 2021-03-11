@@ -1,4 +1,4 @@
-export default class HintToogle {
+class HintToogle {
   readonly input: HTMLInputElement;
   readonly label: HTMLLabelElement;
 
@@ -26,3 +26,5 @@ export default class HintToogle {
     wrapper.append(this.label);
   }
 }
+
+export default HintToogle;

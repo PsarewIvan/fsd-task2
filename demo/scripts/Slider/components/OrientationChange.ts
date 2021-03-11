@@ -1,7 +1,7 @@
 import InputElement from './InputElement';
 import { Settings } from '../types';
 
-export default class OrientationChange {
+class OrientationChange {
   private inputs: HTMLInputElement[];
   private wrapper: HTMLDivElement;
   static id: number;
@@ -65,3 +65,4 @@ export default class OrientationChange {
 }
 
 OrientationChange.id = 0;
+export default OrientationChange;
