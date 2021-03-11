@@ -11,14 +11,15 @@ export default class Tooltips {
   }
 
   public update(state: Settings): void {
-    if (state.tooltips === true && !this.min && !this.max) {
+    const isTooltipsRender = this.min && this.max;
+    if (state.tooltips === true && !isTooltipsRender) {
       this.render(state);
     }
     if (state.tooltips) {
       this.updateMin(state.min);
       this.updateMax(state.max);
     }
-    if (!state.tooltips && this.min && this.max) {
+    if (!state.tooltips && isTooltipsRender) {
       this.destroyAll();
     }
   }
