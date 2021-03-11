@@ -104,9 +104,14 @@ export default class SliderModel {
     }
   }
 
-  // Проверяет и вызывает метод записи новых значений слайдера
+  // Проверяет изменились ли значения и вызывает метод записи
+  // новых значений слайдера
   private updateValues(values: number[]): void {
-    const isValuesUpdate: boolean = !this.isEqual(values, this.settings.values);
+    const updateValues = this.changeInputValues(values);
+    const isValuesUpdate: boolean = !this.isEqual(
+      updateValues,
+      this.settings.values
+    );
     if (isValuesUpdate) {
       this.setSettings({ values: this.changeInputValues(values) });
       this.modelChangedSubject.notify('onChange', this.getSettings());
@@ -118,26 +123,15 @@ export default class SliderModel {
   // значений
   private changeInputValues(values: number[]): number[] {
     const currentValues = this.getSettings().values;
-    currentValues.forEach((value, i) => {
-      if (typeof values[i] === 'number' && value !== values[i]) {
-        currentValues[i] = values[i];
-      }
-    });
-    currentValues.forEach((value, i) => {
-      if (value < this.settings.min) {
-        currentValues[i] = this.settings.min;
-      }
-      if (value > this.settings.max) {
-        currentValues[i] = this.settings.max;
-      }
-      if (currentValues[i + 1] && value > currentValues[i + 1]) {
-        currentValues[i] = currentValues[i + 1];
-      }
-      if (currentValues[i - 1] && value < currentValues[i - 1]) {
-        currentValues[i] = currentValues[i - 1];
-      }
-    });
-    return currentValues;
+    for (let i = 0; i < currentValues.length; i += 1) {
+      if (typeof values[i] !== 'number') values[i] = currentValues[i];
+      if (values[i] < this.settings.min) values[i] = this.settings.min;
+      if (values[i] > this.settings.max) values[i] = this.settings.max;
+    }
+    const clone = _.cloneDeep(this.settings.values);
+    if (values[0] > clone[1]) values[0] = clone[1];
+    if (values[1] < clone[0]) values[1] = clone[0];
+    return values;
   }
 
   private updateStep(step: number): void {
