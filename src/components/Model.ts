@@ -113,7 +113,7 @@ export default class SliderModel {
       this.settings.values
     );
     if (isValuesUpdate) {
-      this.setSettings({ values: this.changeInputValues(values) });
+      this.setSettings({ values: updateValues });
       this.modelChangedSubject.notify('onChange', this.getSettings());
       this.onChangeCallback();
     }
@@ -129,8 +129,20 @@ export default class SliderModel {
       if (values[i] > this.settings.max) values[i] = this.settings.max;
     }
     const clone = _.cloneDeep(this.settings.values);
-    if (values[0] > clone[1]) values[0] = clone[1];
-    if (values[1] < clone[0]) values[1] = clone[0];
+    const isChangeBoth = values[0] !== clone[0] && values[1] !== clone[1];
+    const isChangeFirst = values[0] !== clone[0] && values[1] === clone[1];
+    const isChangeSecond = values[0] === clone[0] && values[1] !== clone[1];
+    const isFirstGreater = values[0] > clone[1];
+    const isSecondLess = values[1] < clone[0];
+    if (isChangeBoth) {
+      values.sort((a, b) => a - b);
+    }
+    if (isChangeFirst && isFirstGreater) {
+      values[0] = clone[1];
+    }
+    if (isChangeSecond && isSecondLess) {
+      values[1] = clone[0];
+    }
     return values;
   }
 
