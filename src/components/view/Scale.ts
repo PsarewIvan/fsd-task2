@@ -14,16 +14,19 @@ class Scale extends SliderElement {
     const markNumber = state.scaleMark * state.subScaleMark;
     const step: number =
       (state.max - state.min) / (state.scaleMark * state.subScaleMark);
+    const fragment = document.createDocumentFragment();
     for (let i = 0; i <= markNumber; i += 1) {
-      this.renderMark(markNumber, i, state.subScaleMark);
-      this.renderTick({
+      const mark = this.renderMark(markNumber, i, state.subScaleMark);
+      const tick = this.renderTick({
         markNumber,
         subMark: state.subScaleMark,
         index: i,
         step,
         min: state.min,
       });
+      fragment.append(mark, tick ? tick : '');
     }
+    this.root.append(fragment);
   }
 
   public update(state: Settings = this.state): void {
@@ -47,24 +50,30 @@ class Scale extends SliderElement {
     });
   }
 
-  private renderMark(markNumber: number, index: number, subMark: number): void {
+  private renderMark(
+    markNumber: number,
+    index: number,
+    subMark: number
+  ): HTMLElement {
     const markElement: HTMLElement = document.createElement('span');
     markElement.classList.add('free-slider__scale-mark');
     markElement.style[this.directionType] = `${(index * 100) / markNumber}%`;
     if (index % subMark === 0) {
       markElement.classList.add('free-slider__scale-mark--big');
     }
-    this.root.append(markElement);
+    return markElement;
   }
 
-  private renderTick(state: TickState): void {
+  private renderTick(state: TickState): HTMLElement {
     if (state.index % state.subMark === 0) {
       const tick: HTMLElement = document.createElement('span');
       tick.classList.add('free-slider__scale-text');
-      tick.style[this.directionType] = `${(state.index * 100) / state.markNumber}%`;
+      tick.style[this.directionType] = `${
+        (state.index * 100) / state.markNumber
+      }%`;
       const tickValue = this.round(state.step * state.index + state.min, 5);
       tick.innerHTML = tickValue.toString();
-      this.root.append(tick);
+      return tick;
     }
   }
 
